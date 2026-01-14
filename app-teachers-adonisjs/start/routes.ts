@@ -7,6 +7,7 @@
 |
 */
 
+import TeachersController from '#controllers/teachers_controller'
 import router from '@adonisjs/core/services/router'
 
-router.on('/').render('pages/home')
+router.get('/', [TeachersController, 'index']).as('home')

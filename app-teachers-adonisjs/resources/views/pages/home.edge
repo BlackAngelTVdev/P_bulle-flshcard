@@ -18,12 +18,13 @@
       </tr>
     </thead>
     <tbody>
+      @each ((teacher, index) in teachers)
       <tr>
         <td>
-          Girardet Alain
+          {{ teacher.lastname }} {{ teacher.firstname }}
         </td>
         <td>
-          AGT
+          {{ teacher.nickname }}
         </td>
         <td class="containerOptions">
           <a href="#">
@@ -37,45 +38,7 @@
           </a>
         </td>
       </tr>
-      <tr>
-        <td>
-          Mveng Antoine
-        </td>
-
-        <td>
-          AMG
-        </td>
-        <td class="containerOptions">
-          <a href="#">
-            <img height="20em" src="./img/edit.png" alt="edit" />
-          </a>
-          <a href="javascript:confirmDelete()">
-            <img height="20em" src="./img/delete.png" alt="delete" />
-          </a>
-          <a href="#">
-            <img height="20em" src="./img/detail.png" alt="detail" />
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Charmier Grégory
-        </td>
-        <td>
-          GregLeBarbar
-        </td>
-        <td class="containerOptions">
-          <a href="#">
-            <img height="20em" src="./img/edit.png" alt="edit" />
-          </a>
-          <a href="javascript:confirmDelete()">
-            <img height="20em" src="./img/delete.png" alt="delete" />
-          </a>
-          <a href="#">
-            <img height="20em" src="./img/detail.png" alt="detail" />
-          </a>
-        </td>
-      </tr>
+      @end
     </tbody>
   </table>
 </form>
