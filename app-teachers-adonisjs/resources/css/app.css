@@ -1,0 +1,144 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: auto;
+    width: 80%;
+}
+
+nav {
+    border: black solid 3px;
+    background-color: #e5e5e5;
+    text-align: center;
+}
+
+.container {
+    height: 50%;
+}
+
+footer {
+    border-top: black solid 1px;
+    text-align: center;
+    margin-top: 3vw;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 1vw;
+    border-bottom: #ddd solid 1px;
+}
+
+.containerOptions a,
+.user-head a {
+    text-decoration: none;
+    height: 100%;
+    margin-left: 1vw;
+}
+
+.user-head {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-footer {
+    text-align: right;
+}
+
+.left,
+.rigth {
+    display: inline-block;
+}
+
+.left {
+    width: 70%;
+}
+
+label {
+    display: inline-block;
+    width: 10%;
+}
+
+.container-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5%;
+
+}
+
+.titre-header {
+    width: 60%;
+    height: 100%;
+}
+
+.login-container {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.login-container form {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-container label {
+    display: none;
+}
+
+.login-container input,
+.login-container .btn-login {
+    width: 30%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.login-container h3 {
+    display: inline-block;
+    width: 30%;
+    text-align: right;
+    margin-right: 1vw;
+}
+
+.login-container input {
+    height: 4em;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.btn-login {
+    background-color: #00b4cc;
+}
+
+.btn {
+    text-align: center;
+    color: white;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    height: 4.5em;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-logout {
+    text-decoration: none;
+    background-color: coral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+}
