@@ -17,6 +17,6 @@ export default class extends BaseSeeder {
     ])
 
     // Appel la factory pour créer 10 enseignants
-    await TeacherFactory.createMany(100)
+    await TeacherFactory.createMany(1000000)
   }
 }

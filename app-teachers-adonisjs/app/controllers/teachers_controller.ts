@@ -20,18 +20,27 @@ export default class TeachersController {
   /**
   * Show individual record
   */
-  async show({ params }: HttpContext) { }
+  async show({ params, view }: HttpContext) {
+    // Sélectionner l'enseignant dont on veut afficher les détails
+    const teacher = await Teacher.query().where('id',
+      params.id).preload('section').firstOrFail()
+    // Afficher la vue
+    return view.render('pages/teachers/show.edge', {
+      title: "Détail d'unenseignant", 
+      teacher 
+    })
+}
   /**
   * Edit individual record
   */
-  async edit({ params }: HttpContext) { }
+  async edit({ params }: HttpContext) {}
 
   /**
   * Handle form submission for the edit action
   */
-  async update({ params, request }: HttpContext) { }
+  async update({ params, request }: HttpContext) {}
   /**
   * Delete record
   */
-  async destroy({ params }: HttpContext) { }
+  async destroy({ params }: HttpContext) {}
 }
