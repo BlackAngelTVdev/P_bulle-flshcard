@@ -4,7 +4,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-
+      // La seule ligne que nous devons ajouter à cette migration
+      // Nom de la section
       table.string('name').notNullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
