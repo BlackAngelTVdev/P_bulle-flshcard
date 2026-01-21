@@ -1,0 +1,17 @@
+{
+    "shared": {
+        "fields": {
+            "gender": "Genre",
+            "firstname": "Prénom",
+            "lastname": "Nom",
+            "nickname": "Surnom",
+            "origine": "Origine",
+            "sectionId": "Section"
+        },
+        "messages": {
+            "required": "Le champ {field} est obligatoire.",
+            "minLength": "Le champ {field} doit contenir au moins { min } caractères.",
+            "email": "Le champ doit {field} être une adresse e-mail valide."
+        }
+    }
+}

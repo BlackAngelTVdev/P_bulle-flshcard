@@ -1,4 +1,6 @@
+import Section from '#models/section'
 import Teacher from '#models/teacher'
+import { teacherValidator } from '#validators/teacher'
 import type { HttpContext } from '@adonisjs/core/http'
 export default class TeachersController {
   /**
@@ -17,11 +19,33 @@ export default class TeachersController {
   /**
   * Display form to create a new record
   */
-  async create({ }: HttpContext) { }
+  async create({ view }: HttpContext) {
+    // Récupération des sections triées par le nom
+    const sections = await Section.query().orderBy('name', 'asc')
+    // Appel de la vue
+    return view.render('pages/create', {
+      title: "Ajout d'un enseignant",
+      sections
+    })
+  }
   /**
   * Handle form submission for the create action
   */
-  async store({ request }: HttpContext) { }
+  async store({ request, session, response }: HttpContext) {
+    // Validation des données saisies par l'utilisateur
+    const { gender, firstname, lastname, nickname, origine, sectionId } =
+      await request.validateUsing(teacherValidator)
+    // Création du nouvel enseignant
+    const teacher = await Teacher.create({
+      gender, firstname, lastname, nickname,
+      origine, sectionId
+    })
+    // Afficher un message à l'utilisateur
+    session.flash('success', `Le nouvel enseignant ${teacher.lastname}
+    ${teacher.firstname} a été ajouté avec succès !`)
+    // Rediriger vers la homepage
+    return response.redirect().toRoute('home')
+  }
   /**
   * Show individual record
   */
@@ -56,8 +80,7 @@ export default class TeachersController {
 
     session.flash(
       'success',
-      `L'enseignant ${teacher.lastname} ${teacher.firstname} a été supprimé avec
-succès !`
+      `L'enseignant ${teacher.lastname} ${teacher.firstname} a été supprimé avec succès !`
     )
     // Redirige l'utilisateur sur la home
     return response.redirect().toRoute('home')
