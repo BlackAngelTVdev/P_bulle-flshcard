@@ -2,44 +2,47 @@
 <h3>
   Liste des enseignants
 </h3>
-<form action="#" method="post">
-  <table>
-    <thead>
-      <tr>
-        <th>
-          Nom
-        </th>
-        <th>
-          Surnom
-        </th>
-        <th>
-          Options
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @each ((teacher, index) in teachers)
-      <tr>
-        <td>
-          {{ teacher.lastname }} {{ teacher.firstname }}
-        </td>
-        <td>
-          {{ teacher.nickname }}
-        </td>
-        <td class="containerOptions">
-          <a href="">
-            <img height="20em" src="./img/edit.png" alt="edit" />
-          </a>
-          <a href="javascript:confirmDelete()">
-            <img height="20em" src="./img/delete.png" alt="delete" />
-          </a>
-          <a href="{{ route('teacher.show', {id: teacher.id}) }}">
-            <img height="20em" src="./img/detail.png" alt="detail" />
-          </a>
-        </td>
-      </tr>
-      @end
-    </tbody>
-  </table>
-</form>
+<table>
+  <thead>
+    <tr>
+      <th>
+        Nom
+      </th>
+      <th>
+        Surnom
+      </th>
+      <th>
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    @each ((teacher, index) in teachers)
+    <tr>
+      <td>
+        {{ teacher.lastname }} {{ teacher.firstname }}
+      </td>
+      <td>
+        {{ teacher.nickname }}
+      </td>
+      <td class="containerOptions">
+        <a href="#">
+          <img height="20em" src="./img/edit.png" alt="edit" />
+        </a>
+       
+        <form action="{{ route('teacher.destroy', { id: teacher.id }) }}?_method=DELETE" method="POST" style="display: inline">
+          {{ csrfField() }}
+          <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+            <img height="20em" src="/img/delete.png" alt="delete" />
+
+          </button>
+        </form>
+        <a href="{{ route('teacher.show', {id: teacher.id}) }}">
+          <img height="20em" src="/img/detail.png" alt="detail" />
+        </a>
+      </td>
+    </tr>
+    @end
+  </tbody>
+</table>
 @endcomponent

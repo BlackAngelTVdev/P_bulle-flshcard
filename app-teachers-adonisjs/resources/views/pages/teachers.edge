@@ -13,9 +13,13 @@
         <a href="#">
             <img height="20em" src="/img/edit.png" alt="edit" />
         </a>
-        <a href="#">
+        <form action="{{ route('teacher.destroy', { id: teacher.id }) }}?_method=DELETE" method="POST" style="display: inline">
+          {{ csrfField() }}
+          <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
             <img height="20em" src="/img/delete.png" alt="delete" />
-        </a>
+
+          </button>
+        </form>
     </div>
 </div>
 <div class="user-body">
