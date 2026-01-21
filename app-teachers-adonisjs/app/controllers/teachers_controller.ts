@@ -5,10 +5,15 @@ export default class TeachersController {
   * Display a list of resource
   */
   async index({ view }: HttpContext) {
-    const teachers = await Teacher.query().orderBy('lastname',
-      'asc').orderBy('firstname', 'asc')
-    return view.render('pages/home', { teachers })
-  }
+  const teachers = await Teacher.query()
+    .orderBy('lastname', 'asc')
+    .orderBy('firstname', 'asc')
+
+  // On transforme les modèles en objets simples
+  const teachersJSON = teachers.map((teacher) => teacher.serialize())
+
+  return view.render('pages/home', { teachers: teachersJSON })
+}
   /**
   * Display form to create a new record
   */
@@ -20,15 +25,16 @@ export default class TeachersController {
   /**
   * Show individual record
   */
-  async show({ params, view }: HttpContext) {
-    // Sélectionner l'enseignant dont on veut afficher les détails
-    const teacher = await Teacher.query().where('id',
-      params.id).preload('section').firstOrFail()
-    // Afficher la vue
-    return view.render('pages/teachers/show.edge', {
-      title: "Détail d'unenseignant", 
-      teacher 
-    })
+async show({ params, view }: HttpContext) {
+  const teacher = await Teacher.query()
+    .where('id', params.id)
+    .preload('section')
+    .firstOrFail()
+
+  return view.render('pages/teachers.edge', {
+    title: "Détail d'un enseignant", 
+    teacher: teacher.serialize() // Toujours mieux !
+  })
 }
   /**
   * Edit individual record

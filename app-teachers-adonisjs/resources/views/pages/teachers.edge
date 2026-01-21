@@ -1,0 +1,35 @@
+@component('components/layout', { title: title })
+<div class="user-head">
+    <h3>
+        Détail : {{ teacher.firstname }} {{ teacher.lastname }}
+        <img style="margin-left: 1vw;" height="20em" alt="male symbole" @if(teacher.gender==='woman' )
+            src="/img/femelle.png" @elseif(teacher.gender==='man' ) src="/img/male.png" @else src="/img/autre.png"
+            @end />
+    </h3>
+    <p>
+        {{ teacher.section.name }}
+    </p>
+    <div class="actions">
+        <a href="#">
+            <img height="20em" src="/img/edit.png" alt="edit" />
+        </a>
+        <a href="#">
+            <img height="20em" src="/img/delete.png" alt="delete" />
+        </a>
+    </div>
+</div>
+<div class="user-body">
+    <div class="left">
+        <p>
+            Surnom : {{ teacher.nickname }}
+        </p>
+        
+        <p>
+            {{ teacher.origine }}
+        </p>
+    </div>
+</div>
+<div class="user-footer">
+    <a href="{{ route('home') }}">Retour à la page d'accueil</a>
+</div>
+@endcomponent

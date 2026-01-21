@@ -27,13 +27,13 @@
           {{ teacher.nickname }}
         </td>
         <td class="containerOptions">
-          <a href="#">
+          <a href="">
             <img height="20em" src="./img/edit.png" alt="edit" />
           </a>
           <a href="javascript:confirmDelete()">
             <img height="20em" src="./img/delete.png" alt="delete" />
           </a>
-          <a href="detailTeacher.html">
+          <a href="{{ route('teacher.show', {id: teacher.id}) }}">
             <img height="20em" src="./img/detail.png" alt="detail" />
           </a>
         </td>
