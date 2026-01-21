@@ -60,18 +60,47 @@ export default class TeachersController {
       teacher: teacher.serialize() // Toujours mieux !
     })
   }
+  async edit({ params, view }: HttpContext) {
+    // Sélectionner l'enseignant dont on veut mettre à jour des informations
+    const teacher = await Teacher.findOrFail(params.id)
+    // Récupération des sections triées par le nom
+    const sections = await Section.query().orderBy('name', 'asc')
+    // Afficher la vue
+    return view.render('pages/edit.edge', {
+      title: 'Modifier un enseignant',
+      teacher,
+      sections,
+    })
+  }
   /**
-  * Edit individual record
+  step9-editer-enseignant.md - GCR 2 / 5 2026-01-05
+  * Gérer la soumission du formulaire pour la mise à jour d'un enseignant
   */
-  async edit({ params }: HttpContext) { }
-
-  /**
-  * Handle form submission for the edit action
-  */
-  async update({ params, request }: HttpContext) { }
-  /**
-  * Delete record
-  */
+  async update({ params, request, session, response }: HttpContext) {
+    // Validation des données saisies par l'utilisateur
+    const { gender, firstname, lastname, nickname, origine, sectionId } =
+      await request.validateUsing(teacherValidator)
+    // Sélectionner l'enseignant dont on veut mettre à jour des informations
+    const teacher = await Teacher.findOrFail(params.id)
+    // Met à jour les infos de l'enseignant
+    teacher.merge({
+      gender,
+      firstname,
+      lastname,
+      nickname,
+      origine,
+      sectionId,
+    })
+    const teacherUpdated = await teacher.save()
+    // Afficher un message à l'utilisateur
+    session.flash(
+      'success',
+      `L'enseignant ${teacherUpdated.lastname} ${teacherUpdated.firstname} a été
+mis à jour avec succès !`
+    )
+    // Redirige l'utilisateur sur la home
+    return response.redirect().toRoute('home')
+  }
   async destroy({ params, session, response }: HttpContext) {
 
     const teacher = await Teacher.findOrFail(params.id)

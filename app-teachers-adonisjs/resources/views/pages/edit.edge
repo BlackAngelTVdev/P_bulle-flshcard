@@ -1,0 +1,92 @@
+@component('components/layout', { title: title })
+<h3>
+    {{ title }}
+</h3>
+{{-- Notez l'ID dans la route et le spoofing de méthode PUT --}}
+<form action="{{ route('teacher.update', { id: teacher.id }) }}?_method=PUT" method="POST">
+    {{ csrfField() }}
+    {{-- Bloc Genre (Radio) --}}
+    <label>
+        <input type="radio" name="gender"value="man" {{ old('gender')
+            || teacher.gender==='man' ? 'checked' : '' }} />
+        Homme
+    </label>
+    <label>
+        <input type="radio" name="gender" value="woman" {{ old('gender') || teacher.gender==='woman' ? 'checked' : ''
+            }} />Femme
+    </label>
+    <label>
+        <input type="radio" name="gender" value="other" {{ old('gender') || teacher.gender==='other' ? 'checked' : ''
+            }} />Autre
+    </label>
+    @inputError('gender')
+    <p class="text-danger">
+        {{ $messages.join(', ') }}
+    </p>
+    @end
+    {{-- Bloc Prénom --}}
+    <div class="field">
+        <label for="firstname">Prénom</label>
+        <input type="text" id="firstname" name="firstname" value="{{
+old('firstname') || teacher.firstname }}" />
+        @inputError('firstname')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    {{-- Bloc Nom --}}
+    <div class="field">
+        <label for="lastname">Nom</label>
+        <input type="text" id="lastname" name="lastname" value="{{ old('lastname')
+|| teacher.lastname }}" />
+        @inputError('lastname')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    {{-- Bloc Surnom --}}
+    <div class="field">
+        <label for="nickname">Surnom</label>
+        <input type="text" id="nickname" name="nickname" value="{{ old('nickname') || teacher.nickname || '' }}" />
+        @inputError('nickname')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    {{-- Bloc Origine (Textarea) --}}
+    <div class="field">
+        <label for="origine">Origine</label>
+        <textarea id="origine" name="origine">{{ old('origine') || teacher.origine
+}}</textarea>
+        @inputError('origine')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    {{-- Bloc Section (Select) --}}
+    <div class="field">
+        <label for="sectionId">Section</label>
+        <select name="sectionId" id="sectionId">
+            <option value="">
+                Choisissez une section
+            </option>
+            @each(section in sections)
+            <option value="{{ section.id }}" {{ (old('sectionId') || teacher.sectionId)==section.id ? 'selected' : ''
+                }}>
+                {{ section.name }}
+            </option>
+            @end
+        </select>
+        @inputError('sectionId')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    <button type="submit">Mettre à jour</button>
+</form>
+@end
