@@ -6,4 +6,7 @@ export default class DecksController {
     const decks = await Deck.all()
     return view.render('pages/home', { decks })
   }
+  async create({ view }: HttpContext) {
+    return view.render('pages/deck/create')
+  }
 }

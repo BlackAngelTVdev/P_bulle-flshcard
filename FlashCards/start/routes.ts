@@ -12,3 +12,5 @@ import router from '@adonisjs/core/services/router'
 const DecksController = () => import('#controllers/decks_controller')
 
 router.get('/', [DecksController, 'index'])
+router.get('/decks', [DecksController, 'index'])
+router.get('/decks/create', [DecksController, 'create'])
