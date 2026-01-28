@@ -1,0 +1,42 @@
+{
+  "repoUrl": "https://github.com/BlackAngelTVdev/P_bulle-flshcard",
+  "projectName": "P_bulles",
+  "branch": "main",
+  "me": "BlackAngelTVdev",
+  "journalStartDate": null,
+  "exceptions": [
+    {
+      "id": "ab54effc-c7a9-422a-ae6f-d927a05bac3e",
+      "type": "commitpatch",
+      "sha": "d73385fec4682797348541497c18991e548809dc",
+      "url": "https://github.com/BlackAngelTVdev/P_bulle-flshcard/commit/d73385fec4682797348541497c18991e548809dc",
+      "name": "Feat(step9): Edit",
+      "description": "Ajout de la modifiction",
+      "date": "2026-01-21T14:04:00.000Z",
+      "duration": 35,
+      "status": "Done",
+      "author": "BlackAngelTVdev",
+      "patch": true
+    },
+    {
+      "id": "39d5a935-7db8-4ce5-bd66-efa7749df9fd",
+      "type": "commitless",
+      "name": "fix(Node) : désinstaller la version exe",
+      "description": "désinstaller la version exe permet d'utiliser la version du toolset ce qui enlève le problème des doubles versions qui fait crach adonis js",
+      "date": "2026-01-21T13:45:00.000Z",
+      "duration": 15,
+      "status": "Done",
+      "author": "BlackAngelTVdev"
+    },
+    {
+      "id": "8db03fcf-0745-4022-926b-988fed154287",
+      "type": "commitless",
+      "name": "Feat(révison) : model mvc",
+      "description": "tous commprendre sur le model mvc, les differance entre les fichier",
+      "date": "2026-01-21T14:55:00.000Z",
+      "duration": 40,
+      "status": "Done",
+      "author": "BlackAngelTVdev"
+    }
+  ]
+}
