@@ -1,0 +1,18 @@
+@component('components/layout', { title: title })
+<h3>
+    Ajouter une section
+</h3>
+<form action="{{ route('sections.store') }}" method="POST">
+    {{ csrfField() }}
+    <div class="field">
+        <label for="name">Nom de la section</label>
+        <input type="text" id="name" name="name" />
+        @inputError('name')
+        <p class="text-danger">
+            {{ $messages.join(', ') }}
+        </p>
+        @end
+    </div>
+    <button type="submit">Enregistrer</button>
+</form>
+@end

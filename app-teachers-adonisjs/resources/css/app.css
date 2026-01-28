@@ -142,3 +142,17 @@ label {
     align-items: center;
     width: 30%;
 }
+.alert-success{
+    color: green;
+    background-color: lightgreen;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.text-danger{
+    color: rgb(128, 0, 0);
+    background-color: lightcoral;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}

@@ -1,0 +1,38 @@
+@component('components/layout', { title: 'Accueil' })
+<h3>
+  Liste des sections
+</h3>
+<table>
+  <thead>
+    <tr>
+      <th>
+        Nom
+      </th>
+      <th>
+        Options
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    @each ((section, index) in sections)
+    <tr>
+      <td>
+        {{ section.name }}
+      </td>
+      <td class="containerOptions">
+
+
+        <form action="{{ route('sections.destroy', { id: section.id }) }}?_method=DELETE" method="POST" style="display: inline">
+          {{ csrfField() }}
+          <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+            <img height="20em" src="/img/delete.png" alt="delete" />
+
+          </button>
+        </form>
+        
+      </td>
+    </tr>
+    @end
+  </tbody>
+</table>
+@endcomponent
