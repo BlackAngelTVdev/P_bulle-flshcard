@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      FlashCards - Home
-    </title>
-    <link rel="stylesheet" href="/styles/main.css" />
-  </head>
-  <body>
+@component('components/main', { title: 'Accueil' })
 
 
   @each(deck in decks)
@@ -19,5 +9,4 @@
   @else
     <p>Aucun deck trouvé dans la base de données.</p>
   @end
-</body>
-</html>
+@end
