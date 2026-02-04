@@ -1,0 +1,82 @@
+@import url(./var.css);
+/* --- LAYOUT GLOBAL --- */
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh; 
+  padding: 2rem;
+}
+
+
+.deck-display-container {
+  background: var(--white);
+  max-width: 600px;
+  width: 100%;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+  border-top: 8px solid var(--primary-violet);
+  
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.deck-display-container h1 {
+  color: var(--primary-violet);
+  font-size: 2.8rem;
+  margin: 0 0 1rem 0;
+  width: 100%;
+}
+
+.deck-display-container p {
+  color: #4b5563;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  background: var(--light-violet);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+/* --- ACTIONS --- */
+.deck-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.btn-edit-deck, .btn-delete-deck {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+  flex: 1; 
+  max-width: 200px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-edit-deck {
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+}
+
+.btn-delete-deck {
+  background-color: white;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+  cursor: pointer;
+}
+
+.btn-edit-deck:hover { background-color: var(--dark-violet); }
+.btn-delete-deck:hover { background-color: #dc2626; color: white; }

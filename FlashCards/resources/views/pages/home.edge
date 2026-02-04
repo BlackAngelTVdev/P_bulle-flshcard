@@ -5,6 +5,9 @@
     <div class="deck-card">
       <h2 class="deck-title">{{ deck.name }}</h2>
       <p class="deck-description">{{ deck.description }}</p>
+      <div class="deck-actions">
+        <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-view-deck">Voir le deck</a>
+      </div>
     </div>
   @else
     <p>Aucun deck trouvé dans la base de données.</p>

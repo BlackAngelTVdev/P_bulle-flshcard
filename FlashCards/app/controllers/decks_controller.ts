@@ -32,8 +32,7 @@ export default class DecksController {
 
     async edit({ params, view }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
-        return response.redirect().toRoute('decks.index')
-
+        return view.render('pages/deck/edit', { deck })
     }
 
     async update({ params, request, response, session }: HttpContext) {
