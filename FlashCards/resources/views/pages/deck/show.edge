@@ -1,4 +1,4 @@
-@component('components/main', { title: 'Deck | Flash Dam\'s', css: 'deckshow' })
+@component('components/main', { title: `Voir ${deck.name} | Flash Dam\'s`, css: 'deckshow' })
 <main>
     <h1>{{ deck.name }}</h1>
     <p>{{ deck.description }}</p>
@@ -7,7 +7,6 @@
         <a href="{{ route('decks.edit', { id: deck.id }) }}" class="btn-edit-deck">Éditer le deck</a>
         <form action="{{ route('decks.destroy', { id: deck.id }) }}?_method=DELETE" method="POST">
             {{ csrfField() }}
-            {{-- On dit à Adonis d'interpréter ce POST comme un DELETE --}}
             <input type="hidden" name="_method" value="DELETE">
 
             <button type="submit" class="btn-delete-deck" onclick="return confirm('Supprimer ce deck ?')">

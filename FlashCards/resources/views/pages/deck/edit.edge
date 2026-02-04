@@ -1,22 +1,29 @@
+@component('components/main', { title: `Modifier ${deck.name} | Flash Dam\'s`, css: 'deckedit' })
+<main>
+    <h1>Modifier {{ deck.name }}</h1>
 
-<h3>
-    Modifier un deck
-</h3>
-{{-- <form action="{{ route('decks.update', deck.id) }}" method="POST">
-    {{ csrfField() }}
-    {{ methodField('PUT') }}
-    <div class="field">
-        <label for="name">Nom du deck</label>
-        <input type="text" id="name" name="name" value="{{ old('name') || deck.name }}" />
-        @inputError('name')
-        <p class="text-danger">{{ $messages.join(', ') }}</p>
-        @end
+    <form action="{{ route('decks.update', { id: deck.id }) }}?_method=PUT" method="POST">
+        {{ csrfField() }}
 
-        <label for="description">Description</label>
-        <input type="text" id="description" name="description" value="{{ old('description') || deck.description }}" />
-        @inputError('description')
-        <p class="text-danger">{{ $messages.join(', ') }}</p>
-        @end
-    </div>
-    <button type="submit">Enregistrer</button>
-</form> --}}
+        <div class="field">
+            <label for="name">Nom du deck</label>
+            <input type="text" id="name" name="name" value="{{ old('name') || deck.name }}" />
+            @inputError('name')
+            <p class="text-danger"></p>
+            @end
+
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description"
+                value="{{ old('description') || deck.description }}" />
+            @inputError('description')
+            <p class="text-danger">Description trop courte (<10 caractères)</p> 
+            @end
+        </div>
+
+        <button type="submit">Enregistrer</button>
+
+        <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-abandon">Abandonner</a>
+    </form>
+</main>
+
+@end
