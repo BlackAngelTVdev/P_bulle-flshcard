@@ -126,3 +126,40 @@ footer {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
+/* Container des alertes */
+.alert {
+    padding: 1rem 1.5rem;
+    margin: 1rem auto;
+    border-radius: 12px;
+    max-width: 600px;
+    font-weight: 600;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+    border: 2px solid transparent;
+}
+
+/* Alerte Succès (Vert doux) */
+.alert-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border-color: #10b981;
+}
+
+/* Alerte Danger/Erreur (Rouge doux) */
+.alert-danger {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border-color: #ef4444;
+}
+
+/* Animation pour faire apparaître le message */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

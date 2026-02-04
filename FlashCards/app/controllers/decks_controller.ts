@@ -16,16 +16,12 @@ export default class DecksController {
     async store({ request, response, session }: HttpContext) {
         // Pas de try/catch ici pour la validation, Adonis gère le redirect back() tout seul
         const payload = await request.validateUsing(createDeckValidator, {
-            messages: {
-                'name.unique': 'Ce deck existe déjà',
-                'description.minLength': 'Description trop courte (<10 caractères)',
-                'required': 'Ce champ est obligatoire',
-            }
+            
         })
 
         await Deck.create(payload)
 
-        session.flash('success', 'Un message flash est affiché lorsqu’un deck a été créé')
+        session.flash('success', 'Deck créé avec succès !')
         return response.redirect().toRoute('decks.index')
     }
 
@@ -44,23 +40,19 @@ export default class DecksController {
 
         const payload = await request.validateUsing(updateDeckValidator, {
             data: { ...request.all(), id: params.id },
-            messages: {
-                'name.unique': 'Ce deck existe déjà',
-                'description.minLength': 'Description trop courte (<10 caractères)',
-                'required': 'Ce champ est obligatoire',
-            }
+            
         })
 
         deck.merge(payload)
         await deck.save()
 
-        session.flash('success', 'Un message flash est affiché lorsqu’un deck a été modifié')
+        session.flash('success', 'Deck modifié avec succès !')
         return response.redirect().toRoute('decks.index')
     }
     async destroy({ params, response, session }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
         await deck.delete()
-        session.flash('success', 'Le deck a bien été supprimé.')
+        session.flash('success', 'Deck supprimé avec succès !')
         return response.redirect().toRoute('decks.index')
     }
 }
