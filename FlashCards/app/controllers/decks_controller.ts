@@ -1,30 +1,34 @@
 import Deck from '#models/deck'
 import type { HttpContext } from '@adonisjs/core/http'
+import { createDeckValidator, updateDeckValidator } from '#validators/deck'
+
 
 export default class DecksController {
     async index({ view }: HttpContext) {
         const decks = await Deck.all()
         return view.render('pages/home', { decks })
     }
+
     async create({ view }: HttpContext) {
         return view.render('pages/deck/create')
     }
+
     async store({ request, response, session }: HttpContext) {
-        const deckData = request.only(['name', 'description'])
+        // Pas de try/catch ici pour la validation, Adonis gère le redirect back() tout seul
+        const payload = await request.validateUsing(createDeckValidator, {
+            messages: {
+                'name.unique': 'Ce deck existe déjà',
+                'description.minLength': 'Description trop courte (<10 caractères)',
+                'required': 'Ce champ est obligatoire',
+            }
+        })
 
-        const deck = new Deck()
-        deck.name = deckData.name
-        deck.description = deckData.description
+        await Deck.create(payload)
 
-        try {
-            await deck.save()
-            session.flash('success', 'Deck created successfully!')
-            return response.redirect().toRoute('decks.index')
-        } catch (error) {
-            session.flash('error', 'There was an error creating the deck.')
-            return response.redirect().back()
-        }
+        session.flash('success', 'Un message flash est affiché lorsqu’un deck a été créé')
+        return response.redirect().toRoute('decks.index')
     }
+
     async show({ params, view }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
         return view.render('pages/deck/show', { deck })
@@ -37,31 +41,26 @@ export default class DecksController {
 
     async update({ params, request, response, session }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
-        const deckData = request.only(['name', 'description'])
 
-        deck.name = deckData.name
-        deck.description = deckData.description
+        const payload = await request.validateUsing(updateDeckValidator, {
+            data: { ...request.all(), id: params.id },
+            messages: {
+                'name.unique': 'Ce deck existe déjà',
+                'description.minLength': 'Description trop courte (<10 caractères)',
+                'required': 'Ce champ est obligatoire',
+            }
+        })
 
-        try {
-            await deck.save()
-            session.flash('success', 'Deck updated successfully!')
-            return response.redirect().toRoute('decks.index')
-        } catch (error) {
-            session.flash('error', 'There was an error updating the deck.')
-            return response.redirect().back()
-        }
+        deck.merge(payload)
+        await deck.save()
+
+        session.flash('success', 'Un message flash est affiché lorsqu’un deck a été modifié')
+        return response.redirect().toRoute('decks.index')
     }
-
-async destroy({ params, response, session }: HttpContext) {
-    // 1. On cherche le deck. Si pas trouvé -> Erreur 404 auto (findOrFail)
-    const deck = await Deck.findOrFail(params.id)
-
-    // 2. Supprimer (Adonis gère les erreurs de DB si tu as un souci de contraintes)
-    await deck.delete()
-
-    // 3. Feedback utilisateur (Messages flash)
-    session.flash('success', 'Le deck a bien été supprimé.')
-
-    return response.redirect().toRoute('decks.index')
-}
+    async destroy({ params, response, session }: HttpContext) {
+        const deck = await Deck.findOrFail(params.id)
+        await deck.delete()
+        session.flash('success', 'Le deck a bien été supprimé.')
+        return response.redirect().toRoute('decks.index')
+    }
 }
