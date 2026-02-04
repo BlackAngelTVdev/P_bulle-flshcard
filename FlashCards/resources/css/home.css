@@ -1,11 +1,40 @@
 @import url(./var.css);
 
-.deck-card {
+main {
+  width: 90%;       /* Pour que ça reste propre sur mobile */
+  margin: 0 auto;   /* 0 en haut/bas, auto à gauche/droite */
+  padding: 2rem 0;
+}
+
+a.deck-card {
+  display: block;          /* Pour que toute la ligne soit cliquable */
+  text-decoration: none;   /* Enlève le soulignement bleu des liens */
+  color: inherit;          /* Garde la couleur de texte par défaut */
   background: white;
   border-radius: 12px;
   padding: 20px;
-  margin: 10px;
+  margin: 10px 0;          /* 10px haut/bas, 0 gauche/droite */
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   border-left: 5px solid var(--primary-violet);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Effet au survol pour que ça soit "chill" et conforme au PDF */
+a.deck-card:hover {
+  transform: translateX(5px); /* Petit décalage vers la droite */
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9;
+}
+
+.deck-title {
+  margin: 0 0 8px 0;
+  color: var(--primary-violet);
+  font-size: 1.25rem;
+}
+
+.deck-description {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
 }
