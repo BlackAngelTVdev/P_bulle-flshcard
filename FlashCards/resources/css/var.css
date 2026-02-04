@@ -1,0 +1,8 @@
+:root {
+  --primary-violet: #8b5cf6; /* Violet moderne */
+  --light-violet: #f5f3ff;   /* Fond très clair */
+  --dark-violet: #6d28d9;    /* Hover des boutons */
+  --white: #ffffff;
+  --text-dark: #1f2937;
+  --gray-light: #e5e7eb;
+}

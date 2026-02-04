@@ -1,0 +1,83 @@
+@import url(./var.css);
+
+h3 {
+    color: var(--primary-violet);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+form {
+    max-width: 500px;
+    margin: 2rem auto;
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+input[type="text"] {
+    padding: 12px 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary-violet);
+    background-color: var(--white);
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* --- GESTION DES ERREURS --- */
+.text-danger {
+    color: #dc2626;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+input.is-invalid {
+    border-color: #dc2626;
+}
+
+/* --- BOUTON ENREGISTRER --- */
+button[type="submit"] {
+    width: 100%;
+    background-color: var(--primary-violet);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+    background-color: var(--dark-violet);
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
