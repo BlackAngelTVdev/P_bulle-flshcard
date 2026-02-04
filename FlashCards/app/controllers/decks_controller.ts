@@ -53,15 +53,15 @@ export default class DecksController {
     }
 
     async destroy({ params, response, session }: HttpContext) {
+        // 1. On cherche le deck. Si pas trouvé -> Erreur 404 auto (findOrFail)
         const deck = await Deck.findOrFail(params.id)
 
-        try {
-            await deck.delete()
-            session.flash('success', 'Deck deleted successfully!')
-            return response.redirect().toRoute('decks.index')
-        } catch (error) {
-            session.flash('error', 'There was an error deleting the deck.')
-            return response.redirect().back()
-        }
+        // 2. Supprimer (Adonis gère les erreurs de DB si tu as un souci de contraintes)
+        await deck.delete()
+
+        // 3. Feedback utilisateur (Messages flash)
+        session.flash('success', 'Le deck a bien été supprimé.')
+
+        return response.redirect().toRoute('decks.index')
     }
 }
