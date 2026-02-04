@@ -3,16 +3,18 @@
 <main>
   @each(deck in decks)
   <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
-    <h2 class="deck-title">{{ deck.name }}</h2>
-    <p class="deck-description">{{ deck.description }}</p>
-
-    <div class="deck-footer">
+    <div>
+      <h2 class="deck-title">{{ deck.name }}</h2>
+      <p class="deck-description">{{ deck.description }}</p>
       <span>Voir le deck →</span>
     </div>
+
+    <div class="deck-footer">
+      <span class="count">{{ deck.$extras.cards_count }} cartes</span>
+      
+    </div>
   </a>
-  @else
-  <p>Vous n'avez pas encore de deck.</p>
-  @end
+@end
 
 </main>
 @end
