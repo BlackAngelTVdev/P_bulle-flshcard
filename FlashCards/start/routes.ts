@@ -26,10 +26,9 @@ router.group(() => {
 
 // Routes pour les Cards
 router.group(() => {
-  router.get('/', [CardsController, 'index']).as('cards.index')
   router.get('/create', [CardsController, 'create']).as('cards.create')
-  router.post('/', [CardsController, 'store']).as('cards.store')
   router.get('/:id', [CardsController, 'show']).as('cards.show')
+  router.post('/', [CardsController, 'store']).as('cards.store')
   router.get('/:id/edit', [CardsController, 'edit']).as('cards.edit')
   router.put('/:id', [CardsController, 'update']).as('cards.update')
   router.delete('/:id', [CardsController, 'destroy']).as('cards.destroy')

@@ -1,0 +1,18 @@
+@component('components/main', { title: `Voir la carte | Flash Dam\'s`, css: 'cardedit' })
+<main>
+    <h1>{{ card.question }}</h1>
+    <p>{{ card.answer }}</p>
+
+    <div class="card-actions">
+        <a href="{{ route('cards.edit', { id: card.id }) }}" class="btn-edit-card">Éditer la carte</a>
+        <form action="{{ route('cards.destroy', { id: card.id }) }}?_method=DELETE" method="POST">
+            {{ csrfField() }}
+            <input type="hidden" name="_method" value="DELETE">
+
+            <button type="submit" class="btn-delete-card" onclick="return confirm('Supprimer cette carte ?')">
+                Supprimer la carte
+            </button>
+        </form>
+    </div>
+</main>
+@end

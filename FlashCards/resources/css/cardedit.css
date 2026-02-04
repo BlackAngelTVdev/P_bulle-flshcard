@@ -1,0 +1,102 @@
+main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+/* --- CARTE DE MODIFICATION --- */
+form {
+  background: var(--white);
+  max-width: 550px;
+  width: 100%;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+  border-top: 8px solid var(--primary-violet);
+}
+
+h1 {
+  color: var(--primary-violet);
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* --- CHAMPS DE SAISIE --- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-weight: 700;
+  color: #374151;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+input[type="text"] {
+  padding: 14px;
+  border: 2px solid var(--light-violet);
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-violet);
+  background-color: var(--white);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* --- ERREURS (Conforme maquette "error newdeck") --- */
+.text-danger {
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 0.2rem;
+  /* Rappel de la règle : s'affiche si description < 10 caractères */
+}
+
+/* --- BOUTONS --- */
+button[type="submit"] {
+  width: 100%;
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  margin-top: 1rem;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--dark-violet);
+  transform: translateY(-2px);
+}
+
+/* Style pour le lien "Abandonner" (exigé par l'analyse) */
+.btn-abandon {
+  display: block;
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.btn-abandon:hover {
+  color: var(--primary-violet);
+}

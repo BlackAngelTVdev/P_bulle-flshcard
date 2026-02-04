@@ -27,6 +27,7 @@ export default class DecksController {
 
     async show({ params, view }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
+        await deck.load('cards')
         return view.render('pages/deck/show', { deck })
     }
 

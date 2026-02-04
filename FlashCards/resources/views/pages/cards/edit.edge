@@ -1,0 +1,32 @@
+@component('components/main', { title: `Modifier la carte | Flash Dam\'s`, css: 'cardedit' })
+<main>
+    <form action="{{ route('cards.update', { id: card.id }) }}" method="POST">
+        {{ csrfField() }}
+        <input type="hidden" name="_method" value="PUT">
+
+        <h1>Modifier la carte</h1>
+
+        <div class="field">
+            <label for="question">Question</label>
+            <input type="text" id="question" name="question" value="{{ old('question') || card.question }}">
+            @if(flashMessages.has('errors.question'))
+              <p class="text-danger">{{ flashMessages.get('errors.question') }}</p>
+            @end
+        </div>
+
+        <div class="field">
+            <label for="answer">Réponse</label>
+            <input type="text" id="answer" name="answer" value="{{ old('answer') || card.answer }}">
+            @if(flashMessages.has('errors.answer'))
+              <p class="text-danger">{{ flashMessages.get('errors.answer') }}</p>
+            @end
+        </div>
+
+        <button type="submit">Enregistrer les modifications</button>
+
+        <a href="{{ route('decks.show', { id: card.deckId }) }}" class="btn-abandon">
+            Abandonner
+        </a>
+    </form>
+</main>
+@end

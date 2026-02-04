@@ -14,5 +14,21 @@
             </button>
         </form>
     </div>
+    <div class="cards-table">
+        <div class="table-header">
+            <div class="col">Question</div>
+            <div class="col">Réponse</div>
+            <div class="col-actions"></div>
+        </div>
+
+        @each(card in deck.cards)
+        <a href="{{ route('cards.show', { id: card.id }) }}" class="table-row">
+            <div class="col question-text">{{ card.question }}</div>
+            <div class="col answer-text">{{ card.answer }}</div>
+        </a>
+        @else
+        <p class="empty-msg">Aucune carte dans ce deck.</p>
+        @end
+    </div>
 </main>
 @end
