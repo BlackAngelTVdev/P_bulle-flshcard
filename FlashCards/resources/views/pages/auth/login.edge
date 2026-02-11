@@ -1,17 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
 
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/login.css`])
+    <title>
+        {{ "Login | Flash Dam\'s" }}
+    </title>
+</head>
 <main class="auth-container">
     <div class="auth-card">
-        <img src="/logo.png" alt="Logo" class="auth-logo">
+        <div class="logo-text">
+            <span class="logo-flash">Flash</span>
+            <span class="logo-dams">Dam's</span>
+        </div>
         <h1>Connexion</h1>
 
         <form action="{{ route('auth.login') }}" method="POST">
             {{ csrfField() }}
-            
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" value="{{ old('email') || '' }}" required>
                 @if(flashMessages.has('errors.email'))
-                    <span class="error">{{ flashMessages.get('errors.email') }}</span>
+                <span class="error">{{ flashMessages.get('errors.email') }}</span>
                 @end
             </div>
 
@@ -26,3 +40,4 @@
         <p class="auth-footer">Pas de compte ? <a href="{{ route('auth.register') }}">S'inscrire</a></p>
     </div>
 </main>
+@!component('partials/footer', { })

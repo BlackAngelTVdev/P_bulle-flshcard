@@ -1,0 +1,136 @@
+@import url(./var.css);
+
+/* --- LAYOUT DE LA PAGE --- */
+body {
+    background-color: #f8fafc; /* Un gris très léger pour faire ressortir la carte blanche */
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh; /* Laisse un peu de place pour le footer */
+    padding: 1.5rem;
+}
+
+/* --- LA CARTE BLANCHE --- */
+.auth-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* --- LE LOGO STYLISÉ --- */
+.logo-text {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.logo-flash {
+    color: var(--primary-violet);
+    text-transform: uppercase;
+}
+
+.logo-dams {
+    color: #0885ce; /* Vert émeraude pour le contraste */
+    font-style: italic;
+}
+
+h1 {
+    color: #1e293b;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+/* --- FORMULAIRE --- */
+form {
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 0.5rem;
+}
+
+input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-violet);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* --- BOUTON --- */
+.btn-primary {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--primary-violet);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    background-color: #7c3aed; /* Violet un peu plus foncé */
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* --- MESSAGES D'ERREUR --- */
+.error {
+    color: #dc2626;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    display: block;
+    font-weight: 500;
+}
+
+/* --- FOOTER DE LA CARTE --- */
+.auth-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.auth-footer a {
+    color: var(--primary-violet);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}

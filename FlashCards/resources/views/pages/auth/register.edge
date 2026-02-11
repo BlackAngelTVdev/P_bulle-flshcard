@@ -1,6 +1,21 @@
-@component('components/main', { title: 'Inscription | Flash Dam\'s', css: 'auth' })
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/login.css`])
+    <title>
+        {{ "Register | Flash Dam\'s" }}
+    </title>
+</head>
 <main class="auth-container">
     <div class="auth-card">
+        <div class="logo-text">
+            <span class="logo-flash">Flash</span>
+            <span class="logo-dams">Dam's</span>
+        </div>
         <h1>Créer un compte</h1>
 
         <form action="{{ route('auth.handleRegister') }}" method="POST">
@@ -41,4 +56,4 @@
         <p class="auth-footer">Déjà inscrit ? <a href="{{ route('auth.login') }}">Se connecter</a></p>
     </div>
 </main>
-@end
+@!component('partials/footer', { })
