@@ -1,0 +1,81 @@
+@import url(./var.css);
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.setup-container {
+    background: var(--white);
+    max-width: 500px;
+    width: 100%;
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+    border-top: 8px solid var(--primary-violet);
+    text-align: center;
+}
+
+h1 {
+    color: var(--primary-violet);
+    margin-bottom: 0.5rem;
+}
+
+.mode-selection {
+    margin: 2rem 0;
+}
+
+.mode-selection p {
+    font-weight: 700;
+    color: #4b5563;
+    margin-bottom: 1rem;
+}
+
+/* Le menu déroulant */
+.mode-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--light-violet);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #374151;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.mode-select:focus {
+    border-color: var(--primary-violet);
+}
+
+.btn-start {
+    width: 100%;
+    background-color: var(--primary-violet);
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+}
+
+.btn-back {
+    display: block;
+    margin-top: 1.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-back:hover {
+    color: var(--primary-violet);
+}

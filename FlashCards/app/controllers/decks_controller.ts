@@ -56,4 +56,14 @@ export default class DecksController {
         session.flash('success', 'Deck supprimé avec succès !')
         return response.redirect().toRoute('decks.index')
     }
+    async play({ params, view }: HttpContext) {
+        const deck = await Deck.findOrFail(params.id)
+        await deck.load('cards')
+        return view.render('pages/deck/play', { deck })
+    }
+    async game({ params, view }: HttpContext) {
+        const deck = await Deck.findOrFail(params.id)
+        await deck.load('cards')
+        return view.render('pages/deck/game', { deck })
+    }
 }

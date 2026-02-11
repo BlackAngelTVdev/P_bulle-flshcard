@@ -6,7 +6,6 @@
 
 import router from '@adonisjs/core/services/router'
 
-// On utilise le lazy loading pour les contrôleurs (plus performant)
 const DecksController = () => import('#controllers/decks_controller')
 const CardsController = () => import('#controllers/cards_controller')
 
@@ -22,6 +21,8 @@ router.group(() => {
   router.get('/:id/edit', [DecksController, 'edit']).as('decks.edit')
   router.put('/:id', [DecksController, 'update']).as('decks.update')
   router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
+  router.get('/:id/play', [DecksController, 'play']).as('decks.play')
+  router.get('/:id/game', [DecksController, 'game']).as('decks.game')
 }).prefix('/decks')
 
 // Routes pour les Cards

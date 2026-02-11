@@ -1,0 +1,22 @@
+@component('components/main', { title: `S'entrainer sur ${deck.name} | Flash Dam\'s`, css: 'play' })
+<main>
+    <div class="setup-container">
+        <h1>{{ deck.name }}</h1>
+        
+        <form action="{{ route('decks.game', { id: deck.id }) }}" method="GET">
+            <div class="mode-selection">
+                <p>S'entraîner en mode :</p>
+                <select name="mode" class="mode-select">
+                    <option value="basique">Basique (Recto/Verso)</option>
+                    <option value="survie" disabled>Survie (Bientôt disponible)</option>
+                    <option value="chrono" disabled>Chrono (Bientôt disponible)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-start">C'est parti !</button>
+            
+            <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
+        </form>
+    </div>
+</main>
+@end
