@@ -4,9 +4,16 @@
         <h1>Fini ! 🏆</h1>
         <p class="deck-name">{{ deck.name }}</p>
         
-        <div class="score-circle">
-            <span class="score-num">{{ score }}</span>
-            <span class="score-total">/ {{ total }}</span>
+        {{-- Calcul du pourcentage pour le camembert --}}
+        @let(percentage = (score / total) * 100)
+        
+        <div class="chart-container">
+            <div class="pie-chart" style="background: conic-gradient(#10b981 {{ percentage }}%, #ef4444 0);">
+                <div class="pie-center">
+                    <span class="score-num">{{ score }}</span>
+                    <span class="score-total">/ {{ total }}</span>
+                </div>
+            </div>
         </div>
 
         <p class="feedback-msg">
