@@ -1,7 +1,7 @@
-@component('components/main', { title: `Voir la carte | Flash Dam\'s`, css: 'cardedit' })
+@component('components/main', { title: `Voir la carte | Flash Dam\'s`, css: 'cardShow' })
 <main>
-    <h1>{{ card.question }}</h1>
-    <p>{{ card.answer }}</p>
+    <h2>{{ card.question }}</h2>
+    <p class="card-answer">{{ card.answer }}</p>
 
     <div class="card-actions">
         <a href="{{ route('cards.edit', { id: card.id }) }}" class="btn-edit-card">Éditer la carte</a>

@@ -1,0 +1,87 @@
+@import url(./var.css);
+
+/* --- LAYOUT GLOBAL --- */
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+/* --- STYLE COMMUN (Pour l'égalité parfaite) --- */
+h2, .card-answer {
+  max-width: 600px;
+  width: 100%;
+  min-height: 200px; /* Force une hauteur identique */
+  display: flex;
+  align-items: center; /* Centre le texte verticalement */
+  justify-content: center; /* Centre le texte horizontalement */
+  padding: 2rem;
+  box-sizing: border-box;
+  margin: 0;
+  text-align: center;
+}
+
+/* --- LA QUESTION (HAUT) --- */
+h2 {
+  background: var(--white);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+  border-top: 8px solid var(--primary-violet);
+  color: var(--primary-violet);
+  font-size: 2rem;
+}
+
+/* --- LA RÉPONSE (BAS) --- */
+.card-answer {
+  background: #fdfbff;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.1);
+  border-top: 2px dashed var(--light-violet);
+  color: #4b5563;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+/* --- ACTIONS --- */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 2.5rem;
+  width: 100%;
+  max-width: 600px;
+}
+
+/* On garde tes styles de boutons inchangés */
+.btn-edit-card, .btn-delete-card {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.btn-edit-card {
+  background-color: var(--primary-violet);
+  color: white;
+}
+
+.btn-delete-card {
+  background-color: transparent;
+  color: #dc2626;
+  border: 2px solid #dc2626;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-edit-card:hover, .btn-delete-card:hover {
+  transform: translateY(-2px);
+}
+
+form { flex: 1; display: flex; }

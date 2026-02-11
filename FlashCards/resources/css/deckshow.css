@@ -122,3 +122,38 @@ main {
 .table-row:hover .edit-icon {
   opacity: 1;
 }
+deck-footer {
+  display: flex;
+  justify-content: center; /* Centre le bouton */
+  background-color: #f8f9fa;
+  border-top: 2px solid #eee; /* Pour bien séparer de la dernière carte */
+  padding: 15px 20px;
+}
+
+.btn-add-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary-violet);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px dashed var(--light-violet);
+}
+
+.btn-add-card:hover {
+  background-color: var(--primary-violet);
+  color: white;
+  border-color: var(--primary-violet);
+
+}
+
+/* Petit plus : si tu veux que le message "Aucune carte" soit stylé dans le tableau */
+.empty-msg {
+  padding: 40px;
+  color: #9ca3af;
+  font-style: italic;
+}

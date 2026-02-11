@@ -23,12 +23,19 @@
 
         @each(card in deck.cards)
         <a href="{{ route('cards.show', { id: card.id }) }}" class="table-row">
-            <div class="col question-text">{{ card.question }}</div>
-            <div class="col answer-text">{{ card.answer }}</div>
+            <div class="col">{{ card.question }}</div>
+            <div class="col">{{ card.answer }}</div>
+            <div class="col-actions"><span class="edit-icon">Voir 👁️</span></div>
         </a>
         @else
-        <p class="empty-msg">Aucune carte dans ce deck.</p>
+        <div class="empty-msg">Ce deck est encore vide...</div>
         @end
+
+        <div class="deck-footer">
+            <a href="{{ route('cards.create', { deckId: deck.id }) }}" class="btn-add-card">
+                <span>+</span> Ajouter une nouvelle carte
+            </a>
+        </div>
     </div>
 </main>
 @end
