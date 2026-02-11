@@ -1,4 +1,5 @@
 @import url(./var.css);
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -24,10 +25,24 @@ header {
   padding-bottom: 0.5rem;
 }
 
-.titre-header h1 {
+.titre-header h1 span.logo-flash {
   color: var(--primary-violet);
   font-size: 1.8rem;
   margin: 0;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.titre-header h1 span.logo-dams {
+  color: var(--secondary-violet);
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin: 0;
+  color: #0885ce;
+  /* Vert émeraude pour le contraste */
+  font-style: italic;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: -1px;
@@ -39,10 +54,13 @@ nav {
   margin: 0 auto;
   padding-top: 1rem;
   border-top: 1px solid rgba(139, 92, 246, 0.1);
-  
-  display: flex;             /* Active le mode Flexbox */
-  justify-content: space-between; /* Écarte les deux blocs aux extrémités */
-  align-items: center;       /* Aligne verticalement au centre */
+
+  display: flex;
+  /* Active le mode Flexbox */
+  justify-content: space-between;
+  /* Écarte les deux blocs aux extrémités */
+  align-items: center;
+  /* Aligne verticalement au centre */
 }
 
 /* Bloc des liens à gauche */
@@ -81,7 +99,8 @@ nav a:hover {
 
 /* Style spécial pour le bouton logout */
 .user-info a {
-  color: #dc2626; /* Rouge pour le logout */
+  color: #dc2626;
+  /* Rouge pour le logout */
   font-size: 0.9rem;
   border: 1px solid #dc2626;
   padding: 4px 12px;
@@ -137,40 +156,42 @@ footer {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
 }
+
 /* Container des alertes */
 .alert {
-    padding: 1rem 1.5rem;
-    margin: 1rem auto;
-    border-radius: 12px;
-    max-width: 600px;
-    font-weight: 600;
-    text-align: center;
-    animation: slideIn 0.3s ease-out;
-    border: 2px solid transparent;
+  padding: 1rem 1.5rem;
+  margin: 1rem auto;
+  border-radius: 12px;
+  max-width: 600px;
+  font-weight: 600;
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+  border: 2px solid transparent;
 }
 
 /* Alerte Succès (Vert doux) */
 .alert-success {
-    background-color: #ecfdf5;
-    color: #065f46;
-    border-color: #10b981;
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-color: #10b981;
 }
 
 /* Alerte Danger/Erreur (Rouge doux) */
 .alert-danger {
-    background-color: #fef2f2;
-    color: #991b1b;
-    border-color: #ef4444;
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-color: #ef4444;
 }
 
 /* Animation pour faire apparaître le message */
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
