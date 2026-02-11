@@ -1,0 +1,34 @@
+@component('components/main', { title: `Jeu : ${deck.name}`, css: 'game', js: 'game' })
+<main>
+    {{-- Ajoute data-deck-id ici --}}
+    <div id="game-container" data-cards="{{ JSON.stringify(deck.cards) }}" data-deck-id="{{ deck.id }}">
+
+    </div>
+
+    <div class="flashcard" id="card-element">
+        <div class="card-inner" id="card-inner">
+            <div class="card-front">
+                <h2 id="question-text">Chargement...</h2>
+                <p class="hint">Clique pour voir la réponse</p>
+            </div>
+            <div class="card-back">
+                <h2 id="answer-text">...</h2>
+                <div class="game-actions">
+                    <button class="btn-wrong" onclick="nextCard(false)">Faux ❌</button>
+                    <button class="btn-right" onclick="nextCard(true)">Juste ✅</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h1>Fini ! 🏆</h1>
+        <p id="final-score"></p>
+        <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-submit">Retour au deck</a>
+    </div>
+    </div>
+</main>
+
+
+
+@end

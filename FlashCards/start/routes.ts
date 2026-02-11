@@ -23,6 +23,7 @@ router.group(() => {
   router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
   router.get('/:id/play', [DecksController, 'play']).as('decks.play')
   router.get('/:id/game', [DecksController, 'game']).as('decks.game')
+  router.get('/:id/result', [DecksController, 'result']).as('decks.result')
 }).prefix('/decks')
 
 // Routes pour les Cards

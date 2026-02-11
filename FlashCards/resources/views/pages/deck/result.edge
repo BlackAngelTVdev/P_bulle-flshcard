@@ -1,0 +1,28 @@
+@component('components/main', { title: `Résultat | ${deck.name}`, css: 'result' })
+<main>
+    <div class="result-card">
+        <h1>Fini ! 🏆</h1>
+        <p class="deck-name">{{ deck.name }}</p>
+        
+        <div class="score-circle">
+            <span class="score-num">{{ score }}</span>
+            <span class="score-total">/ {{ total }}</span>
+        </div>
+
+        <p class="feedback-msg">
+            @if(score == total)
+                Parfait ! T'es un monstre ! 🔥
+            @elseif(score > total / 2)
+                Pas mal du tout ! 👏
+            @else
+                Encore un peu d'entraînement... 💪
+            @end
+        </p>
+
+        <div class="actions">
+            <a href="{{ route('decks.game', { id: deck.id }) }}" class="btn-retry">Rejouer</a>
+            <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
+        </div>
+    </div>
+</main>
+@end

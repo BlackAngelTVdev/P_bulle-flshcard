@@ -16,7 +16,7 @@ export default class DecksController {
     async store({ request, response, session }: HttpContext) {
         // Pas de try/catch ici pour la validation, Adonis gère le redirect back() tout seul
         const payload = await request.validateUsing(createDeckValidator, {
-            
+
         })
 
         await Deck.create(payload)
@@ -41,7 +41,7 @@ export default class DecksController {
 
         const payload = await request.validateUsing(updateDeckValidator, {
             data: { ...request.all(), id: params.id },
-            
+
         })
 
         deck.merge(payload)
@@ -65,5 +65,12 @@ export default class DecksController {
         const deck = await Deck.findOrFail(params.id)
         await deck.load('cards')
         return view.render('pages/deck/game', { deck })
+    }
+    async result({ params, request, view }: HttpContext) {
+        const deck = await Deck.findOrFail(params.id)
+        const score = request.input('score')
+        const total = request.input('total')
+
+        return view.render('pages/deck/result', { deck, score, total })
     }
 }
