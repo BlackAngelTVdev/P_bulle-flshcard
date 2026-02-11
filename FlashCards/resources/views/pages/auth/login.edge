@@ -1,0 +1,28 @@
+
+<main class="auth-container">
+    <div class="auth-card">
+        <img src="/logo.png" alt="Logo" class="auth-logo">
+        <h1>Connexion</h1>
+
+        <form action="{{ route('auth.login') }}" method="POST">
+            {{ csrfField() }}
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" value="{{ old('email') || '' }}" required>
+                @if(flashMessages.has('errors.email'))
+                    <span class="error">{{ flashMessages.get('errors.email') }}</span>
+                @end
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn-primary">Se connecter</button>
+        </form>
+
+        <p class="auth-footer">Pas de compte ? <a href="{{ route('auth.register') }}">S'inscrire</a></p>
+    </div>
+</main>
