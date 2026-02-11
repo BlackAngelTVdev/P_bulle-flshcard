@@ -8,7 +8,7 @@ main {
 }
 
 /* --- DECK INFO --- */
-h1 {
+h1.deck-title {
   color: var(--primary-violet);
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
