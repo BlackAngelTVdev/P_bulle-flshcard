@@ -1,0 +1,96 @@
+@import url(./var.css);
+
+/* --- LAYOUT GLOBAL --- */
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+/* --- LE FORMULAIRE (Style Carte) --- */
+form {
+  background: var(--white);
+  max-width: 550px;
+  width: 100%;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+  border-top: 8px solid var(--primary-violet);
+  box-sizing: border-box;
+}
+
+h1 {
+  color: var(--primary-violet);
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  margin-top: 0;
+}
+
+/* --- CHAMPS DE SAISIE --- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-weight: 700;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+input[type="text"], 
+textarea {
+  padding: 14px;
+  border: 2px solid var(--light-violet);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input[type="text"]:focus, 
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-violet);
+  background-color: var(--white);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* --- BOUTON SUBMIT --- */
+.btn-submit {
+  width: 100%;
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+.btn-submit:hover {
+  background-color: var(--dark-violet);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}

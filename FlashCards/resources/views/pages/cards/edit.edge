@@ -1,9 +1,8 @@
 @component('components/main', { title: `Modifier la carte | Flash Dam\'s`, css: 'cardedit' })
 <main>
-    <form action="{{ route('cards.update', { id: card.id }) }}" method="POST">
+    <form action="{{ route('cards.update', { id: card.id }) }}?_method=PUT" method="POST">
         {{ csrfField() }}
-        <input type="hidden" name="_method" value="PUT">
-
+        
         <h1>Modifier la carte</h1>
 
         <div class="field">

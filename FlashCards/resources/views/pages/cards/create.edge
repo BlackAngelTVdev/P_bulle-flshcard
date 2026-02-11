@@ -1,0 +1,22 @@
+@component('components/main', { title: `Créer une carte | Flash Dam\'s`, css: 'cardcreate' })
+<main>
+    <h1>Créer une nouvelle carte</h1>
+    <form action="{{ route('cards.store') }}" method="POST">
+        {{ csrfField() }}
+
+        <input type="hidden" name="deckId" value="{{ request.input('deckId') }}">
+
+        <div class="form-group">
+            <label for="question">Question</label>
+            <input type="text" id="question" name="question" required>
+        </div>
+
+        <div class="form-group">
+            <label for="answer">Réponse</label>
+            <textarea id="answer" name="answer" required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit">Créer la carte</button>
+    </form>
+</main>
+@end

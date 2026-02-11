@@ -32,7 +32,7 @@
         @end
 
         <div class="deck-footer">
-            <a href="{{ route('cards.create', { deckId: deck.id }) }}" class="btn-add-card">
+            <a href="{{ route('cards.create') }}?deckId={{ deck.id }}" class="btn-add-card">
                 <span>+</span> Ajouter une nouvelle carte
             </a>
         </div>
