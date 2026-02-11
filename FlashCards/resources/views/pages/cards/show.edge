@@ -1,18 +1,42 @@
-@component('components/main', { title: `Voir la carte | Flash Dam\'s`, css: 'cardShow' })
+@component('components/main', { title: `Voir la carte | Flash Dam's`, css: 'cardShow' })
 <main>
-    <h2>{{ card.question }}</h2>
-    <p class="card-answer">{{ card.answer }}</p>
+    {{-- La carte qui se retourne au clic --}}
+    <div class="flashcard" id="flashcard">
+        <div class="card-inner">
+            {{-- Face Question --}}
+            <div class="card-front">
+                <span class="card-label">Question</span>
+                <h2>{{ card.question }}</h2>
+                <p class="hint">Clique pour voir la réponse</p>
+            </div>
+            
+            {{-- Face Réponse --}}
+            <div class="card-back">
+                <span class="card-label">Réponse</span>
+                <p class="answer-text">{{ card.answer }}</p>
+            </div>
+        </div>
+    </div>
 
     <div class="card-actions">
-        <a href="{{ route('cards.edit', { id: card.id }) }}" class="btn-edit-card">Éditer la carte</a>
+        {{-- Bouton de retour au deck (indispensable selon l'analyse) --}}
+        <a href="{{ route('decks.show', { id: card.deckId }) }}" class="btn-ok">OK</a>
+        
+        <a href="{{ route('cards.edit', { id: card.id }) }}" class="btn-edit-card">Modifier</a>
+        
         <form action="{{ route('cards.destroy', { id: card.id }) }}?_method=DELETE" method="POST">
             {{ csrfField() }}
-            <input type="hidden" name="_method" value="DELETE">
-
             <button type="submit" class="btn-delete-card" onclick="return confirm('Supprimer cette carte ?')">
-                Supprimer la carte
+                Supprimer
             </button>
         </form>
     </div>
 </main>
+
+<script>
+    // Logique de retournement simple
+    document.getElementById('flashcard').addEventListener('click', function() {
+        this.classList.toggle('is-flipped');
+    });
+</script>
 @end
