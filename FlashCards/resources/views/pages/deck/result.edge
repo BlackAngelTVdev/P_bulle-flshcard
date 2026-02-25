@@ -39,8 +39,10 @@
             @if(mode === 'survie' && score < total)
                 @if(score == 0)
                     Même pas une carte ? Faut se réveiller ! 🧊
+                @elseif(score < total / 2)
+                    Éliminé ! Tu auras tenu au moins {{ score }} cartes. 🪦
                 @else
-                    Éliminé ! Tu as tenu jusqu'à {{ score }} cartes. 🪦
+                    Presque un sans-faute ! Tu as tenu {{ score }} cartes. 🔥
                 @endif
             @elseif(mode === 'chrono')
                 @if(percentage >= 80)
