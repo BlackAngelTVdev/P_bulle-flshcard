@@ -1,12 +1,14 @@
 @import url(./var.css);
 
+/* --- LAYOUT PRINCIPAL --- */
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 85vh;
+    justify-content: center; /* Centre verticalement */
+    align-items: center;     /* Centre horizontalement */
+    min-height: 90vh;        /* Prend presque toute la hauteur de l'écran */
     padding: 2rem;
+    box-sizing: border-box;
 }
 
 /* --- CONTENEUR DE LA CARTE --- */
@@ -14,9 +16,8 @@ main {
     width: 100%;
     max-width: 500px;
     height: 350px;
-    perspective: 1000px; /* Nécessaire pour l'effet 3D */
+    perspective: 1000px; /* Effet 3D */
     cursor: pointer;
-    margin-bottom: 3rem;
 }
 
 .card-inner {
@@ -47,6 +48,7 @@ main {
     border-radius: 24px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(139, 92, 246, 0.1);
+    box-sizing: border-box;
 }
 
 .card-label {
@@ -59,7 +61,7 @@ main {
     font-weight: 700;
 }
 
-/* Style Recto */
+/* Style Recto (Question) */
 .card-front {
     background: white;
     border-top: 8px solid var(--primary-violet);
@@ -78,7 +80,7 @@ main {
     font-style: italic;
 }
 
-/* Style Verso */
+/* Style Verso (Réponse) */
 .card-back {
     background: #fdfbff;
     transform: rotateY(180deg);
@@ -91,17 +93,17 @@ main {
     line-height: 1.6;
 }
 
-/* --- ACTIONS --- */
+/* --- ACTIONS (BOUTONS) --- */
 .card-actions {
     display: flex;
     gap: 15px;
     width: 100%;
     max-width: 500px;
+    margin-top: 3rem; /* Espace fixe entre la carte et les boutons */
 }
 
 .btn-ok, .btn-edit-card, .btn-delete-card {
     flex: 1;
-    margin-top: 60px;
     padding: 14px;
     border-radius: 12px;
     font-weight: 700;
@@ -109,6 +111,8 @@ main {
     text-decoration: none;
     transition: all 0.2s;
     font-size: 1rem;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-ok {
@@ -125,11 +129,15 @@ main {
     background: white;
     color: #dc2626;
     border: 2px solid #dc2626;
-    cursor: pointer;
 }
 
+/* Hover Effects */
 .btn-ok:hover { background: #e5e7eb; }
-.btn-edit-card:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-edit-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3); }
 .btn-delete-card:hover { background: #dc2626; color: white; }
 
-form { flex: 1; }
+/* Gestion des formulaires dans les boutons */
+form { 
+    flex: 1; 
+    display: flex;
+}
