@@ -48,10 +48,10 @@ router.group(() => {
   router.group(() => {
     router.get('/create', [CardsController, 'create']).as('cards.create')
     router.post('/', [CardsController, 'store']).as('cards.store')
-
+    router.get('/:id', [CardsController, 'show']).as('cards.show')
+    
     // Modification (Middleware de propriété)
     router.group(() => {
-      router.get('/:id', [CardsController, 'show']).as('cards.show')
       router.get('/:id/edit', [CardsController, 'edit']).as('cards.edit')
       router.put('/:id', [CardsController, 'update']).as('cards.update')
       router.delete('/:id', [CardsController, 'destroy']).as('cards.destroy')
