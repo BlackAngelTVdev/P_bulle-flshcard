@@ -22,10 +22,13 @@
             {{ csrfField() }}
 
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" value="{{ old('email') || '' }}" required>
-                @if(flashMessages.has('errors.email'))
-                <span class="error">{{ flashMessages.get('errors.email') }}</span>
+                <label for="uid">Email ou Pseudo</label>
+                <input type="text" name="uid" value="{{ old('uid') || '' }}" required>
+                @if(flashMessages.has('errors.uid'))
+                <span class="error">{{ flashMessages.get('errors.uid') }}</span>
+                @end
+                @if(flashMessages.has('errors'))
+                <span class="error">{{ flashMessages.get('errors') }}</span>
                 @end
             </div>
 

@@ -21,9 +21,10 @@ export const registerValidator = vine.compile(
   })
 )
 
+
 export const loginValidator = vine.compile(
   vine.object({
-    email: vine.string().email(),
+    uid: vine.string().trim(), // On ne force plus le format email
     password: vine.string(),
   })
 )
