@@ -1,19 +1,28 @@
 import Card from '#models/card'
 import type { HttpContext } from '@adonisjs/core/http'
 import { createCardValidator, updateCardValidator } from '#validators/card'
+import Deck from '#models/deck'
 export default class CardsController {
         async create({ view }: HttpContext) {
                 return view.render('pages/cards/create')
         }
-        async store({ request, response, session }: HttpContext) {
-
+        async store({ request, auth, response, session }: HttpContext) {
                 const payload = await request.validateUsing(createCardValidator)
 
-                const card = await Card.create(payload)
+                // Vérification que le deck appartient bien à l'utilisateur connecté
+                const deck = await Deck.query()
+                        .where('id', payload.deckId)
+                        .where('userId', auth.user!.id)
+                        .first()
 
-                session.flash('success', 'Carte ajoutée avec succès !')
+                if (!deck) {
+                        session.flash('error', 'Accès refusé. Ce deck ne vous appartient pas.')
+                        return response.redirect().toRoute('decks.index')
+                }
 
-                return response.redirect().toRoute('decks.show', { id: card.deckId })
+                await Card.create(payload)
+                session.flash('success', 'Carte créée.')
+                return response.redirect().toRoute('decks.show', { id: payload.deckId })
         }
         async show({ params, view }: HttpContext) {
                 const card = await Card.query()
