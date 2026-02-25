@@ -11,6 +11,7 @@ export default class DecksController {
     async myDecks({ auth, view }: HttpContext) {
         const decks = await Deck.query()
             .where('userId', auth.user!.id)
+            .withCount('cards') // permet de compter les cartes associées à chaque deck
             .orderBy('createdAt', 'desc')
 
         return view.render('pages/home', { decks })

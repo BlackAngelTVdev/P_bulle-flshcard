@@ -22,6 +22,7 @@ export default class Deck extends BaseModel {
 
   @hasMany(() => Card)
   declare cards: HasMany<typeof Card>
+  // La relation hasMany indique que chaque deck peut avoir plusieurs cartes associées. On peut ensuite utiliser cette relation pour charger les cartes d'un deck
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
