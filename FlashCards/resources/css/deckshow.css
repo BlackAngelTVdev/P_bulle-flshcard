@@ -163,3 +163,73 @@ p {
   color: #9ca3af;
   font-style: italic;
 }
+/* --- RESPONSIVE DESIGN (Deck Show) --- */
+
+@media (max-width: 768px) {
+    h1.deck-title {
+        font-size: 1.8rem;
+    }
+
+    .deck-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-play, .btn-edit-deck, .btn-delete-deck {
+        width: 100%;
+        max-width: 300px; /* Évite que les boutons soient trop longs */
+    }
+
+    /* Transformation du tableau en liste de cartes */
+    .table-header {
+        display: none; /* On cache les titres des colonnes */
+    }
+
+    .table-row {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        position: relative;
+    }
+
+    .col {
+        padding-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+    }
+
+    /* On ajoute des labels via CSS pour savoir ce qu'on lit */
+    .col::before {
+        content: "Recto :";
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--primary-violet);
+        font-weight: 800;
+        margin-bottom: 4px;
+    }
+
+    .col + .col::before {
+        content: "Verso :";
+    }
+
+    .col-actions {
+        width: 100%;
+        text-align: left;
+        padding-top: 10px;
+        border-top: 1px dashed #eee;
+        margin-top: 5px;
+    }
+}
+
+/* Optimisation pour les petits téléphones */
+@media (max-width: 480px) {
+    main {
+        padding: 1rem 0.5rem;
+    }
+
+    .btn-add-card {
+        width: 100%;
+        justify-content: center;
+    }
+}

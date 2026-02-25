@@ -134,3 +134,52 @@ input:focus {
 .auth-footer a:hover {
     text-decoration: underline;
 }
+/* --- RESPONSIVE DESIGN (Auth) --- */
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 1rem;
+        min-height: 85vh; /* Évite les problèmes de viewport sur les navigateurs mobiles */
+    }
+
+    .auth-card {
+        padding: 1.5rem; /* On réduit le padding interne pour gagner de la place */
+        border-radius: 20px; /* Un peu moins arrondi sur petit écran */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* Ombre plus légère */
+    }
+
+    .logo-text {
+        font-size: 1.8rem; /* Logo un peu plus petit */
+        letter-spacing: -1px;
+    }
+
+    h1 {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+    }
+
+    input {
+        padding: 0.7rem 0.9rem; /* Inputs légèrement plus compacts */
+        font-size: 1rem; /* On garde 1rem pour éviter le zoom auto iOS */
+    }
+
+    .btn-primary {
+        padding: 0.9rem; /* Bouton plus facile à taper au pouce */
+    }
+
+    .auth-footer {
+        margin-top: 1.5rem;
+    }
+}
+
+/* Gestion du mode paysage sur mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .auth-container {
+        padding: 2rem 1rem;
+        align-items: flex-start; /* Permet de scroller le formulaire s'il est trop haut */
+    }
+}

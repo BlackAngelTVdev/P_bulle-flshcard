@@ -79,3 +79,48 @@ h1 {
 .btn-back:hover {
     color: var(--primary-violet);
 }
+/* --- RESPONSIVE DESIGN (Setup Game) --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+        min-height: 75vh;
+    }
+
+    .setup-container {
+        padding: 2rem 1.5rem; /* On réduit pour gagner de la place */
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .mode-selection {
+        margin: 1.5rem 0;
+    }
+
+    .mode-select {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .btn-start {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .btn-back {
+        margin-top: 1rem;
+    }
+}
+
+/* Fix pour les écrans très courts */
+@media (max-height: 550px) {
+    .setup-container {
+        padding: 1.5rem;
+    }
+    .mode-selection {
+        margin: 1rem 0;
+    }
+}

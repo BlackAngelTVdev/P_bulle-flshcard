@@ -100,3 +100,62 @@ button[type="submit"]:hover {
 .btn-abandon:hover {
   color: var(--primary-violet);
 }
+/* --- RESPONSIVE DESIGN (Edit Deck) - FIX OVERFLOW --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+        min-height: auto;
+        margin-top: 1rem;
+        width: 100%;
+        box-sizing: border-box; /* Sécurité pour le container */
+        overflow-x: hidden;    /* Empêche tout slide horizontal parasite */
+    }
+
+    form {
+        width: 100%;           /* Prend toute la place disponible définie par le padding du main */
+        max-width: 100%;       /* Force à ne jamais dépasser l'écran */
+        padding: 1.5rem;       /* Padding réduit */
+        border-radius: 16px;
+        box-sizing: border-box; /* IMPORTANT : Inclus le padding dans les 100% de large */
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .field {
+        margin-bottom: 1.2rem;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        box-sizing: border-box; /* Évite que l'input dépasse du formulaire */
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .btn-abandon {
+        margin-top: 1.2rem;
+        padding: 10px;
+    }
+}
+
+/* Fix pour les écrans ultra-compacts (ex: iPhone SE) */
+@media (max-width: 350px) {
+    form {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.4rem;
+    }
+}

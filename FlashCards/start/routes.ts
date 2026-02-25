@@ -22,34 +22,34 @@ router.group(() => {
 
   // Section Decks
   // Section Decks
-router.group(() => {
-  // Consultation et Jeu (Ouvert à tous les connectés)
-  router.get('/', [DecksController, 'index']).as('decks.index')
-  router.get('/mine', [DecksController, 'myDecks']).as('decks.mine')
-  router.get('/create', [DecksController, 'create']).as('decks.create')
-  router.post('/', [DecksController, 'store']).as('decks.store')
-  router.get('/:id', [DecksController, 'show']).as('decks.show')
-  
-  // Tes routes de jeu remises ici :
-  router.get('/:id/play', [DecksController, 'play']).as('decks.play')
-  router.get('/:id/game', [DecksController, 'game']).as('decks.game')
-  router.get('/:id/result', [DecksController, 'result']).as('decks.result')
-
-  // Modification (🛡️ Uniquement le proprio)
   router.group(() => {
-    router.get('/:id/edit', [DecksController, 'edit']).as('decks.edit')
-    router.put('/:id', [DecksController, 'update']).as('decks.update')
-    router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
-  }).use(middleware.isOwner())
+    // Consultation et Jeu (Ouvert à tous les connectés)
+    router.get('/', [DecksController, 'index']).as('decks.index')
+    router.get('/mine', [DecksController, 'myDecks']).as('decks.mine')
+    router.get('/create', [DecksController, 'create']).as('decks.create')
+    router.post('/', [DecksController, 'store']).as('decks.store')
+    router.get('/:id', [DecksController, 'show']).as('decks.show')
 
-}).prefix('/decks')
+    // Tes routes de jeu remises ici :
+    router.get('/:id/play', [DecksController, 'play']).as('decks.play')
+    router.get('/:id/game', [DecksController, 'game']).as('decks.game')
+    router.get('/:id/result', [DecksController, 'result']).as('decks.result')
+
+    // Modification (🛡️ Uniquement le proprio)
+    router.group(() => {
+      router.get('/:id/edit', [DecksController, 'edit']).as('decks.edit')
+      router.put('/:id', [DecksController, 'update']).as('decks.update')
+      router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
+    }).use(middleware.isOwner())
+
+  }).prefix('/decks')
 
   // Section Cards
   router.group(() => {
     router.get('/create', [CardsController, 'create']).as('cards.create')
     router.post('/', [CardsController, 'store']).as('cards.store')
     router.get('/:id', [CardsController, 'show']).as('cards.show')
-    
+
     // Modification (Middleware de propriété)
     router.group(() => {
       router.get('/:id/edit', [CardsController, 'edit']).as('cards.edit')

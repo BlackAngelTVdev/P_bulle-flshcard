@@ -99,3 +99,49 @@ button[type="submit"]:hover {
 .btn-abandon:hover {
   color: var(--primary-violet);
 }
+/* --- RESPONSIVE DESIGN (Modification) --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem; /* Moins d'espace perdu sur les côtés */
+        min-height: auto; 
+        margin-top: 1.5rem;
+    }
+
+    form {
+        padding: 2rem 1.5rem; /* On réduit le padding interne pour gagner de la place */
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .field {
+        margin-bottom: 1.2rem;
+    }
+
+    input[type="text"] {
+        padding: 12px;
+        font-size: 1rem; /* On garde du 1rem pour éviter le zoom auto de l'iPhone au focus */
+    }
+
+    button[type="submit"] {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .btn-abandon {
+        margin-top: 1.2rem;
+        padding: 8px; /* Plus facile à cliquer */
+    }
+}
+
+/* Fix pour les très petits écrans */
+@media (max-width: 380px) {
+    form {
+        padding: 1.5rem 1rem;
+    }
+}

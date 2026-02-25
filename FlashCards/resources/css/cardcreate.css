@@ -93,3 +93,50 @@ textarea:focus {
 .btn-submit:active {
   transform: translateY(0);
 }
+/* --- RESPONSIVE DESIGN (Formulaire) --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem; /* On réduit l'espace autour du formulaire */
+        min-height: auto; /* Évite de forcer une hauteur trop grande si le clavier mobile sort */
+        margin-top: 2rem;
+    }
+
+    form {
+        padding: 2rem 1.5rem; /* Padding interne réduit pour gagner de la place */
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+    }
+
+    h1 {
+        font-size: 1.6rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        gap: 0.5rem; /* Un peu plus compact */
+        margin-bottom: 1.2rem;
+    }
+
+    input[type="text"], 
+    textarea {
+        padding: 12px;
+        font-size: 0.95rem; /* Texte légèrement plus petit pour le mobile */
+    }
+
+    .btn-submit {
+        padding: 14px;
+        font-size: 1rem;
+    }
+}
+
+/* Optimisation pour les très petits écrans (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    form {
+        padding: 1.5rem 1rem;
+    }
+    
+    h1 {
+        font-size: 1.4rem;
+    }
+}

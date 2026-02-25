@@ -66,3 +66,41 @@ a.deck-card:hover {
     color: #64748b;
     margin-bottom: 1.5rem;
 }
+/* --- RESPONSIVE DESIGN (Deck Index) --- */
+
+@media (max-width: 600px) {
+    main {
+        width: 95%; /* On prend un peu plus de place sur les côtés */
+        padding: 1rem 0;
+    }
+
+    a.deck-card {
+        flex-direction: column; /* On empile les éléments */
+        align-items: flex-start; /* Aligné à gauche */
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .deck-title {
+        font-size: 1.15rem;
+    }
+
+    .deck-description {
+        font-size: 0.9rem;
+    }
+
+    /* Changement de l'effet de hover pour le mobile */
+    a.deck-card:hover {
+        transform: translateY(-3px); /* Plus naturel sur mobile */
+        translateX: 0; 
+    }
+
+    .empty-state {
+        padding: 2.5rem 1rem;
+        margin-top: 1rem;
+    }
+
+    .empty-icon {
+        font-size: 2.5rem;
+    }
+}

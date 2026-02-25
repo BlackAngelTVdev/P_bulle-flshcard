@@ -111,3 +111,61 @@ main {
 .btn-back:hover {
     color: var(--primary-violet);
 }
+/* --- RESPONSIVE DESIGN (Results) --- */
+
+@media (max-width: 500px) {
+    main {
+        padding: 1rem;
+        min-height: 85vh;
+    }
+
+    .result-card {
+        padding: 2rem 1.5rem; /* On gagne de la place pour le contenu */
+        border-radius: 20px;
+    }
+
+    .deck-name {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Ajustement du camembert pour mobile */
+    .pie-chart {
+        width: 150px;
+        height: 150px;
+    }
+
+    .pie-center {
+        width: 110px;
+        height: 110px;
+    }
+
+    .score-num {
+        font-size: 2.5rem;
+    }
+
+    .feedback-msg {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+
+    /* Boutons bien larges pour le pouce */
+    .btn-retry {
+        padding: 16px;
+        font-size: 1.1rem;
+    }
+
+    .btn-back {
+        padding: 12px;
+    }
+}
+
+/* Fix pour les écrans très petits ou paysages */
+@media (max-height: 550px) {
+    .chart-container {
+        margin-bottom: 1rem;
+    }
+    .result-card {
+        padding: 1rem;
+    }
+}

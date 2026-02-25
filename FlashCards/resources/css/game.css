@@ -87,3 +87,49 @@ main {
     color: #9ca3af;
     margin-top: 20px;
 }
+/* --- RESPONSIVE DESIGN (Game Mode) --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+        min-height: 70vh; /* On réduit un peu pour pas que ça scroll sur petit écran */
+    }
+
+    .flashcard {
+        width: 100%;
+        max-width: 400px; /* Plus petit sur mobile */
+        height: 300px;    /* Hauteur réduite pour laisser de la place aux boutons */
+    }
+
+    .card-front h2, .card-back p {
+        font-size: 1.2rem; /* On adapte la taille du texte */
+    }
+
+    .game-actions {
+        flex-direction: column; /* Boutons l'un sur l'autre */
+        width: 100%;
+        max-width: 400px;
+        gap: 12px;
+    }
+
+    .btn-right, .btn-wrong {
+        width: 100%;
+        padding: 15px; /* Plus épais pour le tactile */
+        font-size: 1.1rem;
+    }
+
+    .score-board {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+}
+
+/* Fix pour les téléphones en mode paysage ou très courts */
+@media (max-height: 500px) {
+    .flashcard {
+        height: 200px;
+    }
+    .hint {
+        margin-top: 10px;
+    }
+}

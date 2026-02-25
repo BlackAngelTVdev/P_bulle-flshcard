@@ -195,3 +195,66 @@ footer {
     transform: translateY(0);
   }
 }
+/* --- RESPONSIVE DESIGN (Layout & Nav) --- */
+
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    .container-header {
+        text-align: center;
+    }
+
+    /* On empile le titre et la navigation */
+    nav {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding-top: 1rem;
+    }
+
+    /* Les liens de navigation occupent plus d'espace pour être cliquables */
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap; /* Évite que ça sorte de l'écran */
+    }
+
+    /* Le bloc utilisateur passe en dessous des liens */
+    .user-info {
+        width: 100%;
+        justify-content: center;
+        border-top: 1px dashed var(--light-violet);
+        padding-top: 1rem;
+    }
+
+    .username {
+        font-size: 0.8rem;
+    }
+
+    /* Footer s'adapte aussi */
+    footer {
+        padding: 1.5rem 1rem;
+    }
+
+    .footer-content {
+        text-align: center;
+    }
+}
+
+/* Optimisation pour les tout petits écrans (iPhone SE, etc.) */
+@media (max-width: 480px) {
+    .nav-links {
+        gap: 10px;
+    }
+    
+    nav a {
+        font-size: 0.9rem;
+    }
+
+    .titre-header h1 span.logo-flash,
+    .titre-header h1 span.logo-dams {
+        font-size: 1.4rem;
+    }
+}

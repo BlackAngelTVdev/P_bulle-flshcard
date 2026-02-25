@@ -141,3 +141,58 @@ form {
     flex: 1; 
     display: flex;
 }
+/* --- RESPONSIVE DESIGN (Flashcard) --- */
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+        min-height: 85vh; /* Ajustement pour éviter le scroll inutile sur petit écran */
+    }
+
+    .flashcard {
+        height: 300px; /* On réduit un peu la hauteur pour laisser de la place aux boutons */
+    }
+
+    .card-front h2 {
+        font-size: 1.6rem;
+    }
+
+    .answer-text {
+        font-size: 1.2rem;
+        padding: 0 10px;
+    }
+
+    /* Empilement des boutons sur mobile */
+    .card-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 2rem;
+        align-items: center;
+    }
+
+    .btn-ok, .btn-edit-card, .btn-delete-card, form {
+        width: 100%;
+        max-width: 320px; /* On limite pour que ce soit pas trop massif */
+    }
+
+    form {
+        justify-content: center; /* Centre le bouton de suppression dans le form */
+    }
+
+    .btn-ok, .btn-edit-card, .btn-delete-card {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Fix pour les écrans très bas (iPhone SE ou mode paysage) */
+@media (max-height: 600px) {
+    main {
+        justify-content: flex-start; /* Évite de couper le haut de la carte */
+        padding-top: 2rem;
+    }
+    
+    .flashcard {
+        height: 250px;
+    }
+}
