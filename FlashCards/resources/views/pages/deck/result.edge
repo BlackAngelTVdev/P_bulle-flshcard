@@ -1,14 +1,33 @@
 @component('components/main', { title: `Résultat | ${deck.name}`, css: 'result' })
 <main>
     <div class="result-card">
-        <h1>Fini ! 🏆</h1>
+        {{-- En-tête dynamique selon le score --}}
+        @if(score == total)
+            <h1>LÉGENDAIRE ! 👑</h1>
+        @elseif(score == 0)
+            <h1>AÏE... 💀</h1>
+        @else
+            <h1>Fini ! 🏆</h1>
+        @endif
+
         <p class="deck-name">{{ deck.name }}</p>
         
-        {{-- Calcul du pourcentage pour le camembert --}}
-        @let(percentage = (score / total) * 100)
+        {{-- Badge du mode de jeu --}}
+        <div class="mode-badge {{ mode }}">
+            @if(mode === 'survie')
+                Mode Survie 💀
+            @elseif(mode === 'chrono')
+                Mode Chrono ⏱️
+            @else
+                Mode Basique ✅
+            @endif
+        </div>
+
+        {{-- Calcul du pourcentage --}}
+        @let(percentage = (total > 0) ? (score / total) * 100 : 0)
         
         <div class="chart-container">
-            <div class="pie-chart" style="background: conic-gradient(#10b981 {{ percentage }}%, #ef4444 0);">
+            <div class="pie-chart" style="background: conic-gradient(var(--primary-violet) {{ percentage }}%, #eee 0);">
                 <div class="pie-center">
                     <span class="score-num">{{ score }}</span>
                     <span class="score-total">/ {{ total }}</span>
@@ -17,17 +36,33 @@
         </div>
 
         <p class="feedback-msg">
-            @if(score == total)
-                Parfait ! T'es un monstre ! 🔥
-            @elseif(score > total / 2)
-                Pas mal du tout ! 👏
+            @if(mode === 'survie' && score < total)
+                @if(score == 0)
+                    Même pas une carte ? Faut se réveiller ! 🧊
+                @else
+                    Éliminé ! Tu as tenu jusqu'à {{ score }} cartes. 🪦
+                @endif
+            @elseif(mode === 'chrono')
+                @if(percentage >= 80)
+                    T'es rapide comme l'éclair ! ⚡
+                @else
+                    Le temps presse, entraîne ta vitesse ! ⏳
+                @endif
             @else
-                Encore un peu d'entraînement... 💪
-            @end
+                {{-- Messages mode Basique --}}
+                @if(score == total)
+                    Parfait ! T'es un monstre ! 🔥
+                @elseif(score > total / 2)
+                    Pas mal du tout ! 👏
+                @else
+                    Encore un peu d'entraînement... 💪
+                @endif
+            @endif
         </p>
 
         <div class="actions">
-            <a href="{{ route('decks.game', { id: deck.id }) }}" class="btn-retry">Rejouer</a>
+            {{-- On renvoie vers play pour pouvoir rechoisir le mode --}}
+            <a href="{{ route('decks.play', { id: deck.id }) }}" class="btn-retry">Rejouer</a>
             <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
         </div>
     </div>

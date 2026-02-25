@@ -6,20 +6,24 @@
                 <span class="logo-dams">Dam's</span>
             </h1>
         </div>
-        <div class="">
-            
-        </div>
-    </div>
-    <nav>
         
-        <div class="nav-links">
-            <a href="{{ route('decks.index') }}">Accueil</a>&nbsp;
-            <a href="{{ route('decks.mine') }}">Voir mes decks</a>    
-            <a href="{{ route('decks.create') }}">Ajouter un deck</a>
-        </div>
-        <div class="user-info">
-            <span class="username">{{ auth.user.username }}</span>
-            <a href="{{ route('auth.logout') }}">Se déconnecter</a>
-        </div>
-    </nav>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="burger-label">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <nav>
+            <div class="nav-links">
+                <a href="{{ route('decks.index') }}">Accueil</a>
+                <a href="{{ route('decks.mine') }}">Voir mes decks</a>    
+                <a href="{{ route('decks.create') }}">Ajouter un deck</a>
+            </div>
+            <div class="user-info">
+                <span class="username">{{ auth.user.username }}</span>
+                <a href="{{ route('auth.logout') }}">Se déconnecter</a>
+            </div>
+        </nav>
+    </div>
 </header>

@@ -33,6 +33,7 @@ main {
 }
 
 .pie-chart {
+    margin-top: 40px;
     width: 180px;
     height: 180px;
     border-radius: 50%;
@@ -43,9 +44,7 @@ main {
     transition: transform 0.3s ease;
 }
 
-.pie-chart:hover {
-    transform: scale(1.05);
-}
+
 
 .pie-center {
     width: 140px;

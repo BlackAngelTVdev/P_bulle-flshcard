@@ -1,68 +1,101 @@
-// On attend que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('game-container');
     if (!container) return;
 
-    // Récupération des datas injectées par Edge
+    // 1. Setup des datas
     const cards = JSON.parse(container.dataset.cards).sort(() => Math.random() - 0.5);
-    const redirectUrl = container.dataset.redirectUrl;
+    const mode = container.dataset.mode || 'basique';
+    const deckId = container.dataset.deckId;
 
     let currentIndex = 0;
     let score = 0;
+    let lives = 3;
+    let timeLeft = 10;
+    let timerInterval;
+    let isTransitioning = false; // Sécurité anti-spam
 
-    const cardElement = document.getElementById('card-element');
+    // 2. Éléments DOM
     const cardInner = document.getElementById('card-inner');
     const questionText = document.getElementById('question-text');
     const answerText = document.getElementById('answer-text');
     const scoreDisplay = document.getElementById('current-score');
-    const totalDisplay = document.getElementById('total-cards');
-    const resultScreen = document.getElementById('result-screen');
-    const finalScoreText = document.getElementById('final-score');
+    const livesDisplay = document.getElementById('lives-display');
+    const timerBar = document.getElementById('timer-bar');
 
-    if (totalDisplay) totalDisplay.innerText = cards.length;
-
-    // Logique de retournement
-    cardElement.addEventListener('click', (e) => {
-        if (!e.target.closest('.game-actions')) {
+    // 3. Flip de la carte
+    document.getElementById('card-element').addEventListener('click', (e) => {
+        if (!e.target.closest('.game-actions') && !isTransitioning) {
             cardInner.classList.toggle('is-flipped');
         }
     });
 
-    // Fonctions globales attachées à l'objet window pour les onclick du HTML
+    // 4. Logique de réponse
     window.nextCard = (isCorrect) => {
-        if (isCorrect) score++;
-        if (scoreDisplay) scoreDisplay.innerText = score;
+        if (isTransitioning) return; // Empêche de cliquer 10 fois pendant l'anim
+        
+        clearInterval(timerInterval);
+        isTransitioning = true;
+
+        if (isCorrect) {
+            score++;
+            if (scoreDisplay) scoreDisplay.innerText = score;
+        } else if (mode === 'survie') {
+            lives--;
+            if (livesDisplay) livesDisplay.innerText = "❤️".repeat(lives);
+            if (lives <= 0) return showResults();
+        }
+
         currentIndex++;
-        showCard();
+        
+        // Petit délai pour que l'utilisateur voit sa validation avant que la carte change
+        setTimeout(() => {
+            isTransitioning = false;
+            showCard();
+        }, 300);
     };
 
+    // 5. Mode Chrono
+    function startChrono() {
+        timeLeft = 10;
+        if (timerBar) {
+            timerBar.style.transition = 'none'; // Reset immédiat
+            timerBar.style.width = '100%';
+            // Force le reflow pour que la transition de 10s s'applique après le reset
+            timerBar.offsetHeight; 
+            timerBar.style.transition = 'width 10s linear';
+            timerBar.style.width = '0%';
+        }
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                window.nextCard(false);
+            }
+        }, 1000);
+    }
+
+    // 6. Affichage carte
     function showCard() {
         if (currentIndex < cards.length) {
             cardInner.classList.remove('is-flipped');
-            // Petit délai pour laisser l'animation de retour se faire
+            
             setTimeout(() => {
                 questionText.innerText = cards[currentIndex].question;
                 answerText.innerText = cards[currentIndex].answer;
+                if (mode === 'chrono') startChrono();
             }, 150);
         } else {
             showResults();
         }
     }
 
+    // 7. Fin de game
     function showResults() {
-        const container = document.getElementById('game-container');
-        const deckId = container.dataset.deckId; // Récupère l'ID qu'on vient d'ajouter
-
-        // Vérification de sécu
-        if (!deckId) {
-            console.error("Deck ID introuvable !");
-            return;
-        }
-
-        const url = `/decks/${deckId}/result?score=${score}&total=${cards.length}`;
-        window.location.href = url;
+        clearInterval(timerInterval);
+        if (!deckId) return;
+        window.location.href = `/decks/${deckId}/result?score=${score}&total=${cards.length}&mode=${mode}`;
     }
 
-    // Lancement du jeu
     showCard();
 });
