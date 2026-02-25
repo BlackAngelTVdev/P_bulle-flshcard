@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany } from '@adonisjs/lucid/orm' // Ajoute hasMany ici
-import type { HasMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, hasMany, belongsTo } from '@adonisjs/lucid/orm'
+import type { HasMany, BelongsTo } from '@adonisjs/lucid/types/relations'
 import Card from '#models/card'
+import User from '#models/user' // Import de l'User
 
 export default class Deck extends BaseModel {
   @column({ isPrimary: true })
@@ -12,6 +13,12 @@ export default class Deck extends BaseModel {
 
   @column()
   declare description: string
+
+  @column()
+  declare userId: number
+
+  @belongsTo(() => User)
+  declare user: BelongsTo<typeof User>
 
   @hasMany(() => Card)
   declare cards: HasMany<typeof Card>

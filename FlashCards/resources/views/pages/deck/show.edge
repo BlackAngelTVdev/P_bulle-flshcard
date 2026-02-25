@@ -4,24 +4,26 @@
     <p>{{ deck.description }}</p>
 
     <div class="deck-actions">
-
+        {{-- Tout le monde (connecté) peut s'entraîner sur un deck s'il y a accès --}}
         <a href="{{ route('decks.play', { id: deck.id }) }}" class="btn-play">
             S'entraîner 🚀
         </a>
 
+        {{-- 🛡️ Vérification du propriétaire --}}
+        @if(auth.user.id === deck.userId)
+            <a href="{{ route('decks.edit', { id: deck.id }) }}" class="btn-edit-deck">
+                Éditer le deck
+            </a>
 
-        <a href="{{ route('decks.edit', { id: deck.id }) }}" class="btn-edit-deck">
-            Éditer le deck
-        </a>
-
-
-        <form action="{{ route('decks.destroy', { id: deck.id }) }}?_method=DELETE" method="POST">
-            {{ csrfField() }}
-            <button type="submit" class="btn-delete-deck" onclick="return confirm('Supprimer ce deck ?')">
-                Supprimer le deck
-            </button>
-        </form>
+            <form action="{{ route('decks.destroy', { id: deck.id }) }}?_method=DELETE" method="POST">
+                {{ csrfField() }}
+                <button type="submit" class="btn-delete-deck" onclick="return confirm('Supprimer ce deck ?')">
+                    Supprimer le deck
+                </button>
+            </form>
+        @end
     </div>
+
     <div class="cards-table">
         <div class="table-header">
             <div class="col">Question</div>
@@ -30,20 +32,23 @@
         </div>
 
         @each(card in deck.cards)
-        <a href="{{ route('cards.show', { id: card.id }) }}" class="table-row">
-            <div class="col">{{ card.question }}</div>
-            <div class="col">{{ card.answer }}</div>
-            <div class="col-actions"><span class="edit-icon">Voir 👁️</span></div>
-        </a>
+            <a href="{{ route('cards.show', { id: card.id }) }}" class="table-row">
+                <div class="col">{{ card.question }}</div>
+                <div class="col">{{ card.answer }}</div>
+                <div class="col-actions"><span class="edit-icon">Voir 👁️</span></div>
+            </a>
         @else
-        <div class="empty-msg">Ce deck est encore vide...</div>
+            <div class="empty-msg">Ce deck est encore vide...</div>
         @end
 
-        <div class="deck-footer">
-            <a href="{{ route('cards.create') }}?deckId={{ deck.id }}" class="btn-add-card">
-                <span>+</span> Ajouter une nouvelle carte
-            </a>
-        </div>
+        {{-- 🛡️ Seul le proprio peut ajouter des cartes --}}
+        @if(auth.user.id === deck.userId)
+            <div class="deck-footer">
+                <a href="{{ route('cards.create') }}?deckId={{ deck.id }}" class="btn-add-card">
+                    <span>+</span> Ajouter une nouvelle carte
+                </a>
+            </div>
+        @end
     </div>
 </main>
 @end

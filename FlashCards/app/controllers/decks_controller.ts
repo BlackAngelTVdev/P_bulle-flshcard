@@ -8,18 +8,30 @@ export default class DecksController {
         const decks = await Deck.query().withCount('cards')
         return view.render('pages/home', { decks })
     }
+    async myDecks({ auth, view }: HttpContext) {
+        const decks = await Deck.query()
+            .where('userId', auth.user!.id)
+            .orderBy('createdAt', 'desc')
+
+        return view.render('pages/home', { decks })
+    }
 
     async create({ view }: HttpContext) {
         return view.render('pages/deck/create')
     }
 
-    async store({ request, response, session }: HttpContext) {
-        // Pas de try/catch ici pour la validation, Adonis gère le redirect back() tout seul
-        const payload = await request.validateUsing(createDeckValidator, {
+    // On ajoute 'auth' dans les arguments du HttpContext
+    async store({ auth, request, response, session }: HttpContext) {
 
+        // 1. Validation (name, description, etc.)
+        const payload = await request.validateUsing(createDeckValidator)
+
+        // 2. Création avec injection du userId de l'utilisateur connecté
+        // On merge le payload avec l'id de l'user authentifié
+        await Deck.create({
+            ...payload,
+            userId: auth.user!.id
         })
-
-        await Deck.create(payload)
 
         session.flash('success', 'Deck créé avec succès !')
         return response.redirect().toRoute('decks.index')

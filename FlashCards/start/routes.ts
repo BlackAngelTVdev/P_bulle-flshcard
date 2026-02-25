@@ -25,6 +25,7 @@ router.group(() => {
   // Group Decks
   router.group(() => {
     router.get('/', [DecksController, 'index']).as('decks.index')
+    router.get('/mine', [DecksController, 'myDecks']).as('decks.mine')
     router.get('/create', [DecksController, 'create']).as('decks.create')
     router.post('/', [DecksController, 'store']).as('decks.store')
     router.get('/:id', [DecksController, 'show']).as('decks.show')

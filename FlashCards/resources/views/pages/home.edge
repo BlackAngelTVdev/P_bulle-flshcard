@@ -1,20 +1,28 @@
 @component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home' })
 
 <main>
-  @each(deck in decks)
-  <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
-    <div>
-      <h2 class="deck-title">{{ deck.name }}</h2>
-      <p class="deck-description">{{ deck.description }}</p>
-      <span>Voir le deck →</span>
-    </div>
+  <div class="decks-grid">
+    @each(deck in decks)
+      <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
+        <div>
+          <h2 class="deck-title">{{ deck.name }}</h2>
+          <p class="deck-description">{{ deck.description }}</p>
+          <span>Voir le deck →</span>
+        </div>
 
-    <div class="deck-footer">
-      <span class="count">{{ deck.$extras.cards_count }} cartes</span>
-      
-    </div>
-  </a>
-@end
-
+        <div class="deck-footer">
+          <span class="count">{{ deck.$extras.cards_count || 0 }} cartes</span>
+        </div>
+      </a>
+    @else
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h2>Pas encore de deck pour le moment</h2>
+        <p>Commence par créer ton premier deck pour réviser !</p>
+        <a href="{{ route('decks.create') }}" class="btn-primary">Créer un deck</a>
+      </div>
+    @end
+  </div>
 </main>
+
 @end

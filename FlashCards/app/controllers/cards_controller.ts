@@ -16,7 +16,11 @@ export default class CardsController {
                 return response.redirect().toRoute('decks.show', { id: card.deckId })
         }
         async show({ params, view }: HttpContext) {
-                const card = await Card.findOrFail(params.id)
+                const card = await Card.query()
+                        .where('id', params.id)
+                        .preload('deck')
+                        .firstOrFail()
+
                 return view.render('pages/cards/show', { card })
         }
 

@@ -19,6 +19,6 @@ export default defineConfig({
 
   server: {
     allowedHosts: ['cards.laxacube.ch'],
-    host: '0.0.0.0', // Important si tu repasses sur Docker plus tard
+    host: '0.0.0.0',
   },
 })
