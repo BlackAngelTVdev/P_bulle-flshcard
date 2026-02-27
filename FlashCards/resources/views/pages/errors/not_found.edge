@@ -1,8 +1,725 @@
-<h1>
-  404 - Page not found
-</h1>
-<p>
-  This template is rendered by the
-  <a href="http://docs.adonisjs.com/guides/exception-handling#status-pages">status pages feature</a>
-  of the global exception handler.
-</p>
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Flash Dam's</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary-violet: #8b5cf6;
+      --bg-main: #f5f3ff;
+      --bg-card: #ffffff;
+      --text-main: #1f2937;
+      --border: #e5e7eb;
+
+      --accent: #8b5cf6;
+      --accent-glow: rgba(139, 92, 246, 0.25);
+      --text-primary: #1f2937;
+      --text-muted: #6b7280;
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.2);
+      --orange: #f97316;
+      --surface: #ffffff;
+      --surface2: #f9f7ff;
+      --font-main: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--bg-main);
+      color: var(--text-primary);
+      font-family: var(--font-main);
+      overflow: hidden;
+    }
+
+    /* AMBIENT */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.18;
+    }
+
+    .blob.a {
+      width: 500px;
+      height: 500px;
+      background: var(--primary-violet);
+      top: -100px;
+      left: -100px;
+      animation: bdrift 12s ease-in-out infinite alternate;
+    }
+
+    .blob.b {
+      width: 400px;
+      height: 400px;
+      background: #c4b5fd;
+      bottom: -80px;
+      right: -60px;
+      animation: bdrift 9s ease-in-out infinite alternate-reverse;
+    }
+
+    .blob.c {
+      width: 300px;
+      height: 300px;
+      background: #fca5a5;
+      bottom: 20%;
+      left: 30%;
+      opacity: 0.1;
+      animation: bdrift 11s ease-in-out infinite alternate;
+    }
+
+    @keyframes bdrift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.15); }
+    }
+
+    /* LOGO */
+    .logo {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .pip {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      animation: pip 2s ease-in-out infinite;
+    }
+
+    @keyframes pip {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* PAGE */
+    .page {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 72px;
+      padding: 0 60px;
+    }
+
+    @media(max-width:860px) {
+      .page {
+        flex-direction: column;
+        gap: 32px;
+        padding: 60px 24px;
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+      }
+    }
+
+    /* RACK */
+    .scene {
+      position: relative;
+      width: 300px;
+      flex-shrink: 0;
+    }
+
+    .rack {
+      width: 280px;
+      margin: 0 auto;
+      background: linear-gradient(160deg, #ffffff 0%, #f9f7ff 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px 10px 6px 6px;
+      box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.08),
+        0 20px 60px rgba(139, 92, 246, 0.12),
+        0 4px 16px rgba(0, 0, 0, 0.08);
+      padding: 14px 16px 16px;
+      position: relative;
+    }
+
+    .rack::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 28px;
+      right: 28px;
+      height: 8px;
+      background: #ede9fe;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .ru {
+      border-radius: 5px;
+      margin-bottom: 7px;
+      overflow: hidden;
+    }
+
+    .ru:last-child { margin-bottom: 0; }
+
+    .ru-n {
+      height: 30px;
+      background: linear-gradient(90deg, #f5f3ff, #faf9ff);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 8px;
+    }
+
+    .ru-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      flex: 1;
+    }
+
+    .ru-leds { display: flex; gap: 4px; }
+
+    .led {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .l-g {
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+      animation: lgb 3s step-end infinite;
+    }
+
+    .l-o { background: #d1d5db; }
+
+    @keyframes lgb {
+      0%, 94%, 96%, 100% { opacity: 1; }
+      95% { opacity: 0.2; }
+    }
+
+    /* Dead RU */
+    .ru-dead {
+      height: 46px;
+      background: linear-gradient(90deg, #fff1f2, #fff5f5);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 10px;
+      position: relative;
+      box-shadow: inset 0 0 24px rgba(239, 68, 68, 0.05), 0 2px 8px rgba(239, 68, 68, 0.1);
+      animation: flicker 0.14s step-end infinite;
+    }
+
+    @keyframes flicker {
+      0%, 68%, 100% { background: linear-gradient(90deg, #fff1f2, #fff5f5); }
+      70% { background: linear-gradient(90deg, #ffe4e6, #fff1f2); }
+      71% { background: linear-gradient(90deg, #fff1f2, #fff5f5); }
+    }
+
+    .fire-icon {
+      font-size: 20px;
+      animation: shake 0.5s ease-in-out infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(-4deg); }
+      50%       { transform: rotate(4deg); }
+    }
+
+    .dead-info {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 1.5px;
+      color: var(--red);
+      text-transform: uppercase;
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    .led-r {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red), 0 0 16px var(--red-glow);
+      animation: lrb 0.18s step-end infinite;
+    }
+
+    @keyframes lrb {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0.1; }
+    }
+
+    .vent {
+      display: flex;
+      gap: 3px;
+      margin-top: 8px;
+      justify-content: center;
+    }
+
+    .vbar {
+      width: 16px;
+      height: 4px;
+      background: rgba(139, 92, 246, 0.08);
+      border-radius: 2px;
+    }
+
+    .heat {
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      height: 28px;
+      background: radial-gradient(ellipse, rgba(249, 115, 22, 0.2) 0%, transparent 70%);
+      animation: hpulse 1.3s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes hpulse {
+      from { opacity: 0.5; transform: translateX(-50%) scaleX(1); }
+      to   { opacity: 1;   transform: translateX(-50%) scaleX(1.2); }
+    }
+
+    /* SMOKE */
+    .smoke-box {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      right: 0;
+      height: 220px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .puff {
+      position: absolute;
+      bottom: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, transparent 70%);
+      animation: prise var(--d) ease-out infinite;
+      animation-delay: var(--dl);
+      opacity: 0;
+    }
+
+    @keyframes prise {
+      0%   { opacity: 0; transform: translate(0, 0) scale(0.3); }
+      18%  { opacity: 0.55; }
+      60%  { opacity: 0.25; transform: translate(var(--dx), -130px) scale(1.7); }
+      100% { opacity: 0; transform: translate(var(--dx2), -210px) scale(2.6); }
+    }
+
+    .puff:nth-child(1) { width: 65px; height: 65px; left: 36%; --d: 2.8s; --dl: 0s;   --dx: -12px; --dx2: -22px; }
+    .puff:nth-child(2) { width: 52px; height: 52px; left: 52%; --d: 3.2s; --dl: 0.5s; --dx:  16px; --dx2:  28px; }
+    .puff:nth-child(3) { width: 74px; height: 74px; left: 43%; --d: 2.5s; --dl: 1.0s; --dx:  -6px; --dx2: -18px; }
+    .puff:nth-child(4) { width: 46px; height: 46px; left: 60%; --d: 3.6s; --dl: 1.4s; --dx:  22px; --dx2:  36px; }
+    .puff:nth-child(5) { width: 58px; height: 58px; left: 30%; --d: 2.9s; --dl: 1.8s; --dx: -20px; --dx2: -32px; }
+    .puff:nth-child(6) { width: 42px; height: 42px; left: 66%; --d: 3.1s; --dl: 0.3s; --dx:   9px; --dx2:  14px; }
+    .puff:nth-child(7) { width: 68px; height: 68px; left: 46%; --d: 2.7s; --dl: 2.2s; --dx: -14px; --dx2: -26px; }
+    .puff:nth-child(8) { width: 50px; height: 50px; left: 57%; --d: 3.4s; --dl: 0.7s; --dx:  26px; --dx2:  40px; }
+
+    /* Sparks */
+    .sp {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 6px var(--orange);
+      animation: sfly var(--sd) ease-out infinite;
+      animation-delay: var(--sdl);
+      opacity: 0;
+    }
+
+    @keyframes sfly {
+      0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+    }
+
+    .sp:nth-child(1) { width: 4px; height: 4px; left: 38%; bottom: 8px;  --sd: 0.6s; --sdl: 0s;    --sx: -14px; --sy: -30px; }
+    .sp:nth-child(2) { width: 3px; height: 3px; left: 53%; bottom: 12px; --sd: 0.5s; --sdl: 0.22s; --sx:  11px; --sy: -24px; }
+    .sp:nth-child(3) { width: 5px; height: 5px; left: 45%; bottom: 6px;  --sd: 0.7s; --sdl: 0.44s; --sx:  -7px; --sy: -38px; background: var(--red); box-shadow: 0 0 6px var(--red); }
+    .sp:nth-child(4) { width: 3px; height: 3px; left: 61%; bottom: 10px; --sd: 0.55s;--sdl: 0.65s; --sx:  15px; --sy: -22px; }
+    .sp:nth-child(5) { width: 4px; height: 4px; left: 49%; bottom: 14px; --sd: 0.65s;--sdl: 0.9s;  --sx:  -4px; --sy: -32px; background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+
+    /* Cables */
+    .cables {
+      width: 280px;
+      margin: 0 auto;
+      height: 18px;
+    }
+
+    .cables svg { width: 100%; height: 100%; overflow: visible; }
+
+    /* CONTENT */
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 420px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      background: rgba(239, 68, 68, 0.07);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--red);
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .bdot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 8px var(--red);
+      animation: pip 0.9s step-end infinite;
+    }
+
+    .bignum {
+      font-size: clamp(88px, 13vw, 128px);
+      font-weight: 700;
+      line-height: 0.85;
+      letter-spacing: -6px;
+      color: var(--text-primary);
+      position: relative;
+      display: inline-block;
+    }
+
+    .bignum::after {
+      content: '404';
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      color: var(--primary-violet);
+      opacity: 0.1;
+      z-index: -1;
+      animation: ng 6s ease-in-out infinite;
+    }
+
+    @keyframes ng {
+      0%, 87%, 100% { transform: none; opacity: 0.1; }
+      89% { transform: translateX(-8px); opacity: 0.22; }
+      92% { transform: translateX(5px);  opacity: 0.15; }
+      94% { transform: none; opacity: 0.1; }
+    }
+
+    .headline {
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+      line-height: 1.5;
+    }
+
+    .sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      opacity: 0.7;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* Log */
+    .log {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.07);
+    }
+
+    .log::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary-violet), transparent);
+      opacity: 0.4;
+    }
+
+    .log-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      background: #faf9ff;
+    }
+
+    .wd { width: 8px; height: 8px; border-radius: 50%; }
+    .wd-r { background: #ff5f57; }
+    .wd-y { background: #febc2e; }
+    .wd-g { background: #28c840; }
+
+    .log-tag {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+
+    .log-body { padding: 12px 16px 14px; }
+
+    .ll {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      line-height: 2;
+      opacity: 0;
+      animation: llin 0.2s ease-out forwards;
+      white-space: nowrap;
+    }
+
+    .ll:nth-child(1) { animation-delay: 0.3s; }
+    .ll:nth-child(2) { animation-delay: 0.65s; }
+    .ll:nth-child(3) { animation-delay: 1.0s; }
+    .ll:nth-child(4) { animation-delay: 1.35s; }
+    .ll:nth-child(5) { animation-delay: 1.7s; }
+    .ll:nth-child(6) { animation-delay: 2.05s; }
+
+    @keyframes llin {
+      from { opacity: 0; transform: translateX(-4px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .ok { color: #16a34a; }
+    .wn { color: #d97706; }
+    .er { color: #dc2626; }
+    .ac { color: #7c3aed; }
+    .dm { color: #9ca3af; }
+
+    .cur {
+      display: inline-block;
+      width: 6px;
+      height: 11px;
+      background: var(--primary-violet);
+      vertical-align: middle;
+      margin-left: 2px;
+      border-radius: 1px;
+      animation: blink 0.9s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Button */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 10px;
+      letter-spacing: 0.3px;
+      width: fit-content;
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3), 0 8px 28px rgba(139, 92, 246, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.5), 0 16px 40px rgba(139, 92, 246, 0.4);
+      background: #7c3aed;
+    }
+
+    .barrow { transition: transform 0.15s; font-size: 16px; }
+    .btn:hover .barrow { transform: translateX(-3px); }
+  </style>
+</head>
+
+<body>
+
+  <div class="ambient">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <div class="logo">
+    <div class="pip"></div>Flash Dam's
+  </div>
+
+  <div class="page">
+
+    <!-- SERVER SCENE -->
+    <div class="scene">
+      <div style="position:relative;width:280px;margin:0 auto;">
+
+        <div class="smoke-box">
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="puff"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+          <div class="sp"></div>
+        </div>
+
+        <div class="rack">
+          <div class="ru">
+            <div class="ru-n"><span class="ru-label">SRV-01 / NGINX</span>
+              <div class="ru-leds">
+                <div class="led l-g"></div>
+                <div class="led l-o"></div>
+              </div>
+            </div>
+          </div>
+          <div class="ru">
+            <div class="ru-n"><span class="ru-label">SRV-02 / REDIS</span>
+              <div class="ru-leds">
+                <div class="led l-g"></div>
+                <div class="led l-o"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ru">
+            <div class="ru-dead">
+              <div class="fire-icon">🔥</div>
+              <div class="dead-info">
+                SRV-03 — FAULT<br>
+                <span style="font-size:7px;opacity:0.6;">PAGE NOT FOUND [0x404]</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:3px;">
+                <div class="led-r"></div>
+                <div class="led-r" style="animation-delay:0.09s;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ru">
+            <div class="ru-n" style="opacity:0.45;"><span class="ru-label">SRV-04 / DATABASE</span>
+              <div class="ru-leds">
+                <div class="led l-o"></div>
+                <div class="led l-o"></div>
+              </div>
+            </div>
+          </div>
+          <div class="ru">
+            <div class="ru-n" style="opacity:0.25;"><span class="ru-label">SRV-05 / BACKUP</span>
+              <div class="ru-leds">
+                <div class="led l-o"></div>
+                <div class="led l-o"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vent">
+            <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+            <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+            <div class="vbar"></div><div class="vbar"></div><div class="vbar"></div>
+            <div class="vbar"></div><div class="vbar"></div>
+          </div>
+
+          <div class="heat"></div>
+        </div>
+
+        <div class="cables">
+          <svg viewBox="0 0 280 18" fill="none">
+            <path d="M20 2 Q60 16 100 8 Q140 0 180 14 Q220 18 260 6" stroke="rgba(139,92,246,0.3)" stroke-width="2"/>
+            <path d="M10 10 Q50 2 90 16 Q130 18 170 8 Q210 0 260 14" stroke="rgba(139,92,246,0.1)" stroke-width="2"/>
+            <path d="M30 16 Q80 3 120 15 Q160 18 200 6 Q240 0 272 12" stroke="rgba(239,68,68,0.2)" stroke-width="1.5"/>
+            <path d="M5 6 Q45 18 85 10 Q125 2 165 16 Q205 18 260 9" stroke="rgba(139,92,246,0.06)" stroke-width="2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <div class="badge">
+        <div class="bdot"></div>Incident actif
+      </div>
+      <div class="bignum">404</div>
+      <div class="headline">Page introuvable</div>
+      <div class="sub">Le serveur SRV-03 a rendu l'âme.<br>La ressource demandée est partie en fumée.</div>
+
+      <div class="log">
+        <div class="log-bar">
+          <div class="wd wd-r"></div>
+          <div class="wd wd-y"></div>
+          <div class="wd wd-g"></div>
+          <span class="log-tag">INCIDENT LOG — SRV-03</span>
+        </div>
+        <div class="log-body">
+          <div class="ll"><span class="dm">00:01</span>&nbsp; <span class="ok">BOOT</span>&nbsp;&nbsp; Flash-Dam's Node v4.1 — OK</div>
+          <div class="ll"><span class="dm">00:18</span>&nbsp; <span class="wn">WARN</span>&nbsp;&nbsp; Température CPU anormale [94°C]</div>
+          <div class="ll"><span class="dm">00:18</span>&nbsp; <span class="wn">WARN</span>&nbsp;&nbsp; Route <span class="ac">GET /cette/page</span> inconnue</div>
+          <div class="ll"><span class="dm">00:19</span>&nbsp; <span class="er">ERROR</span>&nbsp; Ressource introuvable [HTTP 404]</div>
+          <div class="ll"><span class="dm">00:19</span>&nbsp; <span class="er">CRIT</span>&nbsp;&nbsp; Surchauffe — ventilateur HS</div>
+          <div class="ll"><span class="dm">00:19</span>&nbsp; <span class="dm">HALT</span>&nbsp;&nbsp; Attente intervention technicien<span class="cur"></span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>

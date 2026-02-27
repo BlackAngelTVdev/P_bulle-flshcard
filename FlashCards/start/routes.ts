@@ -59,3 +59,6 @@ router.group(() => {
   }).prefix('/cards')
 
 }).use(middleware.auth())
+router.any('*', ({ view }) => {
+  return view.render('pages/errors/not_found')
+}).as('not_found')
