@@ -4,42 +4,29 @@ import fs from 'node:fs/promises'
 import Groq from 'groq-sdk'
 
 export default class AIService {
+
+  // -------------------------------------------------------
+  // Traite UNE image → retourne ses flashcards
+  // -------------------------------------------------------
   async generateFromImage(image: MultipartFile): Promise<{ question: string; answer: string }[]> {
-
-    // --- Vérification de la clé API ---
     const apiKey = env.get('GROQ_API_KEY')
-    if (!apiKey) {
-      console.error('❌ [AIService] GROQ_API_KEY manquante dans le fichier .env !')
-      throw new Error('Clé API Groq non configurée.')
-    }
+    if (!apiKey) throw new Error('Clé API Groq non configurée.')
+    if (!image.tmpPath) throw new Error('Image manquante ou upload échoué.')
 
-
-
-    if (!image.tmpPath) {
-      console.error('❌ [AIService] tmpPath manquant — fichier non uploadé correctement.')
-      throw new Error('Image manquante ou upload échoué.')
-    }
-
-    // --- Lecture et encodage base64 ---
+    console.log(`📷 [AIService] Traitement image: ${image.clientName} (${image.size} bytes)`)
 
     let base64Image: string
     try {
       const imageData = await fs.readFile(image.tmpPath)
       base64Image = imageData.toString('base64')
-
     } catch (readError) {
-      console.error('❌ [AIService] Impossible de lire le fichier image:', readError)
       throw new Error(`Lecture image échouée: ${readError.message}`)
     }
 
     const contentType = image.headers['content-type'] || 'image/jpeg'
     const imageUrl = `data:${contentType};base64,${base64Image}`
-
-
-    // --- Initialisation Groq ---
     const groq = new Groq({ apiKey })
     const model = 'meta-llama/llama-4-maverick-17b-128e-instruct'
-
 
     const prompt = `Tu es un assistant pédagogique expert en création de flashcards. Analyse cette image et génère des flashcards adaptées à son contenu.
 
@@ -60,122 +47,121 @@ DÉTECTE AUTOMATIQUEMENT le type de contenu :
    → Question = nom/contexte, Réponse = formule exacte
 
 RÈGLES ABSOLUES :
-- Réponds UNIQUEMENT avec du JSON brut, rien d\'autre, zéro texte autour
+- Réponds UNIQUEMENT avec du JSON brut, rien d'autre, zéro texte autour
 - Interdit : blocs markdown, backticks, texte avant/après
 - Format strict : {"flashcards": [{"question": "...", "answer": "..."}]}
 - Couvre ABSOLUMENT TOUS les éléments visibles (chaque ligne du tableau !)
-- Maximum 40 flashcards
-- Ne saute aucune ligne d\'un tableau`
+- Maximum 40 flashcards par image
+- Ne saute aucune ligne d'un tableau`
 
     let rawContent: string | null = null
 
     try {
-
       const startTime = Date.now()
-
       const chatCompletion = await groq.chat.completions.create({
         model,
         messages: [
           {
             role: 'user',
             content: [
-              {
-                type: 'text',
-                text: prompt,
-              },
-              {
-                type: 'image_url',
-                image_url: {
-                  url: imageUrl,
-                },
-              },
+              { type: 'text', text: prompt },
+              { type: 'image_url', image_url: { url: imageUrl } },
             ],
           },
         ],
         temperature: 0.1,
         max_tokens: 2048,
       })
-
-      const elapsed = Date.now() - startTime
-
-
+      console.log(`✅ [AIService] "${image.clientName}" traitée en ${Date.now() - startTime}ms`)
       rawContent = chatCompletion.choices[0]?.message?.content ?? null
-
-
+      console.log(`📝 [AIService] Réponse brute (${image.clientName}):\n---\n${rawContent}\n---`)
     } catch (groqError) {
-
-      throw new Error(`Erreur API Groq: ${groqError.message}`)
+      throw new Error(`Erreur API Groq (${image.clientName}): ${groqError.message}`)
     }
 
-    if (!rawContent) {
-      console.error('❌ [AIService] La réponse de Groq est vide.')
-      throw new Error('Réponse vide reçue de Groq.')
-    }
+    if (!rawContent) throw new Error(`Réponse vide pour l'image ${image.clientName}`)
 
-    // --- Parsing JSON ---
-    console.log('\n🔍 [AIService] Parsing de la réponse JSON...')
     let parsed: any
-
     try {
-      // Nettoyage au cas où le modèle entoure le JSON de backticks markdown
       const cleaned = rawContent
         .replace(/```json\s*/gi, '')
         .replace(/```\s*/g, '')
         .trim()
-
-      if (cleaned !== rawContent) {
-
-      }
-
       parsed = JSON.parse(cleaned)
-
     } catch (parseError) {
-      console.error('❌ [AIService] Échec du parsing JSON:', parseError.message)
-      console.error('Contenu non parsable:', rawContent)
-      throw new Error(`Réponse Groq non valide (JSON invalide): ${parseError.message}`)
+      console.error(`❌ [AIService] JSON invalide pour ${image.clientName}:`, rawContent)
+      throw new Error(`JSON invalide pour ${image.clientName}: ${parseError.message}`)
     }
 
-    // --- Extraction du tableau de cartes ---
     let cards: { question: string; answer: string }[] = []
-
     if (Array.isArray(parsed)) {
-
       cards = parsed
     } else if (Array.isArray(parsed.flashcards)) {
-
       cards = parsed.flashcards
     } else if (Array.isArray(parsed.cards)) {
-
       cards = parsed.cards
     } else {
-      // Dernier recours : on cherche le premier tableau dans l'objet
-      const firstArray = Object.entries(parsed).find(([key, val]) => Array.isArray(val))
+      const firstArray = Object.entries(parsed).find(([_, val]) => Array.isArray(val))
       if (firstArray) {
-        console.warn(`⚠️ [AIService] Tableau trouvé sous une clé inattendue: "${firstArray[0]}"`)
         cards = firstArray[1] as any[]
       } else {
-        console.error('❌ [AIService] Aucun tableau de cartes trouvé dans la réponse.')
-        console.error('Objet parsé:', JSON.stringify(parsed, null, 2))
-        throw new Error('Format de réponse Groq inattendu — aucun tableau trouvé.')
+        throw new Error(`Format inattendu pour ${image.clientName}`)
       }
     }
 
-    // --- Validation des cartes ---
-    const validCards = cards.filter((card, index) => {
-      const isValid = card && typeof card.question === 'string' && typeof card.answer === 'string'
-        && card.question.trim() !== '' && card.answer.trim() !== ''
-      if (!isValid) {
-        console.warn(`⚠️ [AIService] Carte #${index} invalide ignorée:`, card)
+    return cards.filter(
+      (card) =>
+        card &&
+        typeof card.question === 'string' &&
+        typeof card.answer === 'string' &&
+        card.question.trim() !== '' &&
+        card.answer.trim() !== ''
+    )
+  }
+
+  // -------------------------------------------------------
+  // Traite PLUSIEURS images en parallèle → fusionne tout
+  // -------------------------------------------------------
+  async generateFromImages(
+    images: MultipartFile[]
+  ): Promise<{ cards: { question: string; answer: string }[]; errors: string[] }> {
+    console.log(`\n🤖 [AIService] Traitement de ${images.length} image(s) en parallèle...`)
+
+    // Promise.allSettled = si une image échoue, les autres continuent quand même
+    const results = await Promise.allSettled(
+      images.map((image) => this.generateFromImage(image))
+    )
+
+    const allCards: { question: string; answer: string }[] = []
+    const errors: string[] = []
+
+    results.forEach((result, index) => {
+      const imageName = images[index].clientName
+      if (result.status === 'fulfilled') {
+        console.log(`✅ Image #${index + 1} "${imageName}" → ${result.value.length} cartes`)
+        allCards.push(...result.value)
+      } else {
+        const msg = `"${imageName}" : ${result.reason?.message ?? 'erreur inconnue'}`
+        console.error(`❌ Image #${index + 1} échouée — ${msg}`)
+        errors.push(msg)
       }
-      return isValid
     })
 
-
-    validCards.forEach((card, i) => {
-      console.log(`   [${i + 1}] Q: ${card.question.substring(0, 60)}...`)
+    // Dédoublonnage : retire les cartes avec la même question
+    const seen = new Set<string>()
+    const cards = allCards.filter((card) => {
+      const key = card.question.toLowerCase().trim()
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
     })
-    console.log('========================================\n')
 
-    return validCards
+    console.log(`\n🎴 [AIService] Résumé:`)
+    console.log(`   - Images OK        : ${results.length - errors.length}/${images.length}`)
+    console.log(`   - Cartes brutes    : ${allCards.length}`)
+    console.log(`   - Cartes uniques   : ${cards.length}`)
+    console.log(`   - Erreurs          : ${errors.length}`)
+
+    return { cards, errors }
   }
 }

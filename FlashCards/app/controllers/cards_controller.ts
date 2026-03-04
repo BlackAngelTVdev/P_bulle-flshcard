@@ -10,6 +10,7 @@ export default class CardsController {
   // -------------------------------------------------------
   async create({ view, request }: HttpContext) {
     const deckId = request.input('deckId')
+    console.log(`\n📋 [CardsController.create] Affichage du formulaire — deckId: ${deckId}`)
     return view.render('pages/cards/create', { deckId })
   }
 
@@ -17,20 +18,43 @@ export default class CardsController {
   // POST /cards
   // -------------------------------------------------------
   async store({ request, auth, response, session }: HttpContext) {
-    // --- 1. Récupération des données de base ---
+    console.log('\n========================================')
+    console.log('💾 [CardsController.store] Démarrage')
+    console.log('========================================')
+
     const deckId = request.input('deckId')
-    const courseImage = request.file('courseImage', {
+
+    // Récupération de PLUSIEURS images (input name="courseImages[]")
+    const courseImages = request.files('courseImages', {
       size: '5mb',
       extnames: ['jpg', 'png', 'jpeg', 'webp'],
     })
 
-    // --- 2. Vérification du deckId ---
+    // Rétrocompatibilité : on accepte aussi l'ancien input "courseImage" (une seule)
+    const singleImage = request.file('courseImage', {
+      size: '5mb',
+      extnames: ['jpg', 'png', 'jpeg', 'webp'],
+    })
+
+    // On fusionne : plusieurs + éventuelle image unique
+    const allImages = [
+      ...courseImages,
+      ...(singleImage ? [singleImage] : []),
+    ].filter((img) => img.isValid)
+
+    console.log(`📥 [CardsController.store] Données reçues:`)
+    console.log(`   - deckId         : ${deckId}`)
+    console.log(`   - question       : ${request.input('question') || '(vide)'}`)
+    console.log(`   - images valides : ${allImages.length}`)
+    allImages.forEach((img, i) => console.log(`     [${i + 1}] ${img.clientName} (${img.size} bytes)`))
+
+    // --- Vérification deckId ---
     if (!deckId) {
       session.flash('error', 'Deck non spécifié.')
       return response.redirect().back()
     }
 
-    // --- 3. Vérification que le deck appartient à l'utilisateur ---
+    // --- Vérification propriété du deck ---
     const deck = await Deck.query()
       .where('id', deckId)
       .where('userId', auth.user!.id)
@@ -40,56 +64,74 @@ export default class CardsController {
       session.flash('error', 'Accès refusé ou deck inexistant.')
       return response.redirect().toRoute('decks.index')
     }
+    console.log(`✅ [CardsController.store] Deck #${deck.id} "${deck.name}" validé.`)
 
     // -------------------------------------------------------
-    // CAS IA : Une image a été fournie
+    // CAS IA : Au moins une image valide
     // -------------------------------------------------------
-    if (courseImage && courseImage.isValid) {
+    if (allImages.length > 0) {
+      console.log(`\n🤖 [CardsController.store] Mode IA — ${allImages.length} image(s) à traiter...`)
+
       try {
         const aiService = new AIService()
-        const rawCards = await aiService.generateFromImage(courseImage)
+        const { cards: rawCards, errors } = await aiService.generateFromImages(allImages)
+
+        // Si certaines images ont échoué on le signale mais on continue avec ce qu'on a
+        if (errors.length > 0) {
+          console.warn(`⚠️ ${errors.length} image(s) ont échoué:`, errors)
+        }
 
         if (rawCards.length === 0) {
-          session.flash('error', "L'IA n'a pas pu extraire de contenu de cette image. Essaie avec une image plus lisible.")
+          session.flash(
+            'error',
+            errors.length > 0
+              ? `Aucune carte générée. Erreurs : ${errors.join(' | ')}`
+              : "L'IA n'a pas pu extraire de contenu. Essaie avec des images plus lisibles."
+          )
           return response.redirect().back()
         }
 
-        // Préparation et insertion en base
-        const cardsToCreate = rawCards.map((card: { question: string; answer: string }) => ({
+        const cardsToCreate = rawCards.map((card) => ({
           question: card.question,
           answer: card.answer,
           deckId: deck.id,
         }))
 
+        console.log(`💾 [CardsController.store] Insertion de ${cardsToCreate.length} cartes...`)
         await Card.createMany(cardsToCreate)
 
-        session.flash('success', `✨ ${cardsToCreate.length} cartes générées par l'IA et ajoutées au deck !`)
-        return response.redirect().toRoute('decks.show', { id: deck.id })
+        // Message de succès avec info sur les erreurs éventuelles
+        const successMsg = `✨ ${cardsToCreate.length} cartes générées depuis ${allImages.length} image(s) !`
+        const warnMsg = errors.length > 0 ? ` (${errors.length} image(s) ignorée(s))` : ''
+        session.flash('success', successMsg + warnMsg)
 
+        return response.redirect().toRoute('decks.show', { id: deck.id })
       } catch (error) {
+        console.error('\n❌ [CardsController.store] Erreur IA:', error.message)
         session.flash('error', `Erreur IA : ${error.message}`)
         return response.redirect().back()
       }
     }
 
     // -------------------------------------------------------
-    // CAS MANUEL : Pas d'image, on valide les champs
+    // CAS MANUEL : Pas d'image
     // -------------------------------------------------------
+    console.log('\n✍️  [CardsController.store] Mode manuel...')
 
-    // Image invalide (présente mais corrompue ou mauvais format)
-    if (courseImage && !courseImage.isValid) {
-      session.flash('error', `Image invalide : ${courseImage.errors.map((e) => e.message).join(', ')}`)
+    // Images présentes mais toutes invalides
+    const invalidImages = request.files('courseImages').filter((img) => !img.isValid)
+    if (invalidImages.length > 0) {
+      const msgs = invalidImages.flatMap((img) => img.errors.map((e) => e.message))
+      session.flash('error', `Images invalides : ${msgs.join(', ')}`)
       return response.redirect().back()
     }
 
     try {
       const payload = await request.validateUsing(createCardValidator)
-
       await Card.create({ ...payload, deckId: deck.id })
-
+      console.log(`💾 [CardsController.store] Carte manuelle créée dans deck #${deck.id}.`)
       session.flash('success', 'Carte créée avec succès !')
       return response.redirect().toRoute('decks.show', { id: deck.id })
-
     } catch (error) {
       session.flash('error', 'Veuillez remplir les champs Question et Réponse, ou fournir une image.')
       return response.redirect().back()
@@ -100,11 +142,7 @@ export default class CardsController {
   // GET /cards/:id
   // -------------------------------------------------------
   async show({ params, view }: HttpContext) {
-    const card = await Card.query()
-      .where('id', params.id)
-      .preload('deck')
-      .firstOrFail()
-
+    const card = await Card.query().where('id', params.id).preload('deck').firstOrFail()
     return view.render('pages/cards/show', { card })
   }
 
@@ -122,10 +160,8 @@ export default class CardsController {
   async update({ params, request, response, session }: HttpContext) {
     const card = await Card.findOrFail(params.id)
     const payload = await request.validateUsing(updateCardValidator)
-
     card.merge(payload)
     await card.save()
-
     session.flash('success', 'La carte a été mise à jour !')
     return response.redirect().toRoute('decks.show', { id: card.deckId })
   }
@@ -136,9 +172,7 @@ export default class CardsController {
   async destroy({ params, response, session }: HttpContext) {
     const card = await Card.findOrFail(params.id)
     const deckId = card.deckId
-
     await card.delete()
-
     session.flash('success', 'La carte a été supprimée.')
     return response.redirect().toRoute('decks.show', { id: deckId })
   }
