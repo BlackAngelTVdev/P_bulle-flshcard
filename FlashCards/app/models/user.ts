@@ -34,10 +34,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime()
   declare lastAiRequestAt: DateTime | null
 
-  // -------------------------------------------------------
-  // Vérifie si l'utilisateur peut utiliser l'IA aujourd'hui
-  // Les admins peuvent toujours utiliser l'IA
-  // -------------------------------------------------------
+
   canUseAiToday(): boolean {
     if (this.isAdmin) return true
     if (!this.lastAiRequestAt) return true
@@ -49,7 +46,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
     return !lastUse.hasSame(now, 'day')
   }
 
-  // Retourne l'heure de réinitialisation (minuit prochain)
   aiResetTime(): DateTime {
     return DateTime.local().endOf('day')
   }
