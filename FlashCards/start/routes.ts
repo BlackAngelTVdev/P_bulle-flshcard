@@ -20,7 +20,7 @@ router.group(() => {
 router.group(() => {
   router.get('/logout', [AuthController, 'logout']).as('auth.logout')
 
-  // Section Decks
+
   // Section Decks
   router.group(() => {
     // Consultation et Jeu (Ouvert à tous les connectés)
@@ -59,6 +59,7 @@ router.group(() => {
   }).prefix('/cards')
 
 }).use(middleware.auth())
+
 router.any('*', ({ view }) => {
   return view.render('pages/errors/not_found')
 }).as('not_found')

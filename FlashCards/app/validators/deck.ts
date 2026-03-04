@@ -1,7 +1,8 @@
 import vine from '@vinejs/vine'
+import { frMessages } from '#validators/messages' // On utilise ton fichier centralisé
 
 /**
- * Validateur pour le Store
+ * --- VALIDATEURS DECKS ---
  */
 export const createDeckValidator = vine.compile(
   vine.object({
@@ -9,10 +10,7 @@ export const createDeckValidator = vine.compile(
     description: vine.string().trim().minLength(10),
   })
 )
-
-
-
-
+createDeckValidator.messagesProvider = frMessages
 
 export const updateDeckValidator = vine.compile(
   vine.object({
@@ -27,3 +25,4 @@ export const updateDeckValidator = vine.compile(
     description: vine.string().trim().minLength(10),
   })
 )
+updateDeckValidator.messagesProvider = frMessages
