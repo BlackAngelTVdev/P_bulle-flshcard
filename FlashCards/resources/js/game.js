@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let lives = 3;
     let timeLeft = 10;
     let timerInterval;
-    let isTransitioning = false; // Sécurité anti-spam
+    let isTransitioning = false;
 
     // 2. Éléments DOM
     const cardInner = document.getElementById('card-inner');
