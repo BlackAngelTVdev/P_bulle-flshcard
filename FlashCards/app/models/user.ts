@@ -46,6 +46,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     return !lastUse.hasSame(now, 'day')
   }
 
+  // Retourne l'heure de réinitialisation (minuit prochain)
   aiResetTime(): DateTime {
     return DateTime.local().endOf('day')
   }
