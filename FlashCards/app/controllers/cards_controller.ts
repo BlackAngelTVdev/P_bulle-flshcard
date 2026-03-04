@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { createCardValidator, updateCardValidator } from '#validators/card'
 import AIService from '#services/ai_service'
 import Deck from '#models/deck'
+import { DateTime } from 'luxon'
 
 export default class CardsController {
   // -------------------------------------------------------
@@ -10,7 +11,7 @@ export default class CardsController {
   // -------------------------------------------------------
   async create({ view, request }: HttpContext) {
     const deckId = request.input('deckId')
-    console.log(`\n📋 [CardsController.create] Affichage du formulaire — deckId: ${deckId}`)
+
     return view.render('pages/cards/create', { deckId })
   }
 
@@ -18,9 +19,7 @@ export default class CardsController {
   // POST /cards
   // -------------------------------------------------------
   async store({ request, auth, response, session }: HttpContext) {
-    console.log('\n========================================')
-    console.log('💾 [CardsController.store] Démarrage')
-    console.log('========================================')
+
 
     const deckId = request.input('deckId')
 
@@ -42,10 +41,7 @@ export default class CardsController {
       ...(singleImage ? [singleImage] : []),
     ].filter((img) => img.isValid)
 
-    console.log(`📥 [CardsController.store] Données reçues:`)
-    console.log(`   - deckId         : ${deckId}`)
-    console.log(`   - question       : ${request.input('question') || '(vide)'}`)
-    console.log(`   - images valides : ${allImages.length}`)
+
     allImages.forEach((img, i) => console.log(`     [${i + 1}] ${img.clientName} (${img.size} bytes)`))
 
     // --- Vérification deckId ---
@@ -64,19 +60,30 @@ export default class CardsController {
       session.flash('error', 'Accès refusé ou deck inexistant.')
       return response.redirect().toRoute('decks.index')
     }
-    console.log(`✅ [CardsController.store] Deck #${deck.id} "${deck.name}" validé.`)
+
 
     // -------------------------------------------------------
     // CAS IA : Au moins une image valide
     // -------------------------------------------------------
     if (allImages.length > 0) {
-      console.log(`\n🤖 [CardsController.store] Mode IA — ${allImages.length} image(s) à traiter...`)
+
+
+      // --- Vérification limite quotidienne ---
+      const user = auth.user!
+      if (!user.canUseAiToday()) {
+        const resetTime = user.aiResetTime().toFormat('HH:mm')
+        console.warn(`⛔ [CardsController.store] Limite IA atteinte pour userId #${user.id}`)
+        session.flash(
+          'error',
+          `Tu as déjà utilisé l'IA aujourd'hui. Reviens après minuit (réinitialisation à ${resetTime}).`
+        )
+        return response.redirect().back()
+      }
 
       try {
         const aiService = new AIService()
         const { cards: rawCards, errors } = await aiService.generateFromImages(allImages)
 
-        // Si certaines images ont échoué on le signale mais on continue avec ce qu'on a
         if (errors.length > 0) {
           console.warn(`⚠️ ${errors.length} image(s) ont échoué:`, errors)
         }
@@ -97,10 +104,18 @@ export default class CardsController {
           deckId: deck.id,
         }))
 
-        console.log(`💾 [CardsController.store] Insertion de ${cardsToCreate.length} cartes...`)
+
         await Card.createMany(cardsToCreate)
 
-        // Message de succès avec info sur les erreurs éventuelles
+        // Mise à jour du timestamp IA (sauf admin — on ne traque pas leur usage)
+        if (!user.isAdmin) {
+          user.lastAiRequestAt = DateTime.now()
+          await user.save()
+          console.log(`🕐 [CardsController.store] lastAiRequestAt mis à jour pour userId #${user.id}`)
+        } else {
+          console.log(`👑 [CardsController.store] Admin — pas de limite appliquée.`)
+        }
+
         const successMsg = `✨ ${cardsToCreate.length} cartes générées depuis ${allImages.length} image(s) !`
         const warnMsg = errors.length > 0 ? ` (${errors.length} image(s) ignorée(s))` : ''
         session.flash('success', successMsg + warnMsg)
@@ -116,7 +131,6 @@ export default class CardsController {
     // -------------------------------------------------------
     // CAS MANUEL : Pas d'image
     // -------------------------------------------------------
-    console.log('\n✍️  [CardsController.store] Mode manuel...')
 
     // Images présentes mais toutes invalides
     const invalidImages = request.files('courseImages').filter((img) => !img.isValid)
@@ -129,7 +143,7 @@ export default class CardsController {
     try {
       const payload = await request.validateUsing(createCardValidator)
       await Card.create({ ...payload, deckId: deck.id })
-      console.log(`💾 [CardsController.store] Carte manuelle créée dans deck #${deck.id}.`)
+
       session.flash('success', 'Carte créée avec succès !')
       return response.redirect().toRoute('decks.show', { id: deck.id })
     } catch (error) {

@@ -22,11 +22,35 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ serializeAs: null })
   declare password: string
 
+  @column()
+  declare isAdmin: boolean
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+
   @column.dateTime()
   declare lastAiRequestAt: DateTime | null
+
+  // -------------------------------------------------------
+  // Vérifie si l'utilisateur peut utiliser l'IA aujourd'hui
+  // Les admins peuvent toujours utiliser l'IA
+  // -------------------------------------------------------
+  canUseAiToday(): boolean {
+    if (this.isAdmin) return true
+    if (!this.lastAiRequestAt) return true
+
+    const lastUse = this.lastAiRequestAt.toLocal()
+    const now = DateTime.local()
+
+    // Même jour calendaire = bloqué
+    return !lastUse.hasSame(now, 'day')
+  }
+
+  // Retourne l'heure de réinitialisation (minuit prochain)
+  aiResetTime(): DateTime {
+    return DateTime.local().endOf('day')
+  }
 }

@@ -8,7 +8,7 @@
 
         {{-- ===== SECTION MANUELLE ===== --}}
         <div class="form-group">
-            <label for="question">Question (Manuel)</label>
+            <label for="question">Question</label>
             <input type="text" id="question" name="question" value="{{ old('question') || '' }}">
             @inputError('question')
                 <p class="error-message">{{ $messages.join(', ') }}</p>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="form-group">
-            <label for="answer">Réponse (Manuel)</label>
+            <label for="answer">Réponse</label>
             <textarea id="answer" name="answer">{{ old('answer') || '' }}</textarea>
             @inputError('answer')
                 <p class="error-message">{{ $messages.join(', ') }}</p>
@@ -25,35 +25,46 @@
 
         <div style="margin: 20px 0; text-align: center; font-weight: bold; color: #999;">— OU —</div>
 
-        {{-- ===== SECTION IA MULTI-IMAGES ===== --}}
-        <div class="form-group ai-section">
-            <label>📸 Générer via photos de cours</label>
-            <p style="font-size: 0.75rem; color: #666; margin-bottom: 10px;">
-                Tu peux sélectionner <strong>plusieurs images</strong> en même temps (Ctrl+clic ou Maj+clic).<br>
-                L'IA analysera chaque image et fusionnera toutes les flashcards.
-            </p>
+        {{-- ===== SECTION IA : visible selon quota ===== --}}
+        @if(auth.user.isAdmin || auth.user.canUseAiToday())
 
-            {{-- Input multiple — name="courseImages[]" obligatoire pour AdonisJS --}}
-            <input
-                type="file"
-                name="courseImages[]"
-                accept="image/*"
-                id="imageInput"
-                multiple
-            >
+            @if(auth.user.isAdmin)
+                <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:0.7rem;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:10px;">
+                    👑 Mode Admin — utilisation illimitée
+                </div>
+            @end
 
-            {{-- Zone de prévisualisation --}}
-            <div id="previewContainer" style="display:none; margin-top: 12px;">
-                <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 6px;">
-                    Images sélectionnées : <span id="imageCount">0</span>
+            <div class="form-group ai-section">
+                <label>📸 Générer via photos de cours</label>
+                <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">
+                    Tu peux sélectionner <strong>plusieurs images</strong> en même temps (Ctrl+clic ou Maj+clic).<br>
+                    L'IA analysera chaque image et fusionnera toutes les flashcards.
                 </p>
-                <div id="previewGrid" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                <input type="file" name="courseImages[]" accept="image/*" id="imageInput" multiple>
+                <div id="previewContainer" style="display:none;margin-top:12px;">
+                    <p style="font-size:0.8rem;font-weight:bold;margin-bottom:6px;">
+                        Images sélectionnées : <span id="imageCount">0</span>
+                    </p>
+                    <div id="previewGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                </div>
             </div>
-        </div>
 
-        <button type="submit" class="btn-submit" id="submitBtn">
-            Enregistrer la carte
-        </button>
+        @else
+
+            <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+                <span style="font-size:2rem;">⏳</span>
+                <div>
+                    <p style="margin:0;font-weight:bold;color:#795548;">Génération IA indisponible aujourd'hui</p>
+                    <p style="margin:4px 0 0;font-size:0.8rem;color:#8d6e63;">
+                        Tu as déjà utilisé l'IA aujourd'hui. Le quota se réinitialise à <strong>minuit</strong>.<br>
+                        En attendant, tu peux créer des cartes manuellement ci-dessus.
+                    </p>
+                </div>
+            </div>
+
+        @end
+
+        <button type="submit" class="btn-submit" id="submitBtn">Enregistrer la carte</button>
     </form>
 </main>
 
@@ -61,52 +72,43 @@
     const form = document.getElementById('cardForm')
     const btn = document.getElementById('submitBtn')
     const fileInput = document.getElementById('imageInput')
-    const previewContainer = document.getElementById('previewContainer')
-    const previewGrid = document.getElementById('previewGrid')
-    const imageCount = document.getElementById('imageCount')
 
-    // --- Prévisualisation des images sélectionnées ---
-    fileInput.addEventListener('change', () => {
-        const files = Array.from(fileInput.files)
-        previewGrid.innerHTML = ''
+    if (fileInput) {
+        const previewContainer = document.getElementById('previewContainer')
+        const previewGrid = document.getElementById('previewGrid')
+        const imageCount = document.getElementById('imageCount')
 
-        if (files.length === 0) {
-            previewContainer.style.display = 'none'
-            return
-        }
-
-        previewContainer.style.display = 'block'
-        imageCount.textContent = files.length
-
-        files.forEach((file, index) => {
-            const reader = new FileReader()
-            reader.onload = (e) => {
-                const wrapper = document.createElement('div')
-                wrapper.style.cssText = 'position:relative; display:inline-block;'
-
-                const img = document.createElement('img')
-                img.src = e.target.result
-                img.style.cssText = 'width:80px; height:80px; object-fit:cover; border-radius:6px; border:2px solid #ddd;'
-                img.title = file.name
-
-                const label = document.createElement('div')
-                label.textContent = `#${index + 1}`
-                label.style.cssText = 'position:absolute; bottom:2px; right:4px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:1px 4px; border-radius:3px;'
-
-                wrapper.appendChild(img)
-                wrapper.appendChild(label)
-                previewGrid.appendChild(wrapper)
-            }
-            reader.readAsDataURL(file)
+        fileInput.addEventListener('change', () => {
+            const files = Array.from(fileInput.files)
+            previewGrid.innerHTML = ''
+            if (files.length === 0) { previewContainer.style.display = 'none'; return }
+            previewContainer.style.display = 'block'
+            imageCount.textContent = files.length
+            files.forEach((file, index) => {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    const wrapper = document.createElement('div')
+                    wrapper.style.cssText = 'position:relative;display:inline-block;'
+                    const img = document.createElement('img')
+                    img.src = e.target.result
+                    img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid #ddd;'
+                    img.title = file.name
+                    const label = document.createElement('div')
+                    label.textContent = '#' + (index + 1)
+                    label.style.cssText = 'position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);color:white;font-size:10px;padding:1px 4px;border-radius:3px;'
+                    wrapper.appendChild(img)
+                    wrapper.appendChild(label)
+                    previewGrid.appendChild(wrapper)
+                }
+                reader.readAsDataURL(file)
+            })
         })
-    })
+    }
 
-    // --- Désactivation du bouton pendant le traitement IA ---
     form.addEventListener('submit', () => {
-        const files = Array.from(fileInput.files)
-        if (files.length > 0) {
-            const plural = files.length > 1 ? `${files.length} images` : '1 image'
-            btn.textContent = `⏳ L'IA analyse ${plural}...`
+        if (fileInput && fileInput.files.length > 0) {
+            const plural = fileInput.files.length > 1 ? fileInput.files.length + ' images' : '1 image'
+            btn.textContent = "⏳ L'IA analyse " + plural + "..."
             btn.style.opacity = '0.7'
             btn.style.cursor = 'not-allowed'
             btn.disabled = true

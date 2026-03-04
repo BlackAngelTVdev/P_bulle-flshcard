@@ -13,7 +13,7 @@ export default class AIService {
     if (!apiKey) throw new Error('Clé API Groq non configurée.')
     if (!image.tmpPath) throw new Error('Image manquante ou upload échoué.')
 
-    console.log(`📷 [AIService] Traitement image: ${image.clientName} (${image.size} bytes)`)
+
 
     let base64Image: string
     try {
@@ -72,9 +72,9 @@ RÈGLES ABSOLUES :
         temperature: 0.1,
         max_tokens: 2048,
       })
-      console.log(`✅ [AIService] "${image.clientName}" traitée en ${Date.now() - startTime}ms`)
+
       rawContent = chatCompletion.choices[0]?.message?.content ?? null
-      console.log(`📝 [AIService] Réponse brute (${image.clientName}):\n---\n${rawContent}\n---`)
+
     } catch (groqError) {
       throw new Error(`Erreur API Groq (${image.clientName}): ${groqError.message}`)
     }
@@ -125,7 +125,7 @@ RÈGLES ABSOLUES :
   async generateFromImages(
     images: MultipartFile[]
   ): Promise<{ cards: { question: string; answer: string }[]; errors: string[] }> {
-    console.log(`\n🤖 [AIService] Traitement de ${images.length} image(s) en parallèle...`)
+
 
     // Promise.allSettled = si une image échoue, les autres continuent quand même
     const results = await Promise.allSettled(
@@ -138,7 +138,7 @@ RÈGLES ABSOLUES :
     results.forEach((result, index) => {
       const imageName = images[index].clientName
       if (result.status === 'fulfilled') {
-        console.log(`✅ Image #${index + 1} "${imageName}" → ${result.value.length} cartes`)
+       
         allCards.push(...result.value)
       } else {
         const msg = `"${imageName}" : ${result.reason?.message ?? 'erreur inconnue'}`
@@ -156,11 +156,7 @@ RÈGLES ABSOLUES :
       return true
     })
 
-    console.log(`\n🎴 [AIService] Résumé:`)
-    console.log(`   - Images OK        : ${results.length - errors.length}/${images.length}`)
-    console.log(`   - Cartes brutes    : ${allCards.length}`)
-    console.log(`   - Cartes uniques   : ${cards.length}`)
-    console.log(`   - Erreurs          : ${errors.length}`)
+
 
     return { cards, errors }
   }
