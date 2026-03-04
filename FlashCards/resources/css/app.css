@@ -240,7 +240,46 @@ footer p {
 .btn-github:hover svg {
     transform: rotate(12deg) scale(1.1);
 }
+.toast {
+  min-width: 250px;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  animation: slideIn 0.5s ease-out;
+}
 
+.toast.success { border-left: 5px solid #2ecc71; }
+.toast.error { border-left: 5px solid #e74c3c; }
+
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: rgba(0,0,0,0.1);
+}
+
+.toast.success .progress-bar { background: #2ecc71; }
+.toast.error .progress-bar { background: #e74c3c; }
+
+/* L'animation de la barre */
+.progress-bar {
+  animation: progress 5s linear forwards;
+}
+
+@keyframes progress {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
 /* --- RESPONSIVE --- */
 @media (max-width: 600px) {
     footer {

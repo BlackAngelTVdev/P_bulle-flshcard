@@ -8,12 +8,20 @@
 
         <div class="form-group">
             <label for="question">Question</label>
-            <input type="text" id="question" name="question" required>
+            <input type="text" id="question" name="question" value="{{ old('question') || '' }}" required>
+            {{-- Affichage de l'erreur pour la question --}}
+            @inputError('question')
+              <p class="error-message" style="color: red; font-size: 0.8rem;"> {{ $messages.join(', ') }} </p>
+            @end
         </div>
 
         <div class="form-group">
             <label for="answer">Réponse</label>
-            <textarea id="answer" name="answer" required></textarea>
+            <textarea id="answer" name="answer" required>{{ old('answer') || '' }}</textarea>
+            {{-- Affichage de l'erreur pour la réponse --}}
+            @inputError('answer')
+              <p class="error-message" style="color: red; font-size: 0.8rem;"> {{ $messages.join(', ') }} </p>
+            @end
         </div>
 
         <button type="submit" class="btn-submit">Créer la carte</button>
