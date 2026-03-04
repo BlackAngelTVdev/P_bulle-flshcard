@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string('password', 180).notNullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
+      table.timestamp('last_ai_request_at').nullable()
     })
   }
 

@@ -58,10 +58,13 @@
     "@adonisjs/shield": "^8.2.0",
     "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^4.0.0",
+    "@google/generative-ai": "^0.24.1",
     "@vinejs/vine": "^3.0.1",
     "edge.js": "^6.2.1",
+    "groq-sdk": "^0.37.0",
     "luxon": "^3.7.2",
     "mysql2": "^3.16.2",
+    "openai": "^6.25.0",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
