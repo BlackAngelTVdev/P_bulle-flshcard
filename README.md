@@ -76,7 +76,7 @@
 
 1. **Cloner le projet**
    ```bash
-   git clone [https://github.com/BlackAngelTVdev/P_bulle-flshcard.git](https://github.com/BlackAngelTVdev/P_bulle-flshcard.git)
+   git clone https://github.com/BlackAngelTVdev/P_bulle-flshcard.git
    cd P_bulle-flshcard
 
 2. **Installation et Configuration**
@@ -203,6 +203,7 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
 
 
 
