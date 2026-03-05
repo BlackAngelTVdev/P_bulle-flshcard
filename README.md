@@ -10,7 +10,6 @@
 ---
 
 ## 🧐 Aperçu
-Flash Dam's simplifie la révision en automatisant la création de flashcards. En combinant la puissance d'**AdonisJS** et l'inférence ultra-rapide de **Groq (Llama 3.2 Vision)**, l'application est capable d'analyser n'importe quel support pédagogique visuel.
 
 <table border="0">
   <tr>
@@ -41,14 +40,23 @@ Flash Dam's simplifie la révision en automatisant la création de flashcards. E
 
 ## ✨ Fonctionnalités
 
-- 📸 **Scan Intelligent (OCR + IA)** : Upload de photos de cours, captures d'écran ou schémas.
-- 🔄 **Système de Redondance (Failover)** : Bascule automatique entre plusieurs modèles (Llama-3.2-90b, 11b, Maverick) en cas de surcharge de l'API.
-- 🧠 **Détection de Contenu** : 
-  - **Langues** : Création de listes de vocabulaire et grammaire.
-  - **Sciences** : Extraction de formules complexes (LaTeX) et définitions.
-  - **Humaines** : Synthèse de concepts clés, dates et thèses.
-- 🗂 **Gestion Intelligente** : Dédoublonnage automatique des questions et filtrage par catégories personnalisées.
-- ⚡ **Performance** : Traitement asynchrone pour ne pas bloquer l'interface utilisateur.
+### 🗂️ Gestion des cartes "Zéro Prise de Tête"
+* **Création Flash** : Ajoute des decks et des cartes en quelques secondes avec une interface ultra-fluide.
+* **Import Intelligent** : Tu balances tes notes brutes ou des captures d'écran, l'IA s'occupe de créer les questions/réponses à ta place.
+
+### 📂 Trie par Domaine (Organisation Pro)
+* **Système d'Accordéon** : Tes decks sont regroupés par matières (Philo, Maths, Anglais...). 
+* **Compteur de Cartes** : Tu vois direct l'ampleur du travail avant même d'ouvrir le dossier.
+
+### 🎮 Multi-modes de Jeu
+* **Mode Basique** : Le classique. Tu vois la question, tu retournes la carte, tu valides.
+* **Mode Chrono** : Temps limité pour répondre. Parfait pour gérer le stress des exams.
+* **Mode Survie** : 3 erreurs autorisées. Pour les vrais qui veulent maîtriser leur sujet à 100%.
+
+### 🧠 Intelligence sous le capot
+* **Système de Failover** : Bascule automatique entre plusieurs modèles (**Llama-3.2, Maverick**) en cas de surcharge.
+* **LaTeX Ready** : Extraction et affichage propre des formules complexes et schémas scientifiques.
+* **Multi-langues** : Gestion spécifique pour le vocabulaire et la grammaire étrangère.
 
 ---
 
@@ -195,4 +203,5 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
 
