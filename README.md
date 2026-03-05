@@ -12,7 +12,32 @@
 ## 🧐 Aperçu
 Flash Dam's simplifie la révision en automatisant la création de flashcards. En combinant la puissance d'**AdonisJS** et l'inférence ultra-rapide de **Groq (Llama 3.2 Vision)**, l'application est capable d'analyser n'importe quel support pédagogique visuel.
 
----
+<table border="0">
+  <tr>
+    <td align="center">
+      <p><b>📸 Feature 1</b></p>
+      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%201" alt="Placeholder 1">
+    </td>
+    <td align="center">
+      <p><b>📸 Feature 2</b></p>
+      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%202" alt="Placeholder 2">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <p><b>📸 Feature 3</b></p>
+      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%203" alt="Placeholder 3">
+    </td>
+    <td align="center">
+      <p><b>📸 Feature 4</b></p>
+      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%204" alt="Placeholder 4">
+    </td>
+  </tr>
+</table>
+
+<p align="center">
+  <i>💡 Les images réelles seront ajoutées prochainement !</i>
+</p>
 
 ## ✨ Fonctionnalités
 
@@ -170,3 +195,4 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
