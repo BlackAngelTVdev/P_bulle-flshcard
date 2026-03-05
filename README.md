@@ -40,11 +40,11 @@
 
 ## ✨ Fonctionnalités
 
-### 🗂️ Gestion des cartes "Zéro Prise de Tête"
+### 🗂️ Gestion des cartes 
 * **Création Flash** : Ajoute des decks et des cartes en quelques secondes avec une interface ultra-fluide.
 * **Import Intelligent** : Tu balances tes notes brutes ou des captures d'écran, l'IA s'occupe de créer les questions/réponses à ta place.
 
-### 📂 Trie par Domaine (Organisation Pro)
+### 📂 Trie par Domaine
 * **Système d'Accordéon** : Tes decks sont regroupés par matières (Philo, Maths, Anglais...). 
 * **Compteur de Cartes** : Tu vois direct l'ampleur du travail avant même d'ouvrir le dossier.
 
@@ -203,5 +203,6 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
 
 
