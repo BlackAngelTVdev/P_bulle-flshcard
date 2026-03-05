@@ -1,29 +1,43 @@
 @component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home' })
-
 <main>
   <div class="decks-grid">
-    @each(deck in decks)
-    <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
-      <div>
-        <h2 class="deck-title">{{ deck.name }}</h2>
-        <p class="deck-description">{{ deck.description }}</p>
-        <span>Voir le deck →</span>
-      </div>
+    
+    {{-- On vérifie si on a des groupes, sinon on affiche l'état vide --}}
+    @if(Object.keys(groupedDecks).length > 0)
+      
+      @each((decksInCategory, category) in groupedDecks)
+        <details class="category-group">
+          <summary class="category-summary">
+            <span>📂 {{ category }}</span>
+            <span class="badge-count">{{ decksInCategory.length }} decks</span>
+          </summary>
+          
+          <div class="category-content">
+            @each(deck in decksInCategory)
+              <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
+                <div class="deck-info">
+                  <h2 class="deck-title">{{ deck.name }}</h2>
+                  <p class="deck-description">{{ deck.description || '' }}</p>
+                </div>
+                <div class="deck-footer">
+                  <span class="count">{{ deck.$extras.cards_count || 0 }} cartes</span>
+                </div>
+              </a>
+            @end
+          </div>
+        </details>
+      @end
 
-      <div class="deck-footer">
-        <span class="count">{{ deck.$extras.cards_count || 0 }} cartes</span>
-        <!-- Affiche le nombre de cartes, ou 0 si aucune carte n'est associée $extras sert à mettre dans un cache et non en db-->
-      </div>
-    </a>
     @else
-    <div class="empty-state">
-      <div class="empty-icon">📂</div>
-      <h2>Pas encore de deck pour le moment</h2>
-      <p>Commence par créer ton premier deck pour réviser !</p>
-      <a href="{{ route('decks.create') }}" class="btn-primary">Créer un deck</a>
-    </div>
+      {{-- État vide si groupedDecks est vide --}}
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <h2>Pas encore de deck pour le moment</h2>
+        <p>Commence par créer ton premier deck pour réviser !</p>
+        <a href="{{ route('decks.create') }}" class="btn-primary">Créer un deck</a>
+      </div>
     @end
+
   </div>
 </main>
-
 @end

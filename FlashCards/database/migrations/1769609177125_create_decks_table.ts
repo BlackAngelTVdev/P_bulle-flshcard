@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.increments('id').primary()
       table.string('name').notNullable()
       table.text('description').nullable()
-      
+      table.string('category').notNullable().defaultTo('Général')
       // Ajout de la relation
       table
         .integer('user_id')

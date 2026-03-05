@@ -4,21 +4,24 @@ import fs from 'node:fs/promises'
 import Groq from 'groq-sdk'
 
 export default class AIService {
+  // Liste des modèles Vision de Groq par ordre de priorité
+  private visionModels = [
+    'llama-3.2-90b-vision-preview',
+    'llama-3.2-11b-vision-preview',
+    'meta-llama/llama-4-maverick-17b-128e-instruct' // Ton modèle actuel
+  ]
 
-  // -------------------------------------------------------
-  // Traite UNE image → retourne ses flashcards
-  // -------------------------------------------------------
   async generateFromImage(image: MultipartFile): Promise<{ question: string; answer: string }[]> {
     const apiKey = env.get('GROQ_API_KEY')
     if (!apiKey) throw new Error('Clé API Groq non configurée.')
     if (!image.tmpPath) throw new Error('Image manquante ou upload échoué.')
 
-
-
     let base64Image: string
     try {
       const imageData = await fs.readFile(image.tmpPath)
       base64Image = imageData.toString('base64')
+      // Sécurité : on supprime le fichier temp dès qu'on a le base64
+      await fs.unlink(image.tmpPath).catch(() => {}) 
     } catch (readError) {
       throw new Error(`Lecture image échouée: ${readError.message}`)
     }
@@ -26,60 +29,73 @@ export default class AIService {
     const contentType = image.headers['content-type'] || 'image/jpeg'
     const imageUrl = `data:${contentType};base64,${base64Image}`
     const groq = new Groq({ apiKey })
-    const model = 'meta-llama/llama-4-maverick-17b-128e-instruct'
 
-    const prompt = `Tu es un assistant pédagogique expert en création de flashcards. Analyse cette image et génère des flashcards adaptées à son contenu.
+    const prompt = `Tu es un assistant pédagogique expert en création de flashcards de haute précision. 
+Analyse l'image fournie et extrais les informations selon les directives par catégorie ci-dessous.
 
-DÉTECTE AUTOMATIQUEMENT le type de contenu :
+DIRECTIVES PAR CATÉGORIE :
+1. LANGUES (Anglais, Allemand, Espagnol, Italien, Français) :
+   - Extrais tout vocabulaire (Mot -> Traduction).
+   - Pour la grammaire : Question = Règle/Contexte, Réponse = Application/Exemple.
+   - Si c'est un tableau : 1 ligne = 1 flashcard.
 
-1. TABLEAU DE VOCABULAIRE (ex: colonne FR/EN, terme/définition, mot/traduction)
-   → Une flashcard PAR LIGNE du tableau, sans exception
-   → Question = contenu colonne gauche, Réponse = contenu colonne droite
-   → Si tableau FR/EN : Q: mot français, A: traduction anglaise (et inversement)
-   → Lis CHAQUE ligne, même si le tableau est long
+2. SCIENCES & TECH (Maths, Physique-Chimie, SVT, Informatique) :
+   - Maths/Physique : Question = Nom du théorème/formule ou énoncé de variable, Réponse = Formule LaTeX ou définition.
+   - SVT/Médecine : Identifie les schémas (Organe -> Fonction) ou processus biologiques.
+   - Informatique : Question = Fonction/Syntaxe, Réponse = Rôle/Code.
 
-2. COURS / TEXTE / SCHÉMA
-   → Flashcards sur les concepts clés, dates, formules, définitions
-   → Question = "Qu'est-ce que X ?" ou "À quoi sert Y ?"
+3. SCIENCES HUMAINES (Philo, Histoire, Géo, SES, Droit) :
+   - Histoire : Question = Événement/Date, Réponse = Description/Importance.
+   - Philo/SES : Question = Concept ou Auteur, Réponse = Définition ou Thèse principale.
+   - Géo/Droit : Question = Terme technique ou Article de loi, Réponse = Définition ou Application.
 
-3. FORMULES / MATHS
-   → Une flashcard par formule ou théorème
-   → Question = nom/contexte, Réponse = formule exacte
+4. CODE DE LA ROUTE & CULTURE G :
+   - Priorise l'identification visuelle (ex: Panneau -> Signification, Priorité -> Règle).
 
-RÈGLES ABSOLUES :
-- Réponds UNIQUEMENT avec du JSON brut, rien d'autre, zéro texte autour
-- Interdit : blocs markdown, backticks, texte avant/après
-- Format strict : {"flashcards": [{"question": "...", "answer": "..."}]}
-- Couvre ABSOLUMENT TOUS les éléments visibles (chaque ligne du tableau !)
-- Maximum 40 flashcards par image
-- Ne saute aucune ligne d'un tableau`
+RÈGLES DE FORMATAGE ABSOLUES :
+- Réponds EXCLUSIVEMENT avec du JSON brut.
+- INTERDIT : Markdown, backticks, ou texte d'introduction/conclusion.
+- STRUCTURE : {"flashcards": [{"question": "...", "answer": "..."}]}
+- COUVERTURE : Analyse l'image de haut en bas. Ne saute aucune ligne de tableau.
+- QUANTITÉ : Entre 5 et 40 flashcards par image.
+- PRÉCISION : Si le texte est manuscrit, fais une déduction logique basée sur le contexte de la catégorie.`
 
     let rawContent: string | null = null
+    let lastError: any = null
 
-    try {
-      const startTime = Date.now()
-      const chatCompletion = await groq.chat.completions.create({
-        model,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              { type: 'text', text: prompt },
-              { type: 'image_url', image_url: { url: imageUrl } },
-            ],
-          },
-        ],
-        temperature: 0.1,
-        max_tokens: 2048,
-      })
+    // --- TEST AUTOMATIQUE DES MODÈLES ---
+    for (const modelName of this.visionModels) {
+      try {
+        const chatCompletion = await groq.chat.completions.create({
+          model: modelName,
+          messages: [
+            {
+              role: 'user',
+              content: [
+                { type: 'text', text: prompt },
+                { type: 'image_url', image_url: { url: imageUrl } },
+              ],
+            },
+          ],
+          temperature: 0.1,
+          max_tokens: 2048,
+        })
 
-      rawContent = chatCompletion.choices[0]?.message?.content ?? null
-
-    } catch (groqError) {
-      throw new Error(`Erreur API Groq (${image.clientName}): ${groqError.message}`)
+        rawContent = chatCompletion.choices[0]?.message?.content ?? null
+        if (rawContent) {
+          console.log(`✅ Succès avec ${modelName}`)
+          break // On a une réponse, on sort de la boucle
+        }
+      } catch (err) {
+        console.warn(`⚠️ Échec avec ${modelName}: ${err.message}. Tentative suivante...`)
+        lastError = err
+        continue // On passe au modèle suivant
+      }
     }
 
-    if (!rawContent) throw new Error(`Réponse vide pour l'image ${image.clientName}`)
+    if (!rawContent) {
+      throw new Error(`Tous les modèles ont échoué pour ${image.clientName}. Dernier message: ${lastError?.message}`)
+    }
 
     let parsed: any
     try {
@@ -119,15 +135,10 @@ RÈGLES ABSOLUES :
     )
   }
 
-  // -------------------------------------------------------
-  // Traite PLUSIEURS images en parallèle → fusionne tout
-  // -------------------------------------------------------
+  // generateFromImages reste identique...
   async generateFromImages(
     images: MultipartFile[]
   ): Promise<{ cards: { question: string; answer: string }[]; errors: string[] }> {
-
-
-    // Promise.allSettled = si une image échoue, les autres continuent quand même
     const results = await Promise.allSettled(
       images.map((image) => this.generateFromImage(image))
     )
@@ -138,7 +149,6 @@ RÈGLES ABSOLUES :
     results.forEach((result, index) => {
       const imageName = images[index].clientName
       if (result.status === 'fulfilled') {
-       
         allCards.push(...result.value)
       } else {
         const msg = `"${imageName}" : ${result.reason?.message ?? 'erreur inconnue'}`
@@ -147,7 +157,6 @@ RÈGLES ABSOLUES :
       }
     })
 
-    // Dédoublonnage : retire les cartes avec la même question
     const seen = new Set<string>()
     const cards = allCards.filter((card) => {
       const key = card.question.toLowerCase().trim()
@@ -155,8 +164,6 @@ RÈGLES ABSOLUES :
       seen.add(key)
       return true
     })
-
-
 
     return { cards, errors }
   }

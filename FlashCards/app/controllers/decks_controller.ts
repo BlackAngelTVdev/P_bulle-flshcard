@@ -3,11 +3,20 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { createDeckValidator, updateDeckValidator } from '#validators/deck'
 
 export default class DecksController {
-    
+
     // 1. Affiche tous les decks publics
     async index({ view }: HttpContext) {
-        const decks = await Deck.query().withCount('cards').orderBy('createdAt', 'desc')
-        return view.render('pages/home', { decks })
+        const decks = await Deck.query().withCount('cards').orderBy('category', 'asc')
+
+        // On groupe les decks par catégorie
+        const groupedDecks = decks.reduce((acc, deck) => {
+            const cat = deck.category || 'Autre'
+            if (!acc[cat]) acc[cat] = []
+            acc[cat].push(deck)
+            return acc
+        }, {} as Record<string, Deck[]>)
+
+        return view.render('pages/home', { groupedDecks })
     }
 
     // 2. Affiche uniquement mes decks
@@ -25,8 +34,9 @@ export default class DecksController {
     }
 
     async store({ auth, request, response, session }: HttpContext) {
+        // Le payload contiendra maintenant 'category' grâce au validator
         const payload = await request.validateUsing(createDeckValidator)
-        
+
         await Deck.create({
             ...payload,
             userId: auth.user!.id
@@ -44,12 +54,12 @@ export default class DecksController {
 
     async edit({ params, auth, view, response }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
-        
+
         // Sécurité : Seul le proprio peut édit
         if (deck.userId !== auth.user!.id) {
             return response.forbidden('Tu ne peux pas modifier ce deck !')
         }
-        
+
         return view.render('pages/deck/edit', { deck })
     }
 
@@ -64,7 +74,7 @@ export default class DecksController {
             data: { ...request.all(), id: params.id },
         })
 
-        deck.merge(payload)
+        deck.merge(payload) // Prendra la catégorie si elle est fournie
         await deck.save()
 
         session.flash('success', 'Deck modifié avec succès !')
@@ -73,7 +83,7 @@ export default class DecksController {
 
     async destroy({ params, response, session, auth }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
-        
+
         if (deck.userId !== auth.user!.id) {
             return response.forbidden()
         }
@@ -93,10 +103,10 @@ export default class DecksController {
     async game({ params, request, view }: HttpContext) {
         const deck = await Deck.findOrFail(params.id)
         await deck.load('cards')
-        
+
         // On récupère le mode choisi, 'basique' par défaut
-        const mode = request.input('mode', 'basique') 
-        
+        const mode = request.input('mode', 'basique')
+
         return view.render('pages/deck/game', { deck, mode })
     }
 
