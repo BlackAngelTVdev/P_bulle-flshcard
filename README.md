@@ -14,29 +14,25 @@
 <table border="0">
   <tr>
     <td align="center">
-      <p><b>📸 Feature 1</b></p>
-      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%201" alt="Placeholder 1">
+      <p><b>📸 Login</b></p>
+      <img  alt="Capture d’écran 2026-03-06 085529" src="https://github.com/user-attachments/assets/e50d6601-f237-41c6-bd1d-a4976bc06077" />
     </td>
     <td align="center">
-      <p><b>📸 Feature 2</b></p>
-      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%202" alt="Placeholder 2">
+      <p><b>📸 Home page</b></p>
+      <img  alt="Capture d’écran 2026-03-06 085411" src="https://github.com/user-attachments/assets/9b8ebfc6-9d22-4390-95b3-9115ba4689d1" />
     </td>
   </tr>
   <tr>
     <td align="center">
-      <p><b>📸 Feature 3</b></p>
-      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%203" alt="Placeholder 3">
+      <p><b>📸 Crée une carte</b></p>
+      <img  alt="Capture d’écran 2026-03-06 085502" src="https://github.com/user-attachments/assets/1e0f5475-ce20-45d1-9929-836dc2460c82" />
     </td>
     <td align="center">
-      <p><b>📸 Feature 4</b></p>
-      <img src="https://placehold.jp/24/787878/ffffff/300x200.png?text=Aperçu%20Image%204" alt="Placeholder 4">
+      <p><b>📸 Jeux</b></p>
+      <img alt="Capture d’écran 2026-03-06 085752" src="https://github.com/user-attachments/assets/bd1094b3-c22f-4a89-b4c7-45ea5d42c0f4" />
     </td>
   </tr>
 </table>
-
-<p align="center">
-  <i>💡 Les images réelles seront ajoutées prochainement !</i>
-</p>
 
 ## ✨ Fonctionnalités
 
@@ -203,6 +199,7 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
 
 
 
