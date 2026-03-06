@@ -28,11 +28,14 @@ p {
   align-items: center;
   gap: 15px;
   margin-bottom: 3rem;
-  flex-wrap: wrap; /* Pour le mobile */
+  flex-wrap: wrap;
+  /* Pour le mobile */
 }
 
 /* --- BOUTONS --- */
-.btn-play, .btn-edit-deck, .btn-delete-deck {
+.btn-play,
+.btn-edit-deck,
+.btn-delete-deck {
   padding: 12px 24px;
   border-radius: 10px;
   font-weight: 700;
@@ -48,9 +51,11 @@ p {
 
 /* S'entraîner (Le plus visible) */
 .btn-play {
-  background-color: #10b981; /* Vert succès */
+  background-color: #10b981;
+  /* Vert succès */
   color: white;
 }
+
 .btn-play:hover {
   background-color: #059669;
   transform: translateY(-2px);
@@ -62,6 +67,7 @@ p {
   background-color: var(--primary-violet);
   color: white;
 }
+
 .btn-edit-deck:hover {
   opacity: 0.9;
   transform: translateY(-2px);
@@ -74,6 +80,7 @@ p {
   border: 2px solid #dc2626;
   cursor: pointer;
 }
+
 .btn-delete-deck:hover {
   background-color: #dc2626;
   color: white;
@@ -86,7 +93,8 @@ p {
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   border: 1px solid #eee;
-  text-align: left; /* On repasse en texte à gauche pour le tableau */
+  text-align: left;
+  /* On repasse en texte à gauche pour le tableau */
 }
 
 .table-header {
@@ -163,73 +171,277 @@ p {
   color: #9ca3af;
   font-style: italic;
 }
+
+/* --- BOUTON PARTAGER (L'ouvreur) --- */
+.btn-share {
+  background-color: #fff;
+  color: var(--primary-violet);
+  border: 2px solid var(--primary-violet);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-share:hover {
+  background-color: var(--primary-violet);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
+/* --- MODALE BOOSTÉE --- */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  /* Bleu nuit transparent */
+  backdrop-filter: blur(8px);
+  /* Flou plus prononcé */
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 24px;
+  width: 95%;
+  max-width: 420px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.9);
+  animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.modal-header h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.close-btn {
+  background: #f3f4f6;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: #e5e7eb;
+}
+
+/* --- OPTIONS DE PARTAGE --- */
+.share-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.share-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.share-item:hover {
+  transform: translateY(-5px);
+}
+
+.share-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  /* Look iOS/Squircle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.share-item span {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-main);
+}
+
+.wa {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: white;
+}
+
+.snap {
+  background: linear-gradient(135deg, #FFFC00, #fefb00);
+  color: black;
+}
+
+.copy {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  color: white;
+}
+
+/* --- CHAMP DE COPIE --- */
+.copy-link-field {
+  display: flex;
+  background: #f9fafb;
+  padding: 8px;
+  border-radius: 14px;
+  border: 2px solid #f3f4f6;
+  align-items: center;
+}
+
+.copy-link-field input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0 12px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  outline: none;
+  width: 100%;
+}
+
+.copy-link-field button {
+  background: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.copy-link-field button:hover {
+  background: var(--primary-hover);
+}
+
+/* --- ANIMATIONS --- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPop {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive modale */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .share-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
 /* --- RESPONSIVE DESIGN (Deck Show) --- */
 
 @media (max-width: 768px) {
-    h1.deck-title {
-        font-size: 1.8rem;
-    }
+  h1.deck-title {
+    font-size: 1.8rem;
+  }
 
-    .deck-actions {
-        flex-direction: column;
-        gap: 10px;
-    }
+  .deck-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .btn-play, .btn-edit-deck, .btn-delete-deck {
-        width: 100%;
-        max-width: 300px; /* Évite que les boutons soient trop longs */
-    }
+  .btn-play,
+  .btn-edit-deck,
+  .btn-delete-deck {
+    width: 100%;
+    max-width: 300px;
+    /* Évite que les boutons soient trop longs */
+  }
 
-    /* Transformation du tableau en liste de cartes */
-    .table-header {
-        display: none; /* On cache les titres des colonnes */
-    }
+  /* Transformation du tableau en liste de cartes */
+  .table-header {
+    display: none;
+    /* On cache les titres des colonnes */
+  }
 
-    .table-row {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-        position: relative;
-    }
+  .table-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    position: relative;
+  }
 
-    .col {
-        padding-right: 0;
-        margin-bottom: 10px;
-        width: 100%;
-    }
+  .col {
+    padding-right: 0;
+    margin-bottom: 10px;
+    width: 100%;
+  }
 
-    /* On ajoute des labels via CSS pour savoir ce qu'on lit */
-    .col::before {
-        content: "Recto :";
-        display: block;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        color: var(--primary-violet);
-        font-weight: 800;
-        margin-bottom: 4px;
-    }
+  /* On ajoute des labels via CSS pour savoir ce qu'on lit */
+  .col::before {
+    content: "Recto :";
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--primary-violet);
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
 
-    .col + .col::before {
-        content: "Verso :";
-    }
+  .col+.col::before {
+    content: "Verso :";
+  }
 
-    .col-actions {
-        width: 100%;
-        text-align: left;
-        padding-top: 10px;
-        border-top: 1px dashed #eee;
-        margin-top: 5px;
-    }
+  .col-actions {
+    width: 100%;
+    text-align: left;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+    margin-top: 5px;
+  }
 }
 
 /* Optimisation pour les petits téléphones */
 @media (max-width: 480px) {
-    main {
-        padding: 1rem 0.5rem;
-    }
+  main {
+    padding: 1rem 0.5rem;
+  }
 
-    .btn-add-card {
-        width: 100%;
-        justify-content: center;
-    }
+  .btn-add-card {
+    width: 100%;
+    justify-content: center;
+  }
 }

@@ -4,28 +4,62 @@
     <p>{{ deck.description }}</p>
 
     <div class="deck-actions">
-        {{-- On ne montre le bouton que s'il y a au moins une carte dans le deck --}}
         @if(deck.cards.length > 0)
         <a href="{{ route('decks.play', { id: deck.id }) }}" class="btn-play">
             S'entraîner 🚀
         </a>
         @end
 
-        {{-- 🛡️ Vérification du propriétaire --}}
+        {{-- Nouveau Bouton Partager --}}
+        <button type="button" class="btn-share" onclick="openShareModal()">
+            Partager 🔗
+        </button>
+
         @if(auth.user.id === deck.userId)
         <a href="{{ route('decks.edit', { id: deck.id }) }}" class="btn-edit-deck">
-            Éditer le deck
+            Éditer
         </a>
 
         <form action="{{ route('decks.destroy', { id: deck.id }) }}?_method=DELETE" method="POST">
             {{ csrfField() }}
             <button type="submit" class="btn-delete-deck" onclick="return confirm('Supprimer ce deck ?')">
-                Supprimer le deck
+                Supprimer
             </button>
         </form>
         @end
     </div>
 
+    {{-- MODALE DE PARTAGE (Placée en dehors des actions) --}}
+    <div id="shareModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Partager ce deck</h3>
+                <button class="close-btn" onclick="toggleModal(false)">&times;</button>
+            </div>
+
+            <div class="share-options">
+                <div class="share-item" onclick="shareTo('whatsapp')">
+                    <div class="share-icon wa">WA</div>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-item" onclick="shareTo('snapchat')">
+                    <div class="share-icon snap">SC</div>
+                    <span>Snapchat</span>
+                </div>
+                <div class="share-item" onclick="shareTo('copy')">
+                    <div class="share-icon copy">🔗</div>
+                    <span>Copier</span>
+                </div>
+            </div>
+
+            <div class="copy-link-field">
+                <input type="text" id="shareUrl" readonly>
+                <button onclick="copyLink()" id="copyBtn">Copier</button>
+            </div>
+        </div>
+    </div>
+
+    {{-- TABLEAU DES CARTES --}}
     <div class="cards-table">
         <div class="table-header">
             <div class="col">Question</div>
@@ -43,14 +77,63 @@
         <div class="empty-msg">Ce deck est encore vide...</div>
         @end
 
-        {{-- 🛡️ Seul le proprio peut ajouter des cartes --}}
         @if(auth.user.id === deck.userId)
         <div class="deck-footer">
             <a href="{{ route('cards.create') }}?deckId={{ deck.id }}" class="btn-add-card">
-                <span>+</span> Ajouter une nouvelle carte
+                <span>+</span> Ajouter une carte
             </a>
         </div>
         @end
     </div>
 </main>
+
+<script>
+    const modal = document.getElementById('shareModal');
+    const shareInput = document.getElementById('shareUrl');
+    const currentUrl = window.location.origin + '/decks/{{ deck.id }}';
+
+    async function openShareModal() {
+        // 1. Si on est sur mobile, on utilise le menu natif direct (comme YouTube)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: "Flash Dam's - {{ deck.name }}",
+                    text: "Viens réviser ce deck avec moi !",
+                    url: currentUrl
+                });
+            } catch (err) {
+                console.log('Partage annulé ou erreur');
+            }
+        } else {
+            // 2. Si on est sur PC, on ouvre ta jolie popup
+            shareInput.value = currentUrl;
+            toggleModal(true);
+        }
+    }
+
+    function toggleModal(show) {
+        modal.style.display = show ? 'flex' : 'none';
+    }
+
+    function closeModal(e) {
+        if (e.target === modal) toggleModal(false);
+    }
+
+    function copyLink() {
+        navigator.clipboard.writeText(currentUrl);
+        const btn = document.getElementById('copyBtn');
+        btn.innerText = 'Copié !';
+        setTimeout(() => btn.innerText = 'Copier', 2000);
+    }
+
+    function shareTo(platform) {
+        const text = "Viens voir ce deck sur Flash Dam's !";
+        let url = '';
+        if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text + ' ' + currentUrl)}`;
+        if (platform === 'snapchat') url = `https://www.snapchat.com/share?url=${encodeURIComponent(currentUrl)}`;
+
+        if (url) window.open(url, '_blank');
+        if (platform === 'copy') copyLink();
+    }
+</script>
 @end
