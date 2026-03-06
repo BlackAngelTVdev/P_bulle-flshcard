@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/index.css'])
+    <title>Flash Dam's | Révise avec efficacité</title>
+</head>
+<body>
+
+  {{-- 1. HEADER / NAVBAR --}}
+  <header class="main-header">
+    <div class="header-container">
+      <div class="logo-text">
+        <span class="logo-flash">Flash</span><span class="logo-dams">Dam's</span>
+      </div>
+      <nav class="nav-auth">
+        <a href="{{ route('auth.login') }}" class="nav-link">Connexion</a>
+        <a href="{{ route('auth.register') }}" class="btn-primary-sm">S'inscrire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {{-- 2. HERO SECTION --}}
+    <section class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1>Maîtrise tes révisions en un <span class="text-gradient">éclair</span></h1>
+          <p class="hero-subtitle">
+            Oublie les fiches Bristol perdues. Crée tes decks numériques, organise-les par catégories et utilise la répétition espacée pour ne plus jamais oublier.
+          </p>
+          <div class="cta-group">
+            <a href="{{ route('auth.register') }}" class="btn-primary-lg">
+              Commencer gratuitement
+            </a>
+            <p class="small-info">
+              @if(totalDecks && totalDecks > 0)
+                Déjà <strong>{{ totalDecks }}</strong> decks créés et utilisables
+              @else
+                Rejoins les premiers utilisateurs et crée ton deck !
+              @end
+            </p>
+          </div>
+        </div>
+
+        <div class="hero-image">
+
+          <div class="image-placeholder">
+            <img src="resources\img\cards.png" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {{-- 3. FEATURES SECTION --}}
+    <section class="features-section">
+      <div class="features-grid">
+        {{-- Feature 1 : Ce qui marche déjà (L'automatique) --}}
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h3>Tri Automatique</h3>
+          <p>Pas besoin de perdre du temps : tes decks sont automatiquement classés par thèmes pour une bibliothèque toujours propre.</p>
+        </div>
+
+        {{-- Feature 2 : En cours (Stats) --}}
+        <div class="feature-card upcoming">
+          <div class="icon">📈</div>
+          <h3>Stats & Progression</h3>
+          <div class="badge-soon">Bientôt disponible</div>
+          <p>On prépare un tableau de bord complet pour visualiser tes points forts et tes faiblesses en temps réel.</p>
+        </div>
+
+        {{-- Feature 3 : En cours (Partage) --}}
+        <div class="feature-card upcoming">
+          <div class="icon">🤝</div>
+          <h3>Partage Communautaire</h3>
+          <div class="badge-soon">Bientôt disponible</div>
+          <p>D'ici peu, tu pourras envoyer tes meilleurs decks à tes potes ou réviser ceux de la communauté en un clic.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  @!component('partials/footer', { })
+</body>
+</html>
