@@ -9,11 +9,7 @@ export default class AuthController {
 
   async login({ request, auth, response, session }: HttpContext) {
     const { uid, password } = request.all()
-
     try {
-      /* On cherche manuellement car verifyCredentials ne gère qu'un champ unique.
-         On check si l'identifiant (uid) match soit l'email, soit le username.
-      */
       const user = await User.query()
         .where('email', uid)
         .orWhere('username', uid)
@@ -23,11 +19,9 @@ export default class AuthController {
         throw new Error('Invalid credentials')
       }
 
-      /* On utilise le mail trouvé pour valider le password via la méthode native,
-         ce qui permet de garder la gestion automatique du hachage.
-      */
       await User.verifyCredentials(user.email, password)
 
+      await session.regenerate() // ← AJOUT ICI
       await auth.use('web').login(user)
 
       return response.redirect().toRoute('decks.index')
@@ -52,6 +46,7 @@ export default class AuthController {
       const payload = await request.validateUsing(registerValidator)
       const user = await User.create(payload)
 
+      await session.regenerate() // ← AJOUT ICI
       await auth.use('web').login(user)
 
       return response.redirect().toRoute('decks.index')
