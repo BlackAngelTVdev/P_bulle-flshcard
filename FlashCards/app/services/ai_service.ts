@@ -21,7 +21,7 @@ export default class AIService {
       const imageData = await fs.readFile(image.tmpPath)
       base64Image = imageData.toString('base64')
       // Sécurité : on supprime le fichier temp dès qu'on a le base64
-      await fs.unlink(image.tmpPath).catch(() => {}) 
+      await fs.unlink(image.tmpPath).catch(() => { })
     } catch (readError) {
       throw new Error(`Lecture image échouée: ${readError.message}`)
     }
@@ -30,7 +30,7 @@ export default class AIService {
     const imageUrl = `data:${contentType};base64,${base64Image}`
     const groq = new Groq({ apiKey })
 
-    const prompt = `Tu es un assistant pédagogique expert en création de flashcards de haute précision. 
+    const prompt = `Tu es un assistant pédagogique expert en création de flashcards de haute précision.
 Analyse l'image fournie et extrais les informations selon les directives par catégorie ci-dessous.
 
 DIRECTIVES PAR CATÉGORIE :
@@ -58,7 +58,9 @@ RÈGLES DE FORMATAGE ABSOLUES :
 - STRUCTURE : {"flashcards": [{"question": "...", "answer": "..."}]}
 - COUVERTURE : Analyse l'image de haut en bas. Ne saute aucune ligne de tableau.
 - QUANTITÉ : Entre 5 et 40 flashcards par image.
-- PRÉCISION : Si le texte est manuscrit, fais une déduction logique basée sur le contexte de la catégorie.`
+- PRÉCISION : Si le texte est manuscrit, fais une déduction logique basée sur le contexte de la catégorie.
+- Réponse de max 255 caractères
+- Question de mx 255 caractères`
 
     let rawContent: string | null = null
     let lastError: any = null

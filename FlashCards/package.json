@@ -63,8 +63,10 @@
     "edge.js": "^6.2.1",
     "groq-sdk": "^0.37.0",
     "luxon": "^3.7.2",
+    "mammoth": "^1.11.0",
     "mysql2": "^3.16.2",
     "openai": "^6.25.0",
+    "pdf-parse": "^2.4.5",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {

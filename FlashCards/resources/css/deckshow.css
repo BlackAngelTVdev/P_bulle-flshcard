@@ -1,13 +1,11 @@
 @import url(./var.css);
 
-/* --- LAYOUT GLOBAL --- */
 main {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-/* --- DECK INFO --- */
 h1.deck-title {
   color: var(--primary-violet);
   font-size: 2.5rem;
@@ -21,7 +19,7 @@ p {
   text-align: center;
 }
 
-/* --- ACTIONS (ALIGNEMENT HORIZONTAL) --- */
+/* --- ACTIONS & BOUTONS --- */
 .deck-actions {
   display: flex;
   justify-content: center;
@@ -29,13 +27,12 @@ p {
   gap: 15px;
   margin-bottom: 3rem;
   flex-wrap: wrap;
-  /* Pour le mobile */
 }
 
-/* --- BOUTONS --- */
 .btn-play,
 .btn-edit-deck,
-.btn-delete-deck {
+.btn-delete-deck,
+.btn-share {
   padding: 12px 24px;
   border-radius: 10px;
   font-weight: 700;
@@ -47,12 +44,11 @@ p {
   border: none;
   font-family: inherit;
   font-size: 1rem;
+  cursor: pointer;
 }
 
-/* S'entraîner (Le plus visible) */
 .btn-play {
   background-color: #10b981;
-  /* Vert succès */
   color: white;
 }
 
@@ -62,23 +58,29 @@ p {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-/* Éditer */
 .btn-edit-deck {
   background-color: var(--primary-violet);
   color: white;
 }
 
-.btn-edit-deck:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+.btn-share {
+  background-color: #fff;
+  color: var(--primary-violet);
+  border: 2px solid var(--primary-violet);
+  gap: 8px;
 }
 
-/* Supprimer */
+.btn-edit-deck:hover,
+.btn-share:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+}
+
 .btn-delete-deck {
   background-color: #fff;
   color: #dc2626;
   border: 2px solid #dc2626;
-  cursor: pointer;
 }
 
 .btn-delete-deck:hover {
@@ -86,15 +88,13 @@ p {
   color: white;
 }
 
-/* --- TABLEAU DES CARTES --- */
+/* --- TABLEAU --- */
 .cards-table {
   background: white;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   border: 1px solid #eee;
-  text-align: left;
-  /* On repasse en texte à gauche pour le tableau */
 }
 
 .table-header {
@@ -137,7 +137,6 @@ p {
   font-size: 0.9rem;
 }
 
-/* --- FOOTER DU TABLEAU --- */
 .deck-footer {
   display: flex;
   justify-content: center;
@@ -162,7 +161,6 @@ p {
 .btn-add-card:hover {
   background-color: var(--primary-violet);
   color: white;
-
 }
 
 .empty-msg {
@@ -172,37 +170,13 @@ p {
   font-style: italic;
 }
 
-/* --- BOUTON PARTAGER (L'ouvreur) --- */
-.btn-share {
-  background-color: #fff;
-  color: var(--primary-violet);
-  border: 2px solid var(--primary-violet);
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.btn-share:hover {
-  background-color: var(--primary-violet);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
-}
-
-/* --- MODALE BOOSTÉE --- */
+/* --- MODALE --- */
 .modal-overlay {
   display: none;
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.4);
-  /* Bleu nuit transparent */
   backdrop-filter: blur(8px);
-  /* Flou plus prononcé */
   z-index: 1000;
   align-items: center;
   justify-content: center;
@@ -216,7 +190,6 @@ p {
   width: 95%;
   max-width: 420px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  transform: scale(0.9);
   animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
@@ -230,7 +203,6 @@ p {
 .modal-header h3 {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--text-main);
 }
 
 .close-btn {
@@ -240,18 +212,11 @@ p {
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
 }
 
-.close-btn:hover {
-  background: #e5e7eb;
-}
-
-/* --- OPTIONS DE PARTAGE --- */
 .share-options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -265,7 +230,8 @@ p {
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  transition: transform 0.2s;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .share-item:hover {
@@ -276,18 +242,10 @@ p {
   width: 60px;
   height: 60px;
   border-radius: 18px;
-  /* Look iOS/Squircle */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.share-item span {
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: var(--text-main);
 }
 
 .wa {
@@ -305,7 +263,6 @@ p {
   color: white;
 }
 
-/* --- CHAMP DE COPIE --- */
 .copy-link-field {
   display: flex;
   background: #f9fafb;
@@ -320,10 +277,7 @@ p {
   border: none;
   background: transparent;
   padding: 0 12px;
-  font-size: 0.9rem;
-  color: var(--text-light);
   outline: none;
-  width: 100%;
 }
 
 .copy-link-field button {
@@ -333,46 +287,9 @@ p {
   padding: 10px 20px;
   border-radius: 10px;
   font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
 }
 
-.copy-link-field button:hover {
-  background: var(--primary-hover);
-}
-
-/* --- ANIMATIONS --- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes modalPop {
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Responsive modale */
-@media (max-width: 480px) {
-  .modal-content {
-    padding: 1.5rem;
-  }
-
-  .share-icon {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-/* --- RESPONSIVE DESIGN (Deck Show) --- */
-
+/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   h1.deck-title {
     font-size: 1.8rem;
@@ -380,37 +297,31 @@ p {
 
   .deck-actions {
     flex-direction: column;
-    gap: 10px;
   }
 
   .btn-play,
   .btn-edit-deck,
-  .btn-delete-deck {
+  .btn-delete-deck,
+  .btn-share {
     width: 100%;
     max-width: 300px;
-    /* Évite que les boutons soient trop longs */
   }
 
-  /* Transformation du tableau en liste de cartes */
   .table-header {
     display: none;
-    /* On cache les titres des colonnes */
   }
 
   .table-row {
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
-    position: relative;
   }
 
   .col {
-    padding-right: 0;
     margin-bottom: 10px;
     width: 100%;
   }
 
-  /* On ajoute des labels via CSS pour savoir ce qu'on lit */
   .col::before {
     content: "Recto :";
     display: block;
@@ -428,20 +339,49 @@ p {
   .col-actions {
     width: 100%;
     text-align: left;
-    padding-top: 10px;
     border-top: 1px dashed #eee;
-    margin-top: 5px;
+    padding-top: 10px;
   }
 }
 
-/* Optimisation pour les petits téléphones */
 @media (max-width: 480px) {
   main {
     padding: 1rem 0.5rem;
   }
 
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .share-icon {
+    width: 50px;
+    height: 50px;
+  }
+
   .btn-add-card {
     width: 100%;
     justify-content: center;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalPop {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
