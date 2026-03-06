@@ -1,17 +1,17 @@
 @component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home' })
 <main>
   <div class="decks-grid">
-    
+
     {{-- On vérifie si on a des groupes, sinon on affiche l'état vide --}}
     @if(Object.keys(groupedDecks).length > 0)
-      
+
       @each((decksInCategory, category) in groupedDecks)
         <details class="category-group">
           <summary class="category-summary">
             <span>📂 {{ category }}</span>
             <span class="badge-count">{{ decksInCategory.length }} decks</span>
           </summary>
-          
+
           <div class="category-content">
             @each(deck in decksInCategory)
               <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
