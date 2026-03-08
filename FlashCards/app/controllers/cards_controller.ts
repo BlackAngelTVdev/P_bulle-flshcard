@@ -28,7 +28,6 @@ export default class CardsController {
       extnames: allAllowedExts,
     })
 
-    // Rétrocompatibilité ancien champ "courseImages[]"
     const legacyImages = request.files('courseImages', {
       size: '5mb',
       extnames: ['jpg', 'png', 'jpeg', 'webp'],
@@ -44,11 +43,6 @@ export default class CardsController {
       ...legacyImages,
       ...(singleImage ? [singleImage] : []),
     ].filter((f) => f.isValid)
-
-    console.log(`\n📂 [CardsController.store] ${allFiles.length} fichier(s) valide(s) reçu(s)`)
-    allFiles.forEach((f, i) =>
-      console.log(`     [${i + 1}] ${f.clientName} (${f.size} bytes, .${f.extname})`)
-    )
 
     // --- Vérification deckId ---
     if (!deckId) {
@@ -74,7 +68,6 @@ export default class CardsController {
       const user = auth.user!
       if (!user.canUseAiToday()) {
         const resetTime = user.aiResetTime().toFormat('HH:mm')
-        console.warn(`⛔ [CardsController.store] Limite IA atteinte pour userId #${user.id}`)
         session.flash(
           'error',
           `Tu as déjà utilisé l'IA aujourd'hui. Reviens après minuit (réinitialisation à ${resetTime}).`
@@ -85,10 +78,6 @@ export default class CardsController {
       try {
         const aiService = new AIService()
         const { cards: rawCards, errors } = await aiService.generateFromFiles(allFiles)
-
-        if (errors.length > 0) {
-          console.warn(`⚠️ ${errors.length} fichier(s) ont échoué:`, errors)
-        }
 
         if (rawCards.length === 0) {
           session.flash(
@@ -111,9 +100,6 @@ export default class CardsController {
         if (!user.isAdmin) {
           user.lastAiRequestAt = DateTime.now()
           await user.save()
-          console.log(`🕐 lastAiRequestAt mis à jour pour userId #${user.id}`)
-        } else {
-          console.log(`👑 Admin — pas de limite appliquée.`)
         }
 
         const successMsg = `✨ ${cardsToCreate.length} cartes générées depuis ${allFiles.length} fichier(s) !`
@@ -122,7 +108,6 @@ export default class CardsController {
 
         return response.redirect().toRoute('decks.show', { id: deck.id })
       } catch (error) {
-        console.error('\n❌ [CardsController.store] Erreur IA:', error.message)
         session.flash('error', `Erreur IA : ${error.message}`)
         return response.redirect().back()
       }

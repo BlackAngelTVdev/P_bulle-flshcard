@@ -59,7 +59,7 @@ export default class DecksController {
     })
 
     session.flash('success', 'Deck créé avec succès !')
-    return response.redirect().toRoute('decks.index')
+    return response.redirect().toRoute('decks.mine')
   }
 
   async show({ params, view }: HttpContext) {
@@ -94,7 +94,7 @@ export default class DecksController {
     await deck.save()
 
     session.flash('success', 'Deck modifié avec succès !')
-    return response.redirect().toRoute('decks.index')
+    return response.redirect().toRoute('decks.mine')
   }
 
   async destroy({ params, response, session, auth }: HttpContext) {
