@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/legal.css'])
-    <title>Flash Dam's | Révise avec efficacité</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/legal.css'])
+  <title>Flash Dam's | Légal & Sécurité</title>
 </head>
 
 <div class="legal-scene">
   <div class="legal-header">
     <a href="{{ route('index') }}" class="back-link">← Retour</a>
-    <p class="legal-subtitle">Retrouve ici nos engagements envers toi.</p>
+    <p class="legal-subtitle">Engagement, transparence et sécurité.</p>
     <div class="face-tabs">
       <a href="{{ route('legal', { face: 'cgu' }) }}" class="face-tab {{ face === 'cgu' ? 'active' : '' }}">CGU</a>
-      <a href="{{ route('legal', { face: 'cgv' }) }}" class="face-tab {{ face === 'cgv' ? 'active' : '' }}">CGV</a>
+      <a href="{{ route('legal', { face: 'data' }) }}" class="face-tab {{ face === 'data' ? 'active' : '' }}">DATA</a>
     </div>
   </div>
 
@@ -24,78 +24,50 @@
       <div class="card-face card-front">
         <div class="card-header">
           <div class="card-header-left">
-            <span class="card-pill">01 / CGU</span>
-            <h1>Conditions Générales <span class="highlight">d'Utilisation</span></h1>
+            <span class="card-pill">01 / USAGE</span>
+            <h1>Utilisation <span class="highlight">Gratuite</span></h1>
           </div>
-          <a href="{{ route('legal', { face: 'cgv' }) }}" class="flip-btn">
-            <span>Voir les CGV</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
-          </a>
         </div>
         <div class="card-body">
           <section class="legal-section">
-            <h2><span class="section-num">1</span> Acceptation</h2>
-            <p>En accédant à Flash Dam's, vous acceptez sans réserve les présentes conditions. L'utilisation du service implique votre accord complet.</p>
+            <h2><span class="section-num">1</span> Service 100% Gratuit</h2>
+            <p>Flash Dam's est mis à disposition gratuitement. Il n'y a aucun frais caché, aucun abonnement, et aucune fonctionnalité bridée par un paiement.</p>
           </section>
+
           <section class="legal-section">
-            <h2><span class="section-num">2</span> Description du service</h2>
-            <p>Flash Dam's est une plateforme de création et d'apprentissage par flashcards. Le service est fourni tel quel, sans garantie de disponibilité continue.</p>
+            <h2><span class="section-num">2</span> Disponibilité (Uptime)</h2>
+            <p>Le service est fourni "en l'état". Bien que je fasse mon maximum, je ne garantis pas un accès 24h/24 et 7j/7. Des interruptions de maintenance peuvent survenir.</p>
           </section>
+
           <section class="legal-section">
-            <h2><span class="section-num">3</span> Compte utilisateur</h2>
-            <p>Vous êtes responsable de la confidentialité de vos identifiants et de toute activité effectuée depuis votre compte.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">4</span> Contenu utilisateur</h2>
-            <p>Vous conservez vos droits sur le contenu que vous créez. En publiant, vous accordez à Flash Dam's une licence d'utilisation non exclusive.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">5</span> Comportement interdit</h2>
-            <p>Il est interdit d'utiliser le service à des fins illégales, d'accéder à des systèmes non autorisés ou de perturber la plateforme.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">6</span> Modification des CGU</h2>
-            <p>Nous nous réservons le droit de modifier ces conditions à tout moment. Les utilisateurs seront informés des changements majeurs.</p>
+            <h2><span class="section-num">3</span> Responsabilité</h2>
+            <p>Tu es responsable du contenu de tes decks. L'usage de l'IA est un outil d'aide, vérifie toujours tes sources avant tes examens.</p>
           </section>
         </div>
       </div>
 
-      {{-- FACE ARRIÈRE : CGV --}}
+      {{-- FACE ARRIÈRE : DATA --}}
       <div class="card-face card-back">
         <div class="card-header">
           <div class="card-header-left">
-            <span class="card-pill card-pill--back">02 / CGV</span>
-            <h1>Conditions Générales <span class="highlight">de Vente</span></h1>
+            <span class="card-pill card-pill--back">02 / DATA</span>
+            <h1>Tes Données <span class="highlight">sont sacrées</span></h1>
           </div>
-          <a href="{{ route('legal', { face: 'cgu' }) }}" class="flip-btn flip-btn--back">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
-            <span>Voir les CGU</span>
-          </a>
         </div>
         <div class="card-body">
           <section class="legal-section">
-            <h2><span class="section-num">1</span> Offres et tarifs</h2>
-            <p>Flash Dam's propose un accès gratuit avec des fonctionnalités premium disponibles selon les offres consultables sur la page tarifaire.</p>
+            <h2><span class="section-num">1</span> Sauvegardes</h2>
+            <p>Je mets tout en œuvre pour qu'aucune donnée ne soit perdue (backups réguliers). Cependant, le risque zéro n'existe pas en informatique.</p>
           </section>
+
           <section class="legal-section">
-            <h2><span class="section-num">2</span> Paiement</h2>
-            <p>Les paiements sont sécurisés et traités par des prestataires certifiés. Aucune donnée bancaire n'est stockée sur nos serveurs.</p>
+            <h2><span class="section-num">2</span> Risque de perte</h2>
+            <p>Dans le cas exceptionnel d'un crash majeur, une perte de données partielle reste possible. Je décline toute responsabilité en cas de perte de tes fiches.</p>
           </section>
+
           <section class="legal-section">
-            <h2><span class="section-num">3</span> Droit de rétractation</h2>
-            <p>Conformément à la législation en vigueur, vous disposez d'un délai de 14 jours pour vous rétracter après tout achat d'abonnement.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">4</span> Remboursement</h2>
-            <p>Les demandes de remboursement sont traitées sous 5 à 10 jours ouvrés. Contactez le support avec votre numéro de commande.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">5</span> Résiliation</h2>
-            <p>Vous pouvez résilier votre abonnement à tout moment depuis votre espace personnel. La résiliation prend effet à la fin de la période en cours.</p>
-          </section>
-          <section class="legal-section">
-            <h2><span class="section-num">6</span> Litiges</h2>
-            <p>En cas de litige, une solution amiable sera recherchée en priorité. À défaut, les tribunaux compétents de notre siège social seront saisis.</p>
+            <h2><span class="section-num">3</span> Confidentialité</h2>
+            <p>Tes données ne sont jamais revendues. Elles restent sur l'infrastructure Flash Dam's pour ton usage personnel de révision.</p>
           </section>
         </div>
       </div>
@@ -106,10 +78,10 @@
 
 <script>
   const wrapper = document.querySelector('.card-wrapper')
-  const face = wrapper.dataset.face
+  const currentFace = wrapper.dataset.face
 
-  // Flip instantané si CGV (pas de transition au chargement)
-  if (face === 'cgv') {
+  // Flip instantané si on arrive sur la face 'data'
+  if (currentFace === 'data') {
     wrapper.classList.add('no-transition')
     wrapper.classList.add('is-flipped')
     requestAnimationFrame(() => {
@@ -119,25 +91,22 @@
     })
   }
 
-  // Flip animé au clic sur les boutons
-  document.querySelectorAll('.flip-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault()
-      const target = btn.href
-      wrapper.classList.toggle('is-flipped')
-      setTimeout(() => { window.location.href = target }, 500)
-    })
-  })
+  // Gestion du flip fluide
+  const handleFlip = (e, targetUrl) => {
+    e.preventDefault()
+    wrapper.classList.toggle('is-flipped')
+    setTimeout(() => { window.location.href = targetUrl }, 500)
+  }
 
-  document.querySelectorAll('.face-tab').forEach(tab => {
-    tab.addEventListener('click', (e) => {
-      e.preventDefault()
-      const target = tab.href
-      const goTo = tab.textContent.trim().toLowerCase()
-      const current = face
-      if (goTo !== current) {
-        wrapper.classList.toggle('is-flipped')
-        setTimeout(() => { window.location.href = target }, 500)
+  document.querySelectorAll('.flip-btn, .face-tab').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const targetUrl = el.getAttribute('href')
+      const targetFace = targetUrl.includes('data') ? 'data' : 'cgu'
+      
+      if (targetFace !== currentFace) {
+        handleFlip(e, targetUrl)
+      } else {
+        e.preventDefault()
       }
     })
   })

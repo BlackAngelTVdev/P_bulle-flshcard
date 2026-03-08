@@ -10,11 +10,9 @@ const AuthController = () => import('#controllers/users_controller')
 router.get('/', [HomeController, 'index']).as('index')
 
 router.get('/legal/:face', ({ params, view }) => {
-  const face = ['cgu', 'cgv'].includes(params.face) ? params.face : 'cgu'
+  const face = ['cgu', 'data'].includes(params.face) ? params.face : 'cgu'
   return view.render('pages/conditions/legal', { face })
 }).as('legal')
-
-// Redirection /legal → /legal/cgu
 router.get('/legal', ({ response }) => {
   return response.redirect().toRoute('legal', { face: 'cgu' })
 }).as('legal.index')
