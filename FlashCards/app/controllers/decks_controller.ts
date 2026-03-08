@@ -3,18 +3,20 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { createDeckValidator, updateDeckValidator } from '#validators/deck'
 
 export default class DecksController {
-
   // 1. Affiche tous les decks publics
   async index({ view }: HttpContext) {
     const decks = await Deck.query().withCount('cards').orderBy('category', 'asc')
 
     // On groupe les decks par catégorie
-    const groupedDecks = decks.reduce((acc, deck) => {
-      const cat = deck.category || 'Autre'
-      if (!acc[cat]) acc[cat] = []
-      acc[cat].push(deck)
-      return acc
-    }, {} as Record<string, Deck[]>)
+    const groupedDecks = decks.reduce(
+      (acc, deck) => {
+        const cat = deck.category || 'Autre'
+        if (!acc[cat]) acc[cat] = []
+        acc[cat].push(deck)
+        return acc
+      },
+      {} as Record<string, Deck[]>
+    )
 
     return view.render('pages/home', { groupedDecks })
   }
@@ -29,12 +31,15 @@ export default class DecksController {
       .orderBy('category', 'asc')
 
     // La logique de regroupement que tu voulais
-    const groupedDecks = decks.reduce((acc, deck) => {
-      const cat = deck.category || 'Autre'
-      if (!acc[cat]) acc[cat] = []
-      acc[cat].push(deck)
-      return acc
-    }, {} as Record<string, Deck[]>)
+    const groupedDecks = decks.reduce(
+      (acc, deck) => {
+        const cat = deck.category || 'Autre'
+        if (!acc[cat]) acc[cat] = []
+        acc[cat].push(deck)
+        return acc
+      },
+      {} as Record<string, Deck[]>
+    )
 
     // On passe 'groupedDecks' à la vue, comme dans ton index
     return view.render('pages/home', { groupedDecks })
@@ -50,7 +55,7 @@ export default class DecksController {
 
     await Deck.create({
       ...payload,
-      userId: auth.user!.id
+      userId: auth.user!.id,
     })
 
     session.flash('success', 'Deck créé avec succès !')
@@ -82,10 +87,10 @@ export default class DecksController {
     }
 
     const payload = await request.validateUsing(updateDeckValidator, {
-      data: { ...request.all(), id: params.id },
+      data: { ...request.all(), id: Number(params.id) }, // 👈 conversion en number
     })
 
-    deck.merge(payload) // Prendra la catégorie si elle est fournie
+    deck.merge(payload)
     await deck.save()
 
     session.flash('success', 'Deck modifié avec succès !')
