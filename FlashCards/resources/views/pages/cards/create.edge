@@ -35,17 +35,23 @@
             @end
 
             <div class="form-group ai-section">
-                <label>📸 Générer via photos de cours</label>
+                <label>📎 Générer via fichiers de cours</label>
                 <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">
-                    Tu peux sélectionner <strong>plusieurs images</strong> en même temps (Ctrl+clic ou Maj+clic).<br>
-                    L'IA analysera chaque image et fusionnera toutes les flashcards.
+                    Tu peux mélanger <strong>images, PDF, Word et PowerPoint</strong> en même temps.<br>
+                    L'IA analysera chaque fichier et fusionnera toutes les flashcards.
                 </p>
-                <input type="file" name="courseImages[]" accept="image/*" id="imageInput" multiple>
+                <input
+                    type="file"
+                    name="courseFiles[]"
+                    accept="image/*,.pdf,.docx,.pptx"
+                    id="fileInput"
+                    multiple
+                >
                 <div id="previewContainer" style="display:none;margin-top:12px;">
                     <p style="font-size:0.8rem;font-weight:bold;margin-bottom:6px;">
-                        Images sélectionnées : <span id="imageCount">0</span>
+                        Fichiers sélectionnés : <span id="fileCount">0</span>
                     </p>
-                    <div id="previewGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+                    <div id="previewGrid" style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;"></div>
                 </div>
             </div>
 
@@ -71,43 +77,76 @@
 <script>
     const form = document.getElementById('cardForm')
     const btn = document.getElementById('submitBtn')
-    const fileInput = document.getElementById('imageInput')
+    const fileInput = document.getElementById('fileInput')
+
+    // Icônes selon l'extension
+    function getFileIcon(filename) {
+        const ext = filename.split('.').pop().toLowerCase()
+        if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) return null // on affiche l'image
+        if (ext === 'pdf') return '📄'
+        if (ext === 'docx') return '📝'
+        if (ext === 'pptx') return '📊'
+        return '📎'
+    }
 
     if (fileInput) {
         const previewContainer = document.getElementById('previewContainer')
         const previewGrid = document.getElementById('previewGrid')
-        const imageCount = document.getElementById('imageCount')
+        const fileCount = document.getElementById('fileCount')
 
         fileInput.addEventListener('change', () => {
             const files = Array.from(fileInput.files)
             previewGrid.innerHTML = ''
             if (files.length === 0) { previewContainer.style.display = 'none'; return }
             previewContainer.style.display = 'block'
-            imageCount.textContent = files.length
+            fileCount.textContent = files.length
+
             files.forEach((file, index) => {
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    const wrapper = document.createElement('div')
-                    wrapper.style.cssText = 'position:relative;display:inline-block;'
-                    const img = document.createElement('img')
-                    img.src = e.target.result
-                    img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid #ddd;'
-                    img.title = file.name
-                    const label = document.createElement('div')
-                    label.textContent = '#' + (index + 1)
-                    label.style.cssText = 'position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);color:white;font-size:10px;padding:1px 4px;border-radius:3px;'
-                    wrapper.appendChild(img)
-                    wrapper.appendChild(label)
-                    previewGrid.appendChild(wrapper)
+                const wrapper = document.createElement('div')
+                wrapper.style.cssText = 'position:relative;display:inline-block;width:80px;'
+
+                const icon = getFileIcon(file.name)
+
+                if (icon === null) {
+                    // Image → aperçu visuel
+                    const reader = new FileReader()
+                    reader.onload = (e) => {
+                        const img = document.createElement('img')
+                        img.src = e.target.result
+                        img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid #ddd;'
+                        img.title = file.name
+                        wrapper.appendChild(img)
+                    }
+                    reader.readAsDataURL(file)
+                } else {
+                    // Document → icône + nom tronqué
+                    const box = document.createElement('div')
+                    box.style.cssText = 'width:80px;height:80px;border-radius:6px;border:2px solid #ddd;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f5f5f5;gap:4px;'
+                    const iconEl = document.createElement('span')
+                    iconEl.textContent = icon
+                    iconEl.style.fontSize = '28px'
+                    const nameEl = document.createElement('span')
+                    nameEl.textContent = file.name.length > 10 ? file.name.slice(0, 9) + '…' : file.name
+                    nameEl.style.cssText = 'font-size:9px;color:#555;text-align:center;padding:0 2px;word-break:break-all;'
+                    box.appendChild(iconEl)
+                    box.appendChild(nameEl)
+                    box.title = file.name
+                    wrapper.appendChild(box)
                 }
-                reader.readAsDataURL(file)
+
+                const label = document.createElement('div')
+                label.textContent = '#' + (index + 1)
+                label.style.cssText = 'position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);color:white;font-size:10px;padding:1px 4px;border-radius:3px;'
+                wrapper.appendChild(label)
+                previewGrid.appendChild(wrapper)
             })
         })
     }
 
     form.addEventListener('submit', () => {
         if (fileInput && fileInput.files.length > 0) {
-            const plural = fileInput.files.length > 1 ? fileInput.files.length + ' images' : '1 image'
+            const count = fileInput.files.length
+            const plural = count > 1 ? count + ' fichiers' : '1 fichier'
             btn.textContent = "⏳ L'IA analyse " + plural + "..."
             btn.style.opacity = '0.7'
             btn.style.cursor = 'not-allowed'

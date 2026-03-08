@@ -11,7 +11,6 @@ export default class CardsController {
   // -------------------------------------------------------
   async create({ view, request }: HttpContext) {
     const deckId = request.input('deckId')
-
     return view.render('pages/cards/create', { deckId })
   }
 
@@ -19,30 +18,37 @@ export default class CardsController {
   // POST /cards
   // -------------------------------------------------------
   async store({ request, auth, response, session }: HttpContext) {
-
-
     const deckId = request.input('deckId')
 
-    // Récupération de PLUSIEURS images (input name="courseImages[]")
-    const courseImages = request.files('courseImages', {
+    // Accepte images ET documents (PDF, DOCX, PPTX)
+    const allAllowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf', 'docx', 'pptx']
+
+    const courseFiles = request.files('courseFiles', {
+      size: '20mb',
+      extnames: allAllowedExts,
+    })
+
+    // Rétrocompatibilité ancien champ "courseImages[]"
+    const legacyImages = request.files('courseImages', {
       size: '5mb',
       extnames: ['jpg', 'png', 'jpeg', 'webp'],
     })
 
-    // Rétrocompatibilité : on accepte aussi l'ancien input "courseImage" (une seule)
     const singleImage = request.file('courseImage', {
       size: '5mb',
       extnames: ['jpg', 'png', 'jpeg', 'webp'],
     })
 
-    // On fusionne : plusieurs + éventuelle image unique
-    const allImages = [
-      ...courseImages,
+    const allFiles = [
+      ...courseFiles,
+      ...legacyImages,
       ...(singleImage ? [singleImage] : []),
-    ].filter((img) => img.isValid)
+    ].filter((f) => f.isValid)
 
-
-    allImages.forEach((img, i) => console.log(`     [${i + 1}] ${img.clientName} (${img.size} bytes)`))
+    console.log(`\n📂 [CardsController.store] ${allFiles.length} fichier(s) valide(s) reçu(s)`)
+    allFiles.forEach((f, i) =>
+      console.log(`     [${i + 1}] ${f.clientName} (${f.size} bytes, .${f.extname})`)
+    )
 
     // --- Vérification deckId ---
     if (!deckId) {
@@ -61,14 +67,10 @@ export default class CardsController {
       return response.redirect().toRoute('decks.index')
     }
 
-
     // -------------------------------------------------------
-    // CAS IA : Au moins une image valide
+    // CAS IA : Au moins un fichier valide
     // -------------------------------------------------------
-    if (allImages.length > 0) {
-
-
-      // --- Vérification limite quotidienne ---
+    if (allFiles.length > 0) {
       const user = auth.user!
       if (!user.canUseAiToday()) {
         const resetTime = user.aiResetTime().toFormat('HH:mm')
@@ -82,10 +84,10 @@ export default class CardsController {
 
       try {
         const aiService = new AIService()
-        const { cards: rawCards, errors } = await aiService.generateFromImages(allImages)
+        const { cards: rawCards, errors } = await aiService.generateFromFiles(allFiles)
 
         if (errors.length > 0) {
-          console.warn(`⚠️ ${errors.length} image(s) ont échoué:`, errors)
+          console.warn(`⚠️ ${errors.length} fichier(s) ont échoué:`, errors)
         }
 
         if (rawCards.length === 0) {
@@ -93,7 +95,7 @@ export default class CardsController {
             'error',
             errors.length > 0
               ? `Aucune carte générée. Erreurs : ${errors.join(' | ')}`
-              : "L'IA n'a pas pu extraire de contenu. Essaie avec des images plus lisibles."
+              : "L'IA n'a pas pu extraire de contenu. Essaie avec des fichiers plus lisibles."
           )
           return response.redirect().back()
         }
@@ -104,20 +106,18 @@ export default class CardsController {
           deckId: deck.id,
         }))
 
-
         await Card.createMany(cardsToCreate)
 
-        // Mise à jour du timestamp IA (sauf admin — on ne traque pas leur usage)
         if (!user.isAdmin) {
           user.lastAiRequestAt = DateTime.now()
           await user.save()
-          console.log(`🕐 [CardsController.store] lastAiRequestAt mis à jour pour userId #${user.id}`)
+          console.log(`🕐 lastAiRequestAt mis à jour pour userId #${user.id}`)
         } else {
-          console.log(`👑 [CardsController.store] Admin — pas de limite appliquée.`)
+          console.log(`👑 Admin — pas de limite appliquée.`)
         }
 
-        const successMsg = `✨ ${cardsToCreate.length} cartes générées depuis ${allImages.length} image(s) !`
-        const warnMsg = errors.length > 0 ? ` (${errors.length} image(s) ignorée(s))` : ''
+        const successMsg = `✨ ${cardsToCreate.length} cartes générées depuis ${allFiles.length} fichier(s) !`
+        const warnMsg = errors.length > 0 ? ` (${errors.length} fichier(s) ignoré(s))` : ''
         session.flash('success', successMsg + warnMsg)
 
         return response.redirect().toRoute('decks.show', { id: deck.id })
@@ -129,25 +129,26 @@ export default class CardsController {
     }
 
     // -------------------------------------------------------
-    // CAS MANUEL : Pas d'image
+    // CAS MANUEL : Pas de fichier
     // -------------------------------------------------------
+    const invalidFiles = [
+      ...request.files('courseFiles'),
+      ...request.files('courseImages'),
+    ].filter((f) => !f.isValid)
 
-    // Images présentes mais toutes invalides
-    const invalidImages = request.files('courseImages').filter((img) => !img.isValid)
-    if (invalidImages.length > 0) {
-      const msgs = invalidImages.flatMap((img) => img.errors.map((e) => e.message))
-      session.flash('error', `Images invalides : ${msgs.join(', ')}`)
+    if (invalidFiles.length > 0) {
+      const msgs = invalidFiles.flatMap((f) => f.errors.map((e) => e.message))
+      session.flash('error', `Fichiers invalides : ${msgs.join(', ')}`)
       return response.redirect().back()
     }
 
     try {
       const payload = await request.validateUsing(createCardValidator)
       await Card.create({ ...payload, deckId: deck.id })
-
       session.flash('success', 'Carte créée avec succès !')
       return response.redirect().toRoute('decks.show', { id: deck.id })
     } catch (error) {
-      session.flash('error', 'Veuillez remplir les champs Question et Réponse, ou fournir une image.')
+      session.flash('error', 'Veuillez remplir les champs Question et Réponse, ou fournir un fichier.')
       return response.redirect().back()
     }
   }

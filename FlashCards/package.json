@@ -40,6 +40,7 @@
     "@japa/plugin-adonisjs": "^4.0.0",
     "@japa/runner": "^4.2.0",
     "@swc/core": "1.11.24",
+    "@types/adm-zip": "^0.5.7",
     "@types/luxon": "^3.7.1",
     "@types/node": "^22.15.18",
     "eslint": "^9.26.0",
@@ -60,14 +61,15 @@
     "@adonisjs/vite": "^4.0.0",
     "@google/generative-ai": "^0.24.1",
     "@vinejs/vine": "^3.0.1",
+    "adm-zip": "^0.5.16",
     "edge.js": "^6.2.1",
     "groq-sdk": "^0.37.0",
     "luxon": "^3.7.2",
     "mammoth": "^1.11.0",
     "mysql2": "^3.16.2",
     "openai": "^6.25.0",
-    "pdf-parse": "^2.4.5",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "unpdf": "^1.4.0"
   },
   "hotHook": {
     "boundaries": [
