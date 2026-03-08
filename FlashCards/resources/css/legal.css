@@ -1,0 +1,283 @@
+/* ─── Scene ─────────────────────────────────────────── */
+.legal-scene {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+/* ─── Header page ────────────────────────────────────── */
+.legal-header {
+  margin-bottom: 2.5rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-light);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--primary-violet); }
+
+.legal-subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-bottom: 1.25rem;
+}
+
+/* ─── Tabs ───────────────────────────────────────────── */
+.face-tabs {
+  display: inline-flex;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.face-tab {
+  padding: 7px 20px;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-light);
+  transition: all 0.2s;
+}
+
+.face-tab.active {
+  background: var(--primary-violet);
+  color: white;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+}
+
+.face-tab:not(.active):hover {
+  color: var(--primary-violet);
+  background: var(--bg-main);
+}
+
+/* ─── Card wrapper (flip) ────────────────────────────── */
+.card-wrapper {
+  perspective: 1400px;
+}
+
+.card-inner {
+  position: relative;
+  min-height: 560px;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.card-wrapper.is-flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-wrapper.no-transition .card-inner {
+  transition: none !important;
+}
+
+/* ─── Card faces ─────────────────────────────────────── */
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 24px rgba(139, 92, 246, 0.07), 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Barre colorée en haut */
+.card-front::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-violet), #a78bfa);
+  flex-shrink: 0;
+}
+
+.card-back::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, #6366f1, var(--primary-violet));
+  flex-shrink: 0;
+}
+
+/* ─── Card header ────────────────────────────────────── */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.card-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card-pill {
+  display: inline-block;
+  background: var(--bg-main);
+  color: var(--primary-violet);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  width: fit-content;
+}
+
+.card-pill--back {
+  background: #eef2ff;
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.card-header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.highlight {
+  color: var(--primary-violet);
+}
+
+/* ─── Flip button ────────────────────────────────────── */
+.flip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--bg-main);
+  color: var(--primary-violet);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.flip-btn:hover {
+  background: var(--primary-violet);
+  color: white;
+  border-color: var(--primary-violet);
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.flip-btn--back {
+  background: #eef2ff;
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.25);
+}
+
+.flip-btn--back:hover {
+  background: #6366f1;
+  color: white;
+  border-color: #6366f1;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+/* ─── Card body ──────────────────────────────────────── */
+.card-body {
+  padding: 24px 32px 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 28px;
+  overflow-y: auto;
+  flex: 1;
+  align-content: start;
+}
+
+/* ─── Sections légales ───────────────────────────────── */
+.legal-section {
+  background: var(--bg-main);
+  border-radius: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.legal-section:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 2px 12px rgba(139, 92, 246, 0.06);
+}
+
+.legal-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: var(--primary-violet);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.card-back .section-num {
+  background: #6366f1;
+}
+
+.legal-section p {
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin: 0;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────── */
+.card-body::-webkit-scrollbar { width: 4px; }
+.card-body::-webkit-scrollbar-track { background: transparent; }
+.card-body::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 2px;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .card-header { padding: 18px 20px 16px; }
+  .card-body {
+    grid-template-columns: 1fr;
+    padding: 18px 20px 24px;
+  }
+  .card-inner { min-height: 700px; }
+  .card-header h1 { font-size: 1.15rem; }
+}
