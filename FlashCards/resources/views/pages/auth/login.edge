@@ -5,11 +5,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/login.css`])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/login.css'])
     <title>
-        {{ "Login | Flash Dam\'s" }}
+        {{ "Login | Flash Dam's" }}
     </title>
 </head>
+
 <main class="auth-container">
     <div class="auth-card">
         <div class="logo-text">
@@ -35,6 +36,14 @@
             <div class="form-group">
                 <label for="password">Mot de passe</label>
                 <input type="password" name="password" required>
+            </div>
+
+            {{-- NOUVEAU : Option de session persistante --}}
+            <div class="form-group-remember">
+                <label class="remember-label">
+                    <input type="checkbox" name="isRememberMe">
+                    <span>Rester connecté</span>
+                </label>
             </div>
 
             <button type="submit" class="btn-primary">Se connecter</button>

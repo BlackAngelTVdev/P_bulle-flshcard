@@ -3,6 +3,7 @@ import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
+import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -10,6 +11,8 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
+
   @column({ isPrimary: true })
   declare id: number
 
@@ -34,19 +37,14 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime()
   declare lastAiRequestAt: DateTime | null
 
-
   canUseAiToday(): boolean {
     if (this.isAdmin) return true
     if (!this.lastAiRequestAt) return true
-
     const lastUse = this.lastAiRequestAt.toLocal()
     const now = DateTime.local()
-
-    // Même jour calendaire = bloqué
     return !lastUse.hasSame(now, 'day')
   }
 
-  // Retourne l'heure de réinitialisation (minuit prochain)
   aiResetTime(): DateTime {
     return DateTime.local().endOf('day')
   }

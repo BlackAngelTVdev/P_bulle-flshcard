@@ -173,6 +173,27 @@ input:focus {
     text-decoration: underline;
     color: inherit;
 }
+.form-group-remember {
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+}
+
+.remember-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.remember-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-violet); /* Utilise ta couleur de base */
+}
 /* --- RESPONSIVE DESIGN (Auth) --- */
 
 @media (max-width: 480px) {
