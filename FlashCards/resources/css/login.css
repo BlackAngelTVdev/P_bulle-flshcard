@@ -134,6 +134,45 @@ input:focus {
 .auth-footer a:hover {
     text-decoration: underline;
 }
+
+.btn-primary:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;          
+    margin-bottom: 20px;
+    height: auto;        
+}
+
+
+.checkbox-group input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin: 0 !important;
+    padding: 0;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin: 0 !important;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group label a {
+    margin-left: 4px;
+    text-decoration: underline;
+    color: inherit;
+}
 /* --- RESPONSIVE DESIGN (Auth) --- */
 
 @media (max-width: 480px) {
