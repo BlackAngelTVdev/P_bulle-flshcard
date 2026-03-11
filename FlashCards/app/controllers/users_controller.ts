@@ -127,7 +127,7 @@ export default class AuthController {
       session.flash('errors', error.messages ?? 'Une erreur est survenue')
     }
 
-    return response.redirect().toRoute('auth.showEdit')
+    return response.redirect().toRoute('profile.edit')
   }
 
   /**
@@ -143,7 +143,7 @@ export default class AuthController {
       const isValid = await hash.verify(user.password, currentPassword)
       if (!isValid) {
         session.flash('passwordError', 'Mot de passe actuel incorrect')
-        return response.redirect().toRoute('auth.showEdit')
+        return response.redirect().toRoute('profile.edit')
       }
 
       // Le setter du modèle User hash automatiquement le nouveau mot de passe
@@ -155,6 +155,6 @@ export default class AuthController {
       session.flash('passwordError', error.messages ?? 'Une erreur est survenue')
     }
 
-    return response.redirect().toRoute('auth.showEdit')
+    return response.redirect().toRoute('profile.edit')
   }
 }
