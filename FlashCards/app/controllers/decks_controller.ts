@@ -112,7 +112,6 @@ export default class DecksController {
   async play({ params, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
     
-    // On compte le nombre total de cartes pour l'afficher dans le setup
     await deck.loadCount('cards')
     const cardsCount = deck.$extras.cards_count
 
@@ -146,7 +145,6 @@ export default class DecksController {
   async result({ params, request, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
     
-    // On récupère les stats de fin de partie
     const score = request.input('score', 0)
     const total = request.input('total', 0)
     const mode = request.input('mode', 'basique')
