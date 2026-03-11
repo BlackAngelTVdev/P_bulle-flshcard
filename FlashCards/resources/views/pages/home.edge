@@ -2,9 +2,12 @@
 <main>
   <div class="search-bar">
     <form method="GET" action="" onsubmit="return false;">
-      <input type="text" name="q" placeholder="Rechercher des decks..." value="{{ q || '' }}" autocomplete="off" />
-      <button type="button" aria-label="Rechercher">🔎</button>
+      <input type="text" name="q" placeholder="Ex: Informatique, NoSQL" value="{{ q || '' }}" autocomplete="off" />
+      <button type="button" aria-label="Rechercher">
+        <span class="search-icon" aria-hidden="true"></span>
+      </button>
     </form>
+    <p class="search-help" role="note">Sans virgule: recherche classique. Avec virgule: categorie, theme.</p>
   </div>
 
   <div class="decks-grid">
@@ -15,7 +18,7 @@
       @each((decksInCategory, category) in groupedDecks)
         <details class="category-group">
           <summary class="category-summary">
-            <span>📂 {{ category }}</span>
+            <span class="category-label">📂 {{ category }}</span>
             <span class="badge-count">{{ decksInCategory.length }} decks</span>
           </summary>
 

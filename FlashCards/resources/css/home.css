@@ -10,8 +10,11 @@ main {
 
 /* --- SEARCH BAR --- */
 .search-bar {
+    position: relative;
     width: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
 }
@@ -42,7 +45,8 @@ main {
     background: var(--primary-violet);
     color: white;
     border: none;
-    padding: 10px 14px;
+    width: 48px;
+    height: 48px;
     border-radius: 999px;
     cursor: pointer;
     font-size: 1rem;
@@ -53,6 +57,65 @@ main {
 
 .search-bar button:hover {
     filter: brightness(0.95);
+}
+
+.search-icon {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid currentColor;
+    border-radius: 50%;
+}
+
+.search-icon::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    bottom: -6px;
+    width: 8px;
+    height: 2.5px;
+    background: currentColor;
+    border-radius: 999px;
+    transform: rotate(45deg);
+    transform-origin: center;
+}
+
+.search-help {
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 50%;
+    z-index: 5;
+    width: min(100%, 420px);
+    margin: 0;
+    padding: 0.7rem 0.95rem;
+    border-radius: 14px;
+    background: rgba(30, 27, 75, 0.96);
+    color: #eef2ff;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    text-align: center;
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -6px);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.search-help::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    width: 12px;
+    height: 12px;
+    background: rgba(30, 27, 75, 0.96);
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.search-bar:hover .search-help,
+.search-bar:focus-within .search-help {
+    opacity: 1;
+    transform: translate(-50%, 0);
 }
 
 /* --- ACCORDÉON DE CATÉGORIES --- */
