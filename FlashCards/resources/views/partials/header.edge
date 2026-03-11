@@ -21,7 +21,8 @@
                 <a href="{{ route('decks.create') }}">Ajouter un deck</a>
             </div>
             <div class="user-info">
-                <span class="username">{{ auth.user.username }}</span>
+                
+                <a href="{{ route('profile.edit')}}"><span class="username">{{ auth.user.username }}</span></a>
                 <a href="{{ route('auth.logout') }}">Se déconnecter</a>
             </div>
         </nav>

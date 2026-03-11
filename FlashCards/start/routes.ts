@@ -30,6 +30,14 @@ router.group(() => {
   router.get('/logout', [AuthController, 'logout']).as('auth.logout')
 
 
+  router.group(() => {
+    router.get('/edit', [AuthController, 'showEdit']).as('profile.edit')
+    router.put('/', [AuthController, 'updateProfile']).as('profile.update')
+    router.put('/password', [AuthController, 'updatePassword']).as('profile.password')
+  }).prefix('/profile')
+
+
+
   // Section Decks
   router.group(() => {
     // Consultation et Jeu (Ouvert à tous les connectés)

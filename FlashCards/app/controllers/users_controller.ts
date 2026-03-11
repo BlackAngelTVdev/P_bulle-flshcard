@@ -1,6 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import { registerValidator } from '#validators/auth'
+import { updateProfileValidator, updatePasswordValidator } from '#validators/profile'
+import hash from '@adonisjs/core/services/hash'
 
 export default class AuthController {
   async showLogin({ view }: HttpContext) {
@@ -14,16 +16,12 @@ export default class AuthController {
         .where('email', uid)
         .orWhere('username', uid)
         .first()
-
       if (!user) {
         throw new Error('Invalid credentials')
       }
-
       await User.verifyCredentials(user.email, password)
-
-      await session.regenerate() // ← AJOUT ICI
+      await session.regenerate()
       await auth.use('web').login(user)
-
       return response.redirect().toRoute('decks.index')
     } catch (error) {
       session.flash('errors', 'Identifiants invalides')
@@ -45,14 +43,55 @@ export default class AuthController {
     try {
       const payload = await request.validateUsing(registerValidator)
       const user = await User.create(payload)
-
-      await session.regenerate() // ← AJOUT ICI
+      await session.regenerate()
       await auth.use('web').login(user)
-
       return response.redirect().toRoute('decks.index')
     } catch (error) {
       session.flashAll()
       return response.redirect().back()
+    }
+  }
+
+  async showEdit({ view, auth }: HttpContext) {
+    const user = auth.getUserOrFail()
+    return view.render('pages/auth/profil', { user })
+  }
+
+  async updateProfile({ request, auth, response, session }: HttpContext) {
+    const user = auth.getUserOrFail()
+    try {
+      const payload = await request.validateUsing(updateProfileValidator, {
+        meta: { userId: user.id },
+      })
+      user.merge(payload)
+      await user.save()
+      session.flash('success', 'Profil mis à jour avec succès')
+      return response.redirect().toRoute('decks.index')
+    } catch (error) {
+      session.flash('errors', error.messages ?? 'Une erreur est survenue')
+      session.flashAll()
+      return response.redirect().toRoute('decks.index')
+    }
+  }
+
+  async updatePassword({ request, auth, response, session }: HttpContext) {
+    const user = auth.getUserOrFail()
+    try {
+      const { currentPassword, password } = await request.validateUsing(updatePasswordValidator)
+      const isValid = await hash.verify(user.password, currentPassword)
+      if (!isValid) {
+        session.flash('passwordError', 'Mot de passe actuel incorrect')
+        session.flashAll()
+        return response.redirect().toRoute('decks.index')
+      }
+      user.password = password
+      await user.save()
+      session.flash('success', 'Mot de passe mis à jour avec succès')
+      return response.redirect().toRoute('decks.index')
+    } catch (error) {
+      session.flash('passwordError', error.messages ?? 'Une erreur est survenue')
+      session.flashAll()
+      return response.redirect().toRoute('decks.index')
     }
   }
 }
