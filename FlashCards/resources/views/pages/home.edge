@@ -1,5 +1,12 @@
-@component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home' })
+@component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home', js: 'home' })
 <main>
+  <div class="search-bar">
+    <form method="GET" action="" onsubmit="return false;">
+      <input type="text" name="q" placeholder="Rechercher des decks..." value="{{ q || '' }}" autocomplete="off" />
+      <button type="button" aria-label="Rechercher">🔎</button>
+    </form>
+  </div>
+
   <div class="decks-grid">
 
     {{-- On vérifie si on a des groupes, sinon on affiche l'état vide --}}

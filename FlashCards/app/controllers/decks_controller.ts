@@ -4,8 +4,21 @@ import { createDeckValidator, updateDeckValidator } from '#validators/deck'
 
 export default class DecksController {
   // 1. Affiche tous les decks publics
-  async index({ view }: HttpContext) {
-    const decks = await Deck.query().withCount('cards').orderBy('category', 'asc')
+  async index({ view, request }: HttpContext) {
+    const q = (request.input('q', '') || '').toString().trim()
+
+    // Construire la query et appliquer le filtre si nécessaire
+    const qb = Deck.query().withCount('cards')
+    if (q) {
+      qb.where((builder) => {
+        builder
+          .where('name', 'like', `%${q}%`)
+          .orWhere('description', 'like', `%${q}%`)
+          .orWhere('category', 'like', `%${q}%`)
+      })
+    }
+
+    const decks = await qb.orderBy('category', 'asc')
 
     // On groupe les decks par catégorie
     const groupedDecks = decks.reduce(
@@ -18,17 +31,29 @@ export default class DecksController {
       {} as Record<string, Deck[]>
     )
 
-    return view.render('pages/home', { groupedDecks })
+    return view.render('pages/home', { groupedDecks, q })
   }
 
   // 2. Affiche uniquement mes decks
 
-  async myDecks({ auth, view }: HttpContext) {
-    const decks = await Deck.query()
+  async myDecks({ auth, view, request }: HttpContext) {
+    const q = (request.input('q', '') || '').toString().trim()
+
+    const qb = Deck.query()
       .where('userId', auth.user!.id)
       .withCount('cards')
       // Important : Trie par catégorie pour que l'affichage soit ordonné
-      .orderBy('category', 'asc')
+
+    if (q) {
+      qb.where((builder) => {
+        builder
+          .where('name', 'like', `%${q}%`)
+          .orWhere('description', 'like', `%${q}%`)
+          .orWhere('category', 'like', `%${q}%`)
+      })
+    }
+
+    const decks = await qb.orderBy('category', 'asc')
 
     // La logique de regroupement que tu voulais
     const groupedDecks = decks.reduce(
@@ -42,7 +67,7 @@ export default class DecksController {
     )
 
     // On passe 'groupedDecks' à la vue, comme dans ton index
-    return view.render('pages/home', { groupedDecks })
+    return view.render('pages/home', { groupedDecks, q })
   }
 
   async create({ view }: HttpContext) {
@@ -109,30 +134,51 @@ export default class DecksController {
     return response.redirect().toRoute('decks.index')
   }
 
-  // 3. Page de sélection du mode (Basique, Survie, Chrono)
   async play({ params, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
-    return view.render('pages/deck/play', { deck })
+    
+    await deck.loadCount('cards')
+    const cardsCount = deck.$extras.cards_count
+
+    return view.render('pages/deck/play', { deck, cardsCount })
   }
 
   // 4. Lancement du jeu avec le mode sélectionné
   async game({ params, request, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
-    await deck.load('cards')
-
-    // On récupère le mode choisi, 'basique' par défaut
+    
+    // On récupère le mode ET la limite
     const mode = request.input('mode', 'basique')
+    
+    // On transforme la limite en nombre entier. Si c'est vide, on met 20 par défaut.
+    const limit = Number(request.input('limit', 20))
 
-    return view.render('pages/deck/game', { deck, mode })
+    // On charge les cartes : Aléatoire + Limite
+    const cards = await deck.related('cards').query()
+      .orderByRaw('RAND()') // Pour MySQL (si tu étais sur SQLite, ce serait RANDOM())
+      .limit(limit)
+
+    return view.render('pages/deck/game', { 
+      deck, 
+      cards, 
+      mode, 
+      limit: cards.length // On renvoie la longueur réelle (au cas où le deck a moins de cartes que la limite)
+    })
   }
 
   // 5. Page des résultats finaux
   async result({ params, request, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
+    
     const score = request.input('score', 0)
     const total = request.input('total', 0)
     const mode = request.input('mode', 'basique')
 
-    return view.render('pages/deck/result', { deck, score, total, mode })
+    return view.render('pages/deck/result', { 
+      deck, 
+      score, 
+      total, 
+      mode 
+    })
   }
 }

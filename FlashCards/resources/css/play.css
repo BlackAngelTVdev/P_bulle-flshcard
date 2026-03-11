@@ -79,6 +79,42 @@ h1 {
 .btn-back:hover {
     color: var(--primary-violet);
 }
+
+.limit-selection {
+    margin-top: 20px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.input-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.limit-input {
+    width: 80px;
+    padding: 10px;
+    border: 2px solid var(--primary-violet);
+    border-radius: 8px;
+    background: white;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.total-info {
+    font-weight: bold;
+    color: #666;
+}
+
+.hint {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+    font-size: 0.8rem;
+}
 /* --- RESPONSIVE DESIGN (Setup Game) --- */
 
 @media (max-width: 600px) {

@@ -8,6 +8,53 @@ main {
     padding: 2rem 0;
 }
 
+/* --- SEARCH BAR --- */
+.search-bar {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.search-bar form {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    gap: 8px;
+    background: white;
+    padding: 8px;
+    border-radius: 999px;
+    box-shadow: 0 6px 20px rgba(16,24,40,0.06);
+    border: 1px solid rgba(139,92,246,0.08);
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-size: 1rem;
+    border-radius: 999px;
+    color: var(--text-main, #111827);
+}
+
+.search-bar button {
+    background: var(--primary-violet);
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar button:hover {
+    filter: brightness(0.95);
+}
+
 /* --- ACCORDÉON DE CATÉGORIES --- */
 .category-group {
     margin-bottom: 20px;
@@ -160,5 +207,9 @@ a.deck-card:hover {
 
     .badge-count {
         display: none; /* On cache le compte sur mobile pour gagner de la place */
+    }
+
+    .search-bar form {
+        padding: 6px;
     }
 }
