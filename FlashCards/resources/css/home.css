@@ -82,22 +82,24 @@ main {
 
 .search-help {
     position: absolute;
-    top: calc(100% + 0.45rem);
+    top: calc(100% + 0.3rem);
     left: 50%;
     z-index: 5;
-    width: min(100%, 420px);
+    width: max-content;
+    max-width: calc(100% - 1rem);
     margin: 0;
-    padding: 0.7rem 0.95rem;
-    border-radius: 14px;
-    background: rgba(30, 27, 75, 0.96);
-    color: #eef2ff;
-    font-size: 0.88rem;
-    line-height: 1.45;
+    padding: 0.32rem 0.55rem;
+    border-radius: 8px;
+    background: rgba(30, 27, 75, 0.68);
+    color: rgba(238, 242, 255, 0.78);
+    font-size: 0.68rem;
+    line-height: 1;
+    white-space: nowrap;
     text-align: center;
-    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.18);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, -6px);
+    transform: translate(-50%, -4px);
     transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
@@ -106,9 +108,9 @@ main {
     position: absolute;
     left: 50%;
     bottom: 100%;
-    width: 12px;
-    height: 12px;
-    background: rgba(30, 27, 75, 0.96);
+    width: 6px;
+    height: 6px;
+    background: rgba(30, 27, 75, 0.68);
     transform: translateX(-50%) rotate(45deg);
 }
 
