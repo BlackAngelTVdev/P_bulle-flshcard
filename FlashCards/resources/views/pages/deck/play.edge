@@ -13,6 +13,23 @@
                 </select>
             </div>
 
+            {{-- NOUVEAU : Sélection du volume de cartes --}}
+            <div class="limit-selection">
+                <p>Combien de cartes ?</p>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        name="limit" 
+                        value="20" 
+                        min="1" 
+                        max="{{ cardsCount || 500 }}" 
+                        class="limit-input"
+                    >
+                    <span class="total-info">/ {{ cardsCount || 'toutes' }}</span>
+                </div>
+                <small class="hint">Laisse vide pour tout réviser.</small>
+            </div>
+
             <button type="submit" class="btn-start">C'est parti !</button>
 
             <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>

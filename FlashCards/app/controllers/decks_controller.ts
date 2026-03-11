@@ -109,30 +109,53 @@ export default class DecksController {
     return response.redirect().toRoute('decks.index')
   }
 
-  // 3. Page de sélection du mode (Basique, Survie, Chrono)
   async play({ params, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
-    return view.render('pages/deck/play', { deck })
+    
+    // On compte le nombre total de cartes pour l'afficher dans le setup
+    await deck.loadCount('cards')
+    const cardsCount = deck.$extras.cards_count
+
+    return view.render('pages/deck/play', { deck, cardsCount })
   }
 
   // 4. Lancement du jeu avec le mode sélectionné
   async game({ params, request, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
-    await deck.load('cards')
-
-    // On récupère le mode choisi, 'basique' par défaut
+    
+    // On récupère le mode ET la limite
     const mode = request.input('mode', 'basique')
+    
+    // On transforme la limite en nombre entier. Si c'est vide, on met 20 par défaut.
+    const limit = Number(request.input('limit', 20))
 
-    return view.render('pages/deck/game', { deck, mode })
+    // On charge les cartes : Aléatoire + Limite
+    const cards = await deck.related('cards').query()
+      .orderByRaw('RAND()') // Pour MySQL (si tu étais sur SQLite, ce serait RANDOM())
+      .limit(limit)
+
+    return view.render('pages/deck/game', { 
+      deck, 
+      cards, 
+      mode, 
+      limit: cards.length // On renvoie la longueur réelle (au cas où le deck a moins de cartes que la limite)
+    })
   }
 
   // 5. Page des résultats finaux
   async result({ params, request, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
+    
+    // On récupère les stats de fin de partie
     const score = request.input('score', 0)
     const total = request.input('total', 0)
     const mode = request.input('mode', 'basique')
 
-    return view.render('pages/deck/result', { deck, score, total, mode })
+    return view.render('pages/deck/result', { 
+      deck, 
+      score, 
+      total, 
+      mode 
+    })
   }
 }

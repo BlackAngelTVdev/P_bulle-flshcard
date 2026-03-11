@@ -3,35 +3,38 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!container) return;
 
     // 1. Setup des datas
-    const cards = JSON.parse(container.dataset.cards).sort(() => Math.random() - 0.5);
+    const cards = JSON.parse(container.dataset.cards);
     const mode = container.dataset.mode || 'basique';
     const deckId = container.dataset.deckId;
 
     let currentIndex = 0;
     let score = 0;
     let lives = 3;
-    let timeLeft = 10;
     let timerInterval;
     let isTransitioning = false;
 
-    // 2. Éléments DOM
+    // 2. Éléments DOM (Vérifie bien que les IDs correspondent à ton .edge)
     const cardInner = document.getElementById('card-inner');
     const questionText = document.getElementById('question-text');
     const answerText = document.getElementById('answer-text');
     const scoreDisplay = document.getElementById('current-score');
     const livesDisplay = document.getElementById('lives-display');
     const timerBar = document.getElementById('timer-bar');
+    const cardElement = document.getElementById('card-element');
 
-    // 3. Flip de la carte
-    document.getElementById('card-element').addEventListener('click', (e) => {
-        if (!e.target.closest('.game-actions') && !isTransitioning) {
-            cardInner.classList.toggle('is-flipped');
-        }
-    });
+    // 3. Flip de la carte au clic
+    if (cardElement) {
+        cardElement.addEventListener('click', (e) => {
+            // On ne flip pas si on clique sur les boutons "Juste/Faux"
+            if (!e.target.closest('.game-actions') && !isTransitioning) {
+                cardInner.classList.toggle('is-flipped');
+            }
+        });
+    }
 
-    // 4. Logique de réponse
+    // 4. Logique de réponse (window. pour être accessible par le onclick du HTML)
     window.nextCard = (isCorrect) => {
-        if (isTransitioning) return; // Empêche de cliquer 10 fois pendant l'anim
+        if (isTransitioning) return;
         
         clearInterval(timerInterval);
         isTransitioning = true;
@@ -39,38 +42,44 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCorrect) {
             score++;
             if (scoreDisplay) scoreDisplay.innerText = score;
-        } else if (mode === 'survie') {
-            lives--;
-            if (livesDisplay) livesDisplay.innerText = "❤️".repeat(lives);
-            if (lives <= 0) return showResults();
+        } else {
+            if (mode === 'survie') {
+                lives--;
+                if (livesDisplay) livesDisplay.innerText = "❤️".repeat(lives);
+                if (lives <= 0) {
+                    showResults();
+                    return;
+                }
+            }
         }
 
         currentIndex++;
         
-        // Petit délai pour que l'utilisateur voit sa validation avant que la carte change
+        // On remet la carte sur le Recto avant de changer le texte
+        cardInner.classList.remove('is-flipped');
+
         setTimeout(() => {
             isTransitioning = false;
             showCard();
-        }, 300);
+        }, 300); 
     };
 
     // 5. Mode Chrono
     function startChrono() {
-        timeLeft = 10;
-        if (timerBar) {
-            timerBar.style.transition = 'none'; // Reset immédiat
-            timerBar.style.width = '100%';
-            // Force le reflow pour que la transition de 10s s'applique après le reset
-            timerBar.offsetHeight; 
-            timerBar.style.transition = 'width 10s linear';
-            timerBar.style.width = '0%';
-        }
+        if (!timerBar) return;
+        
+        let timeLeft = 10;
+        timerBar.style.transition = 'none';
+        timerBar.style.width = '100%';
+        timerBar.offsetHeight; // Reflow
+        timerBar.style.transition = 'width 10s linear';
+        timerBar.style.width = '0%';
 
         timerInterval = setInterval(() => {
             timeLeft--;
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                window.nextCard(false);
+                window.nextCard(false); 
             }
         }, 1000);
     }
@@ -78,13 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. Affichage carte
     function showCard() {
         if (currentIndex < cards.length) {
-            cardInner.classList.remove('is-flipped');
+            // On met à jour le texte
+            questionText.innerText = cards[currentIndex].question;
+            answerText.innerText = cards[currentIndex].answer;
             
-            setTimeout(() => {
-                questionText.innerText = cards[currentIndex].question;
-                answerText.innerText = cards[currentIndex].answer;
-                if (mode === 'chrono') startChrono();
-            }, 150);
+            // Si mode chrono, on lance le décompte
+            if (mode === 'chrono') startChrono();
         } else {
             showResults();
         }
@@ -97,5 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `/decks/${deckId}/result?score=${score}&total=${cards.length}&mode=${mode}`;
     }
 
+    // LANCEMENT DU JEU
     showCard();
 });
