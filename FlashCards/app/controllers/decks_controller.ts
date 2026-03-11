@@ -4,8 +4,21 @@ import { createDeckValidator, updateDeckValidator } from '#validators/deck'
 
 export default class DecksController {
   // 1. Affiche tous les decks publics
-  async index({ view }: HttpContext) {
-    const decks = await Deck.query().withCount('cards').orderBy('category', 'asc')
+  async index({ view, request }: HttpContext) {
+    const q = (request.input('q', '') || '').toString().trim()
+
+    // Construire la query et appliquer le filtre si nécessaire
+    const qb = Deck.query().withCount('cards')
+    if (q) {
+      qb.where((builder) => {
+        builder
+          .where('name', 'like', `%${q}%`)
+          .orWhere('description', 'like', `%${q}%`)
+          .orWhere('category', 'like', `%${q}%`)
+      })
+    }
+
+    const decks = await qb.orderBy('category', 'asc')
 
     // On groupe les decks par catégorie
     const groupedDecks = decks.reduce(
@@ -18,17 +31,29 @@ export default class DecksController {
       {} as Record<string, Deck[]>
     )
 
-    return view.render('pages/home', { groupedDecks })
+    return view.render('pages/home', { groupedDecks, q })
   }
 
   // 2. Affiche uniquement mes decks
 
-  async myDecks({ auth, view }: HttpContext) {
-    const decks = await Deck.query()
+  async myDecks({ auth, view, request }: HttpContext) {
+    const q = (request.input('q', '') || '').toString().trim()
+
+    const qb = Deck.query()
       .where('userId', auth.user!.id)
       .withCount('cards')
       // Important : Trie par catégorie pour que l'affichage soit ordonné
-      .orderBy('category', 'asc')
+
+    if (q) {
+      qb.where((builder) => {
+        builder
+          .where('name', 'like', `%${q}%`)
+          .orWhere('description', 'like', `%${q}%`)
+          .orWhere('category', 'like', `%${q}%`)
+      })
+    }
+
+    const decks = await qb.orderBy('category', 'asc')
 
     // La logique de regroupement que tu voulais
     const groupedDecks = decks.reduce(
@@ -42,7 +67,7 @@ export default class DecksController {
     )
 
     // On passe 'groupedDecks' à la vue, comme dans ton index
-    return view.render('pages/home', { groupedDecks })
+    return view.render('pages/home', { groupedDecks, q })
   }
 
   async create({ view }: HttpContext) {
