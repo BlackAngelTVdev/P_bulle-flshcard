@@ -2,7 +2,8 @@
 
 /* --- LAYOUT DE LA PAGE --- */
 body {
-    background-color: #f8fafc; /* Un gris très léger pour faire ressortir la carte blanche */
+    background-color: #f8fafc;
+    /* Un gris très léger pour faire ressortir la carte blanche */
     margin: 0;
     font-family: 'Inter', system-ui, sans-serif;
 }
@@ -11,7 +12,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh; /* Laisse un peu de place pour le footer */
+    min-height: 90vh;
+    /* Laisse un peu de place pour le footer */
     padding: 1.5rem;
 }
 
@@ -41,7 +43,8 @@ body {
 }
 
 .logo-dams {
-    color: #0885ce; /* Vert émeraude pour le contraste */
+    color: #0885ce;
+    /* Vert émeraude pour le contraste */
     font-style: italic;
 }
 
@@ -101,7 +104,6 @@ input:focus {
 }
 
 .btn-primary:hover {
-    background-color: #7c3aed; /* Violet un peu plus foncé */
     transform: translateY(-2px);
 }
 
@@ -141,12 +143,13 @@ input:focus {
     cursor: not-allowed;
     opacity: 0.5;
 }
+
 .checkbox-group {
     display: flex;
     align-items: center;
-    gap: 10px;          
+    gap: 10px;
     margin-bottom: 20px;
-    height: auto;        
+    height: auto;
 }
 
 
@@ -173,6 +176,7 @@ input:focus {
     text-decoration: underline;
     color: inherit;
 }
+
 .form-group-remember {
     margin: 15px 0;
     display: flex;
@@ -192,24 +196,31 @@ input:focus {
     width: 16px;
     height: 16px;
     cursor: pointer;
-    accent-color: var(--primary-violet); /* Utilise ta couleur de base */
+    accent-color: var(--primary-violet);
+    /* Utilise ta couleur de base */
 }
+
 /* --- RESPONSIVE DESIGN (Auth) --- */
 
 @media (max-width: 480px) {
     .auth-container {
         padding: 1rem;
-        min-height: 85vh; /* Évite les problèmes de viewport sur les navigateurs mobiles */
+        min-height: 85vh;
+        /* Évite les problèmes de viewport sur les navigateurs mobiles */
     }
 
     .auth-card {
-        padding: 1.5rem; /* On réduit le padding interne pour gagner de la place */
-        border-radius: 20px; /* Un peu moins arrondi sur petit écran */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* Ombre plus légère */
+        padding: 1.5rem;
+        /* On réduit le padding interne pour gagner de la place */
+        border-radius: 20px;
+        /* Un peu moins arrondi sur petit écran */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        /* Ombre plus légère */
     }
 
     .logo-text {
-        font-size: 1.8rem; /* Logo un peu plus petit */
+        font-size: 1.8rem;
+        /* Logo un peu plus petit */
         letter-spacing: -1px;
     }
 
@@ -223,12 +234,15 @@ input:focus {
     }
 
     input {
-        padding: 0.7rem 0.9rem; /* Inputs légèrement plus compacts */
-        font-size: 1rem; /* On garde 1rem pour éviter le zoom auto iOS */
+        padding: 0.7rem 0.9rem;
+        /* Inputs légèrement plus compacts */
+        font-size: 1rem;
+        /* On garde 1rem pour éviter le zoom auto iOS */
     }
 
     .btn-primary {
-        padding: 0.9rem; /* Bouton plus facile à taper au pouce */
+        padding: 0.9rem;
+        /* Bouton plus facile à taper au pouce */
     }
 
     .auth-footer {
@@ -240,6 +254,7 @@ input:focus {
 @media (max-height: 500px) and (orientation: landscape) {
     .auth-container {
         padding: 2rem 1rem;
-        align-items: flex-start; /* Permet de scroller le formulaire s'il est trop haut */
+        align-items: flex-start;
+        /* Permet de scroller le formulaire s'il est trop haut */
     }
 }

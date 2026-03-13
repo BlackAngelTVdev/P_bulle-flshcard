@@ -53,7 +53,6 @@ p {
 }
 
 .btn-play:hover {
-  background-color: #059669;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
@@ -84,7 +83,6 @@ p {
 }
 
 .btn-delete-deck:hover {
-  background-color: #dc2626;
   color: white;
 }
 
@@ -119,9 +117,7 @@ p {
   transition: background 0.2s;
 }
 
-.table-row:hover {
-  background-color: #f5f3ff;
-}
+.table-row:hover {}
 
 .col {
   flex: 1;
@@ -159,7 +155,6 @@ p {
 }
 
 .btn-add-card:hover {
-  background-color: var(--primary-violet);
   color: white;
 }
 

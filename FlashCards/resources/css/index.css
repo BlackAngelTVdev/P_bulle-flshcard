@@ -106,9 +106,7 @@ body {
   transition: background 0.2s;
 }
 
-.btn-primary-lg:hover {
-  background: var(--primary-hover);
-}
+
 
 .small-info strong {
   color: var(--primary-violet);

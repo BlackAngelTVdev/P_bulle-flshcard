@@ -4,9 +4,12 @@
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centre verticalement */
-    align-items: center;     /* Centre horizontalement */
-    min-height: 90vh;        /* Prend presque toute la hauteur de l'écran */
+    justify-content: center;
+    /* Centre verticalement */
+    align-items: center;
+    /* Centre horizontalement */
+    min-height: 90vh;
+    /* Prend presque toute la hauteur de l'écran */
     padding: 2rem;
     box-sizing: border-box;
 }
@@ -16,7 +19,8 @@ main {
     width: 100%;
     max-width: 500px;
     height: 350px;
-    perspective: 1000px; /* Effet 3D */
+    perspective: 1000px;
+    /* Effet 3D */
     cursor: pointer;
 }
 
@@ -35,11 +39,13 @@ main {
 }
 
 /* --- FACES DE LA CARTE --- */
-.card-front, .card-back {
+.card-front,
+.card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* Cache le dos pendant la rotation */
+    backface-visibility: hidden;
+    /* Cache le dos pendant la rotation */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,7 +90,8 @@ main {
 .card-back {
     background: #fdfbff;
     transform: rotateY(180deg);
-    border-top: 8px solid #10b981; /* Vert pour la réponse */
+    border-top: 8px solid #10b981;
+    /* Vert pour la réponse */
 }
 
 .answer-text {
@@ -99,10 +106,13 @@ main {
     gap: 15px;
     width: 100%;
     max-width: 500px;
-    margin-top: 3rem; /* Espace fixe entre la carte et les boutons */
+    margin-top: 3rem;
+    /* Espace fixe entre la carte et les boutons */
 }
 
-.btn-ok, .btn-edit-card, .btn-delete-card {
+.btn-ok,
+.btn-edit-card,
+.btn-delete-card {
     flex: 1;
     padding: 14px;
     border-radius: 12px;
@@ -132,25 +142,34 @@ main {
 }
 
 /* Hover Effects */
-.btn-ok:hover { background: #e5e7eb; }
-.btn-edit-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3); }
-.btn-delete-card:hover { background: #dc2626; color: white; }
+
+.btn-edit-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-delete-card:hover {
+    color: white;
+}
 
 /* Gestion des formulaires dans les boutons */
-form { 
-    flex: 1; 
+form {
+    flex: 1;
     display: flex;
 }
+
 /* --- RESPONSIVE DESIGN (Flashcard) --- */
 
 @media (max-width: 600px) {
     main {
         padding: 1rem;
-        min-height: 85vh; /* Ajustement pour éviter le scroll inutile sur petit écran */
+        min-height: 85vh;
+        /* Ajustement pour éviter le scroll inutile sur petit écran */
     }
 
     .flashcard {
-        height: 300px; /* On réduit un peu la hauteur pour laisser de la place aux boutons */
+        height: 300px;
+        /* On réduit un peu la hauteur pour laisser de la place aux boutons */
     }
 
     .card-front h2 {
@@ -170,16 +189,23 @@ form {
         align-items: center;
     }
 
-    .btn-ok, .btn-edit-card, .btn-delete-card, form {
+    .btn-ok,
+    .btn-edit-card,
+    .btn-delete-card,
+    form {
         width: 100%;
-        max-width: 320px; /* On limite pour que ce soit pas trop massif */
+        max-width: 320px;
+        /* On limite pour que ce soit pas trop massif */
     }
 
     form {
-        justify-content: center; /* Centre le bouton de suppression dans le form */
+        justify-content: center;
+        /* Centre le bouton de suppression dans le form */
     }
 
-    .btn-ok, .btn-edit-card, .btn-delete-card {
+    .btn-ok,
+    .btn-edit-card,
+    .btn-delete-card {
         padding: 12px;
         font-size: 0.95rem;
     }
@@ -188,10 +214,11 @@ form {
 /* Fix pour les écrans très bas (iPhone SE ou mode paysage) */
 @media (max-height: 600px) {
     main {
-        justify-content: flex-start; /* Évite de couper le haut de la carte */
+        justify-content: flex-start;
+        /* Évite de couper le haut de la carte */
         padding-top: 2rem;
     }
-    
+
     .flashcard {
         height: 250px;
     }

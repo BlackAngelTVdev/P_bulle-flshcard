@@ -2,9 +2,9 @@
 
 /* --- LAYOUT PRINCIPAL --- */
 main {
-    width: 90%; 
+    width: 90%;
     max-width: 1000px;
-    margin: 0 auto;  
+    margin: 0 auto;
     padding: 2rem 0;
 }
 
@@ -27,8 +27,8 @@ main {
     background: white;
     padding: 8px;
     border-radius: 999px;
-    box-shadow: 0 6px 20px rgba(16,24,40,0.06);
-    border: 1px solid rgba(139,92,246,0.08);
+    box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+    border: 1px solid rgba(139, 92, 246, 0.08);
 }
 
 .search-bar input[type="text"] {
@@ -123,11 +123,12 @@ main {
 /* --- ACCORDÉON DE CATÉGORIES --- */
 .category-group {
     margin-bottom: 20px;
-    background: #f8f7ff; /* Fond très léger pour le contenu ouvert */
+    background: #f8f7ff;
+    /* Fond très léger pour le contenu ouvert */
     border-radius: 15px;
     overflow: hidden;
     border: 1px solid var(--light-violet);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .category-summary {
@@ -149,9 +150,7 @@ main {
     display: none;
 }
 
-.category-summary:hover {
-    background: var(--light-violet);
-}
+.category-summary:hover {}
 
 /* Badge du nombre de decks */
 .badge-count {
@@ -161,7 +160,8 @@ main {
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 700;
-    margin-right: 15px; /* Espace avant la flèche */
+    margin-right: 15px;
+    /* Espace avant la flèche */
 }
 
 /* La flèche personnalisée */
@@ -193,7 +193,7 @@ a.deck-card {
     justify-content: space-between;
     align-items: center;
     text-decoration: none;
-    color: inherit;          
+    color: inherit;
     background: white;
     border-radius: 12px;
     padding: 20px;
@@ -204,9 +204,8 @@ a.deck-card {
 }
 
 a.deck-card:hover {
-    transform: translateX(8px); 
+    transform: translateX(8px);
     box-shadow: 0 6px 12px -2px rgba(139, 92, 246, 0.15);
-    background-color: #ffffff;
     border-left-width: 8px;
 }
 
@@ -250,7 +249,7 @@ a.deck-card:hover {
 /* --- RESPONSIVE --- */
 @media (max-width: 600px) {
     main {
-        width: 95%; 
+        width: 95%;
         padding: 1rem 0;
     }
 
@@ -271,7 +270,8 @@ a.deck-card:hover {
     }
 
     .badge-count {
-        display: none; /* On cache le compte sur mobile pour gagner de la place */
+        display: none;
+        /* On cache le compte sur mobile pour gagner de la place */
     }
 
     .search-bar form {

@@ -193,7 +193,6 @@ input:focus {
 }
 
 .btn-primary:hover {
-    background-color: var(--dark-violet);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
 }
