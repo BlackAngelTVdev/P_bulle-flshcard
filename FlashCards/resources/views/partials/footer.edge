@@ -34,3 +34,15 @@
         </div>
     </div>
 </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menu-toggle');
+
+        // Fermer le menu dès qu'on détecte un scroll
+        window.addEventListener('scroll', () => {
+            if (menuToggle.checked) {
+                menuToggle.checked = false;
+            }
+        }, { passive: true });
+    });
+</script>
