@@ -139,7 +139,7 @@ main {
     color: var(--primary-violet);
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     background: white;
     transition: background 0.2s;
@@ -154,6 +154,7 @@ main {
 
 /* Badge du nombre de decks */
 .badge-count {
+    margin-left: auto;
     background: var(--light-violet);
     color: var(--primary-violet);
     padding: 4px 12px;
