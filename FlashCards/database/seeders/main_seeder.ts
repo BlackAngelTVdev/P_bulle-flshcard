@@ -1,6 +1,7 @@
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import { DeckFactory } from '#database/factories/deck_factory'
 import { CardFactory } from '#database/factories/card_factory'
+import Card from '#models/card'
 import User from '#models/user' // Import indispensable
 
 export default class extends BaseSeeder {
@@ -30,7 +31,7 @@ export default class extends BaseSeeder {
     }
 
     // 3. Tes cartes spécifiques
-    await CardFactory.createMany([
+    await Card.createMany([
       { deckId: decks[0].id, question: 'Capitale de la France ?', answer: 'Paris' },
       { deckId: decks[0].id, question: 'Vitesse de la lumière ?', answer: '299 792 458 m/s' },
       { deckId: decks[0].id, question: 'Seeder de salopard ?', answer: 'Affirmatif.' }

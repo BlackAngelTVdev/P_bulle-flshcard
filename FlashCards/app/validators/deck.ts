@@ -28,7 +28,7 @@ export const updateDeckValidator = vine.compile(
     name: vine.string().trim().unique({ 
       table: 'decks', 
       column: 'name',
-      filter: (db, value, field) => {
+      filter: (db, _value, field) => {
         db.whereNot('id', field.data.id)
       }
     }),
