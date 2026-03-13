@@ -1,28 +1,19 @@
 /* ─── CONFIGURATION DES VARIABLES ────────────────────── */
 :root {
-  /* Couleurs principales */
   --primary: #8b5cf6;
   --primary-light: #c084fc;
   --secondary: #6366f1;
-  
-  /* Couleurs de fond */
   --bg-page: #f8fafc;
   --bg-card: #ffffff;
   --bg-inner: #fcfcfd;
   --bg-section: #ffffff;
-  
-  /* Couleurs de texte */
   --text-main: #1e293b;
   --text-muted: #64748b;
   --text-on-primary: #ffffff;
-  
-  /* Structure & Bordures */
   --border-color: #e2e8f0;
   --radius-lg: 20px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  
-  /* Ombres & Effets */
   --shadow-main: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
   --transition-speed: 0.6s;
   --transition-curve: cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,14 +75,16 @@
 /* ─── SYSTÈME DE CARTE (100% WIDTH) ─────────────────── */
 .card-wrapper {
   perspective: 2500px;
+  -webkit-perspective: 2500px;
   width: 100%;
 }
 
 .card-inner {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 160px); /* Prend toute la place restante */
+  min-height: calc(100vh - 160px);
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform var(--transition-speed) var(--transition-curve);
 }
 
@@ -109,6 +102,7 @@
   inset: 0;
   width: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
@@ -118,13 +112,23 @@
   overflow: hidden;
 }
 
-.card-back { transform: rotateY(180deg); }
+.card-front {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
 
 /* Ligne décorative haute */
 .card-face::before {
   content: '';
   height: 5px;
   width: 100%;
+  flex-shrink: 0;
 }
 .card-front::before { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
 .card-back::before { background: linear-gradient(90deg, var(--secondary), var(--primary)); }
@@ -170,11 +174,10 @@
   transform: translateY(-2px);
 }
 
-/* ─── GRILLE DE CONTENU (4 COLONNES AUTO) ────────────── */
+/* ─── GRILLE DE CONTENU ──────────────────────────────── */
 .card-body {
   padding: 3rem;
   display: grid;
-  /* Remplit l'écran avec autant de colonnes de 320px minimum que possible */
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
   overflow-y: auto;
@@ -215,6 +218,7 @@
   align-items: center;
   justify-content: center;
   font-size: 0.7rem;
+  flex-shrink: 0;
 }
 
 .card-back .section-num { background: var(--secondary); }
@@ -226,9 +230,86 @@
   margin: 0;
 }
 
-/* ─── RESPONSIVE ────────────────────────────────────── */
+/* ─── RESPONSIVE MOBILE ──────────────────────────────── */
 @media (max-width: 768px) {
-  .card-header { padding: 1.5rem; flex-direction: column; gap: 1rem; align-items: flex-start; }
-  .card-body { padding: 1.5rem; grid-template-columns: 1fr; }
-  .card-inner { min-height: 800px; }
+  .legal-scene {
+    padding: 0;
+    display: block;
+  }
+
+  .legal-header {
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+    background: var(--bg-page);
+    padding: 15px;
+    margin-bottom: 0;
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(10px);
+  }
+
+  .legal-subtitle { display: none; }
+
+  .face-tabs {
+    width: 100%;
+    display: flex;
+  }
+
+  .face-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+  }
+
+  /* Désactive la 3D sur mobile */
+  .card-wrapper {
+    perspective: none;
+    -webkit-perspective: none;
+  }
+
+  .card-inner {
+    min-height: auto;
+    transform: none !important;
+    transition: none !important;
+    transform-style: flat;
+    -webkit-transform-style: flat;
+  }
+
+  .card-face {
+    position: relative;
+    inset: auto;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    display: none;
+    transform: none !important;
+  }
+
+  /* Affichage selon la face active */
+  .card-wrapper[data-face="cgu"] .card-front { display: flex; }
+  .card-wrapper[data-face="data"] .card-back { display: flex; }
+
+  .card-header {
+    padding: 1.5rem;
+    background: white;
+  }
+
+  .card-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .card-body {
+    padding: 1rem;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    overflow-y: visible;
+  }
+
+  .legal-section {
+    padding: 1.2rem;
+  }
 }

@@ -51,7 +51,7 @@
             </div>
             <div class="form-group checkbox-group">
                 <input type="checkbox" id="terms" name="terms">
-                <label for="terms">J'ai lu et j'accepte les <a href="#">conditions d'utilisation</a></label>
+                <label for="terms">J'ai lu et j'accepte les <a href="{{ route('legal.index') }}">conditions d'utilisation</a></label>
                 @if(flashMessages.has('errors.terms'))
                 <span class="error-msg">{{ flashMessages.get('errors.terms') }}</span>
                 @end
@@ -64,19 +64,46 @@
     </div>
 </main>
 <script>
-    const termsCheckbox = document.getElementById('terms');
-    const submitBtn = document.getElementById('submit-btn');
+  const wrapper = document.querySelector('.card-wrapper');
+  const currentFace = wrapper.dataset.face;
+  const isMobile = window.innerWidth <= 768;
 
-    termsCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            submitBtn.disabled = false;
-            submitBtn.style.opacity = "1";
-            submitBtn.style.cursor = "pointer";
-        } else {
-            submitBtn.disabled = true;
-            submitBtn.style.opacity = "0.5";
-            submitBtn.style.cursor = "not-allowed";
-        }
+  const handleFlip = (e, targetUrl) => {
+    e.preventDefault();
+    
+    // Sur mobile : Pas d'animation de flip, on change juste de page direct
+    if (isMobile) {
+        window.location.href = targetUrl;
+        return;
+    }
+
+    // Sur Desktop : Animation de flip
+    wrapper.classList.add('is-flipped');
+    setTimeout(() => { window.location.href = targetUrl }, 500);
+  };
+
+  document.querySelectorAll('.face-tab').forEach(el => {
+    el.addEventListener('click', (e) => {
+      const targetUrl = el.getAttribute('href');
+      const targetFace = targetUrl.includes('face=data') ? 'data' : 'cgu';
+      
+      if (targetFace !== currentFace) {
+        handleFlip(e, targetUrl);
+      } else {
+        e.preventDefault();
+      }
     });
+  });
+
+  // Init Desktop (Inversion instantanée au chargement)
+  if (!isMobile && currentFace === 'data') {
+    wrapper.classList.add('no-transition');
+    wrapper.classList.add('is-flipped');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrapper.classList.remove('no-transition');
+      });
+    });
+  }
 </script>
 @!component('partials/footer', { })
