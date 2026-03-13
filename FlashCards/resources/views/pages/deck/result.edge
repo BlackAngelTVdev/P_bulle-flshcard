@@ -65,6 +65,11 @@
         <div class="actions">
             {{-- On renvoie vers play pour pouvoir rechoisir le mode --}}
             <a href="{{ route('decks.play', { id: deck.id }) }}" class="btn-retry">Rejouer</a>
+            @if(wrongCardsCount > 0 && sessionId)
+                <a href="{{ route('decks.game', { id: deck.id }) }}?mode={{ mode }}&cardFilter=session_wrong&sessionId={{ sessionId }}" class="btn-retry">
+                    Rejouer les non réussies ({{ wrongCardsCount }})
+                </a>
+            @endif
             <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
         </div>
     </div>

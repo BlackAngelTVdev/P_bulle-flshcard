@@ -20,7 +20,9 @@
     <div id="game-container" 
          data-cards="{{ JSON.stringify(cards) }}" 
          data-deck-id="{{ deck.id }}"
-         data-mode="{{ mode }}">
+            data-mode="{{ mode }}"
+            data-game-session-id="{{ gameSession.id }}"
+            data-csrf-token="{{ csrfToken }}">
     </div>
 
     {{-- 3. La Flashcard --}}

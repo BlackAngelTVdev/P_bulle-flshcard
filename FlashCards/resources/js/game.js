@@ -6,12 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = JSON.parse(container.dataset.cards);
     const mode = container.dataset.mode || 'basique';
     const deckId = container.dataset.deckId;
+    const csrfToken = container.dataset.csrfToken;
+    const gameSessionId = Number(container.dataset.gameSessionId || 0);
 
     let currentIndex = 0;
     let score = 0;
     let lives = 3;
     let timerInterval;
     let isTransitioning = false;
+    const playedCardIds = [];
+    const correctCardIds = [];
+    const wrongCardIds = [];
 
     // 2. Éléments DOM (Vérifie bien que les IDs correspondent à ton .edge)
     const cardInner = document.getElementById('card-inner');
@@ -35,9 +40,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Logique de réponse (window. pour être accessible par le onclick du HTML)
     window.nextCard = (isCorrect) => {
         if (isTransitioning) return;
+        if (currentIndex >= cards.length) return;
         
         clearInterval(timerInterval);
         isTransitioning = true;
+
+        const currentCard = cards[currentIndex];
+        if (currentCard && Number.isInteger(currentCard.id)) {
+            playedCardIds.push(currentCard.id);
+            if (isCorrect) {
+                correctCardIds.push(currentCard.id);
+            } else {
+                wrongCardIds.push(currentCard.id);
+            }
+        }
 
         if (isCorrect) {
             score++;
@@ -99,10 +115,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 7. Fin de game
-    function showResults() {
+    async function showResults() {
         clearInterval(timerInterval);
         if (!deckId) return;
-        window.location.href = `/decks/${deckId}/result?score=${score}&total=${cards.length}&mode=${mode}`;
+
+        const payload = {
+            gameSessionId,
+            mode,
+            score,
+            total: cards.length,
+            playedCardIds,
+            correctCardIds,
+            wrongCardIds,
+        };
+
+        let savedSessionId = gameSessionId;
+
+        try {
+            const response = await fetch(`/decks/${deckId}/finish`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-csrf-token': csrfToken || '',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data?.sessionId) {
+                    savedSessionId = data.sessionId;
+                }
+            }
+        } catch (error) {
+            console.error('Impossible de sauvegarder la session de jeu.', error);
+        }
+
+        window.location.href = `/decks/${deckId}/result?score=${score}&total=${cards.length}&mode=${mode}&sessionId=${savedSessionId}`;
     }
 
     // LANCEMENT DU JEU

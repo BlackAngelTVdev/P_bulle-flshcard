@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.querySelector('.search-bar input[name="q"]')
   const decksGrid = document.querySelector('.decks-grid')
-  
+
   if (!searchInput || !decksGrid) return
 
   const parseSearchQuery = (rawValue) => {
@@ -28,16 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   searchInput.addEventListener('input', (e) => {
     const query = parseSearchQuery(e.target.value)
-    
+
     // Récupérer tous les groupes de catégories
     const categoryGroups = document.querySelectorAll('.category-group')
-    
+
     categoryGroups.forEach(group => {
       const categoryLabel = group.querySelector('.category-label')
       const categoryName = categoryLabel ? categoryLabel.textContent.toLowerCase() : ''
       const deckCards = group.querySelectorAll('.deck-card')
       let visibleDecks = 0
-      
+
       // Filtrer chaque deck dans cette catégorie
       deckCards.forEach(card => {
         const deckTitle = card.querySelector('.deck-title').textContent.toLowerCase()
@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const categoryMatch = !query.category || categoryName.includes(query.category)
         const themeMatch = query.themes.length === 0 || query.themes.every(theme => deckContent.includes(theme))
-        
+
         // Sans virgule: recherche globale. Avec virgule: categorie, theme1, theme2...
         const matches = query.mode === 'empty' ||
           genericMatch ||
           (query.mode === 'segmented' && categoryMatch && themeMatch)
-        
+
         if (matches) {
           card.style.display = ''
           visibleDecks++
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
           card.style.display = 'none'
         }
       })
-      
+
       // Masquer la catégorie entière si aucun deck n'est visible
       if (visibleDecks === 0) {
         group.style.display = 'none'
@@ -78,11 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     })
-    
+
     // Gérer l'affichage de l'empty state si besoin
     const hasVisibleGroups = Array.from(categoryGroups).some(g => g.style.display !== 'none')
     let emptyState = document.querySelector('.empty-state')
-    
+
     if (!hasVisibleGroups && query.mode !== 'empty') {
       if (!emptyState) {
         emptyState = document.createElement('div')

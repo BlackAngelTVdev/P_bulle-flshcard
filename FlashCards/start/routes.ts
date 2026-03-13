@@ -50,6 +50,7 @@ router.group(() => {
     // Tes routes de jeu remises ici :
     router.get('/:id/play', [DecksController, 'play']).as('decks.play')
     router.get('/:id/game', [DecksController, 'game']).as('decks.game')
+    router.post('/:id/finish', [DecksController, 'finish']).as('decks.finish')
     router.get('/:id/result', [DecksController, 'result']).as('decks.result')
 
     // Modification (🛡️ Uniquement le proprio)
