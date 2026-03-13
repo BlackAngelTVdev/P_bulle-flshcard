@@ -5,6 +5,7 @@ import HomeController from '#controllers/home_controller'
 const DecksController = () => import('#controllers/decks_controller')
 const CardsController = () => import('#controllers/cards_controller')
 const AuthController = () => import('#controllers/users_controller')
+const AdminController = () => import('#controllers/admin_controller')
 
 // Routes redirection
 router.get('/', [HomeController, 'index']).as('index')
@@ -50,6 +51,7 @@ router.group(() => {
     // Tes routes de jeu remises ici :
     router.get('/:id/play', [DecksController, 'play']).as('decks.play')
     router.get('/:id/game', [DecksController, 'game']).as('decks.game')
+    router.post('/:id/progress', [DecksController, 'progress']).as('decks.progress')
     router.post('/:id/finish', [DecksController, 'finish']).as('decks.finish')
     router.get('/:id/result', [DecksController, 'result']).as('decks.result')
 
@@ -75,6 +77,14 @@ router.group(() => {
       router.delete('/:id', [CardsController, 'destroy']).as('cards.destroy')
     }).use(middleware.isOwner())
   }).prefix('/cards')
+
+  // Section Admin
+  router.group(() => {
+    router.get('/', [AdminController, 'index']).as('admin.index')
+    router.delete('/game-sessions/:id', [AdminController, 'destroyGameSession']).as('admin.sessions.destroy')
+    router.delete('/login-sessions/:id', [AdminController, 'destroyLoginSession']).as('admin.loginSessions.destroy')
+    router.delete('/users/:id', [AdminController, 'destroyUser']).as('admin.users.destroy')
+  }).prefix('/admin').use(middleware.admin())
 
 }).use(middleware.auth())
 

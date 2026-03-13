@@ -16,6 +16,13 @@ const toPositiveIntArray = (value: unknown): number[] => {
   return [...new Set(normalized)]
 }
 
+const toBoolean = (value: unknown): boolean => {
+  if (typeof value === 'boolean') return value
+  if (typeof value === 'number') return value === 1
+  if (typeof value === 'string') return ['true', '1', 'yes'].includes(value.toLowerCase())
+  return false
+}
+
 export default class DecksController {
   // 1. Affiche tous les decks publics
   async index({ view, request }: HttpContext) {
@@ -272,8 +279,8 @@ export default class DecksController {
   async result({ params, request, view, auth }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
 
-    const score = request.input('score', 0)
-    const total = request.input('total', 0)
+    const scoreInput = request.input('score')
+    const totalInput = request.input('total')
     const mode = request.input('mode', 'basique')
     const sessionId = Number(request.input('sessionId', 0))
 
@@ -286,6 +293,8 @@ export default class DecksController {
       : null
 
     const wrongCardsCount = gameSession?.wrongCardIds?.length || 0
+    const score = scoreInput !== undefined ? Number(scoreInput) : Number(gameSession?.correctAnswers || 0)
+    const total = totalInput !== undefined ? Number(totalInput) : Number(gameSession?.totalCards || 0)
 
     return view.render('pages/deck/result', { 
       deck, 
@@ -295,6 +304,102 @@ export default class DecksController {
       sessionId,
       wrongCardsCount,
     })
+  }
+
+  async progress({ params, request, response, auth }: HttpContext) {
+    const deck = await Deck.findOrFail(params.id)
+    const body = request.body() as Record<string, unknown>
+    const gameSessionId = Number(body.gameSessionId || 0)
+
+    if (!gameSessionId) {
+      return response.badRequest({ ok: false, message: 'Session invalide' })
+    }
+
+    const gameSession = await GameSession.query()
+      .where('id', gameSessionId)
+      .where('user_id', auth.user!.id)
+      .where('deck_id', deck.id)
+      .first()
+
+    if (!gameSession) {
+      return response.notFound({ ok: false, message: 'Session introuvable' })
+    }
+
+    const answersInput = Array.isArray(body.answers)
+      ? body.answers
+      : [{ cardId: body.cardId, isCorrect: body.isCorrect }]
+
+    const answers = answersInput
+      .map((item) => ({
+        cardId: Number((item as Record<string, unknown>)?.cardId || 0),
+        isCorrect: toBoolean((item as Record<string, unknown>)?.isCorrect),
+      }))
+      .filter((item) => Number.isInteger(item.cardId) && item.cardId > 0)
+
+    if (!answers.length) {
+      return response.ok({ ok: true, saved: 0 })
+    }
+
+    const uniqueCardIds = [...new Set(answers.map((item) => item.cardId))]
+    const existingCards = await deck.related('cards').query().whereIn('id', uniqueCardIds).select('id')
+    const validCardIds = new Set(existingCards.map((card) => card.id))
+
+    const playedSet = new Set(gameSession.playedCardIds || [])
+    const correctSet = new Set(gameSession.correctCardIds || [])
+    const wrongSet = new Set(gameSession.wrongCardIds || [])
+
+    let saved = 0
+
+    for (const answer of answers) {
+      if (!validCardIds.has(answer.cardId)) continue
+      if (playedSet.has(answer.cardId)) continue
+
+      playedSet.add(answer.cardId)
+      if (answer.isCorrect) {
+        correctSet.add(answer.cardId)
+        wrongSet.delete(answer.cardId)
+      } else {
+        wrongSet.add(answer.cardId)
+        correctSet.delete(answer.cardId)
+      }
+
+      const stat = await UserCardStat.firstOrCreate(
+        {
+          userId: auth.user!.id,
+          deckId: deck.id,
+          cardId: answer.cardId,
+        },
+        {
+          playedCount: 0,
+          correctCount: 0,
+          wrongCount: 0,
+          lastResult: false,
+          lastPlayedAt: null,
+        }
+      )
+
+      stat.playedCount += 1
+      if (answer.isCorrect) {
+        stat.correctCount += 1
+      } else {
+        stat.wrongCount += 1
+      }
+      stat.lastResult = answer.isCorrect
+      stat.lastPlayedAt = DateTime.now()
+      await stat.save()
+
+      saved += 1
+    }
+
+    gameSession.merge({
+      playedCardIds: [...playedSet],
+      correctCardIds: [...correctSet],
+      wrongCardIds: [...wrongSet],
+      correctAnswers: correctSet.size,
+    })
+    await gameSession.save()
+
+    return response.ok({ ok: true, saved })
   }
 
   async finish({ params, request, response, auth }: HttpContext) {
@@ -342,44 +447,56 @@ export default class DecksController {
       })
     }
 
+    const hasFallbackArrays = normalizedPlayed.length > 0 || normalizedCorrect.length > 0 || normalizedWrong.length > 0
+
+    if (hasFallbackArrays) {
+      for (const cardId of normalizedPlayed) {
+        const isCorrect = normalizedCorrect.includes(cardId)
+        const stat = await UserCardStat.firstOrCreate(
+          {
+            userId: auth.user!.id,
+            deckId: deck.id,
+            cardId,
+          },
+          {
+            playedCount: 0,
+            correctCount: 0,
+            wrongCount: 0,
+            lastResult: false,
+            lastPlayedAt: null,
+          }
+        )
+
+        stat.playedCount += 1
+        if (isCorrect) {
+          stat.correctCount += 1
+        } else {
+          stat.wrongCount += 1
+        }
+        stat.lastResult = isCorrect
+        stat.lastPlayedAt = DateTime.now()
+        await stat.save()
+      }
+    }
+
     gameSession.merge({
       mode,
-      totalCards: Number.isFinite(total) ? total : normalizedPlayed.length,
-      correctAnswers: Number.isFinite(score) ? score : normalizedCorrect.length,
-      playedCardIds: normalizedPlayed,
-      correctCardIds: normalizedCorrect,
-      wrongCardIds: normalizedWrong,
+      totalCards: Number.isFinite(total) && total > 0
+        ? total
+        : hasFallbackArrays
+          ? normalizedPlayed.length
+          : gameSession.totalCards,
+      correctAnswers: Number.isFinite(score) && score >= 0
+        ? score
+        : hasFallbackArrays
+          ? normalizedCorrect.length
+          : gameSession.correctAnswers,
+      playedCardIds: hasFallbackArrays ? normalizedPlayed : gameSession.playedCardIds,
+      correctCardIds: hasFallbackArrays ? normalizedCorrect : gameSession.correctCardIds,
+      wrongCardIds: hasFallbackArrays ? normalizedWrong : gameSession.wrongCardIds,
       endedAt: DateTime.now(),
     })
     await gameSession.save()
-
-    for (const cardId of normalizedPlayed) {
-      const isCorrect = normalizedCorrect.includes(cardId)
-      const stat = await UserCardStat.firstOrCreate(
-        {
-          userId: auth.user!.id,
-          deckId: deck.id,
-          cardId,
-        },
-        {
-          playedCount: 0,
-          correctCount: 0,
-          wrongCount: 0,
-          lastResult: false,
-          lastPlayedAt: null,
-        }
-      )
-
-      stat.playedCount += 1
-      if (isCorrect) {
-        stat.correctCount += 1
-      } else {
-        stat.wrongCount += 1
-      }
-      stat.lastResult = isCorrect
-      stat.lastPlayedAt = DateTime.now()
-      await stat.save()
-    }
 
     return response.ok({
       ok: true,

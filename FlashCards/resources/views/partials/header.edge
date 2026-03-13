@@ -19,6 +19,9 @@
                 <a href="{{ route('decks.index') }}">Accueil</a>
                 <a href="{{ route('decks.mine') }}">Voir mes decks</a>    
                 <a href="{{ route('decks.create') }}">Ajouter un deck</a>
+                @if(auth.user && auth.user.isAdmin)
+                    <a href="{{ route('admin.index') }}">Administration</a>
+                @end
             </div>
             <div class="user-info">
                 

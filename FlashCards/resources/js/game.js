@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let lives = 3;
     let timerInterval;
     let isTransitioning = false;
-    const playedCardIds = [];
-    const correctCardIds = [];
-    const wrongCardIds = [];
+    const pendingAnswers = [];
+    let flushTimer = null;
+    let isFlushing = false;
+    let hasSyncError = false;
 
     // 2. Éléments DOM (Vérifie bien que les IDs correspondent à ton .edge)
     const cardInner = document.getElementById('card-inner');
@@ -37,6 +38,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function enqueueAnswer(cardId, isCorrect) {
+        if (!Number.isInteger(cardId) || cardId <= 0) return;
+
+        pendingAnswers.push({ cardId, isCorrect: !!isCorrect });
+
+        if (pendingAnswers.length >= 3) {
+            void flushProgress();
+            return;
+        }
+
+        if (!flushTimer) {
+            flushTimer = setTimeout(() => {
+                flushTimer = null;
+                void flushProgress();
+            }, 1200);
+        }
+    }
+
+    async function flushProgress(force = false) {
+        if (isFlushing) return;
+        if (!pendingAnswers.length && !force) return;
+        if (!deckId || !gameSessionId) return;
+
+        const answersBatch = pendingAnswers.splice(0, pendingAnswers.length);
+        if (!answersBatch.length && !force) return;
+
+        isFlushing = true;
+        try {
+            const response = await fetch(`/decks/${deckId}/progress`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-csrf-token': csrfToken || '',
+                },
+                body: JSON.stringify({
+                    gameSessionId,
+                    answers: answersBatch,
+                }),
+            });
+
+            if (!response.ok) {
+                hasSyncError = true;
+                pendingAnswers.unshift(...answersBatch);
+            }
+        } catch (error) {
+            hasSyncError = true;
+            pendingAnswers.unshift(...answersBatch);
+            console.error('Impossible de synchroniser la progression.', error);
+        } finally {
+            isFlushing = false;
+        }
+    }
+
     // 4. Logique de réponse (window. pour être accessible par le onclick du HTML)
     window.nextCard = (isCorrect) => {
         if (isTransitioning) return;
@@ -47,12 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentCard = cards[currentIndex];
         if (currentCard && Number.isInteger(currentCard.id)) {
-            playedCardIds.push(currentCard.id);
-            if (isCorrect) {
-                correctCardIds.push(currentCard.id);
-            } else {
-                wrongCardIds.push(currentCard.id);
-            }
+            enqueueAnswer(currentCard.id, isCorrect);
         }
 
         if (isCorrect) {
@@ -119,14 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timerInterval);
         if (!deckId) return;
 
+        if (flushTimer) {
+            clearTimeout(flushTimer);
+            flushTimer = null;
+        }
+        await flushProgress(true);
+
         const payload = {
             gameSessionId,
             mode,
             score,
             total: cards.length,
-            playedCardIds,
-            correctCardIds,
-            wrongCardIds,
         };
 
         let savedSessionId = gameSessionId;
@@ -149,6 +201,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Impossible de sauvegarder la session de jeu.', error);
+        }
+
+        if (hasSyncError) {
+            console.warn('Certaines réponses ont été synchronisées en retard.');
         }
 
         window.location.href = `/decks/${deckId}/result?score=${score}&total=${cards.length}&mode=${mode}&sessionId=${savedSessionId}`;

@@ -1,0 +1,161 @@
+@component('components/main', { title: 'Administration | Flash Dam\'s', css: 'admin' })
+<main class="admin-page">
+  <h1 class="admin-title">Panneau d'administration</h1>
+
+  <section class="stats-grid">
+    <article class="stat-card">
+      <h2>Utilisateurs</h2>
+      <p>{{ stats.users }}</p>
+    </article>
+    <article class="stat-card">
+      <h2>Admins</h2>
+      <p>{{ stats.admins }}</p>
+    </article>
+    <article class="stat-card">
+      <h2>Decks</h2>
+      <p>{{ stats.decks }}</p>
+    </article>
+    <article class="stat-card">
+      <h2>Cartes</h2>
+      <p>{{ stats.cards }}</p>
+    </article>
+    <article class="stat-card">
+      <h2>Sessions jeu</h2>
+      <p>{{ stats.gameSessions }}</p>
+    </article>
+    <article class="stat-card">
+      <h2>Sessions connexion</h2>
+      <p>{{ stats.loginSessions }}</p>
+    </article>
+  </section>
+
+
+
+  <section class="admin-block">
+    <h2>Sessions de connexion (remember me)</h2>
+    @if(loginSessions.length)
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Utilisateur</th>
+              <th>Email</th>
+              <th>Créée le</th>
+              <th>Expire le</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(row in loginSessions)
+              <tr>
+                <td>#{{ row.id }}</td>
+                <td>{{ row.username || `User ${row.tokenable_id}` }}</td>
+                <td>{{ row.email || '-' }}</td>
+                <td>{{ row.created_at }}</td>
+                <td>{{ row.expires_at }}</td>
+                <td>
+                  <form method="POST" action="{{ route('admin.loginSessions.destroy', { id: row.id }) }}?_method=DELETE" onsubmit="return confirm('Résilier cette session de connexion ?')">
+                    {{ csrfField() }}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn-danger">Résilier</button>
+                  </form>
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    @else
+      <p class="empty">Aucune session de connexion.</p>
+    @end
+  </section>
+
+  <section class="admin-block">
+    <h2>Comptes utilisateurs</h2>
+    @if(users.length)
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+              <th>Créé le</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(row in users)
+              <tr>
+                <td>#{{ row.id }}</td>
+                <td>{{ row.username || '-' }}</td>
+                <td>{{ row.email }}</td>
+                <td>
+                  @if(row.is_admin)
+                    <span class="badge-admin">Admin</span>
+                  @else
+                    <span class="badge-user">User</span>
+                  @endif
+                </td>
+                <td>{{ row.created_at }}</td>
+                <td>
+                  <form method="POST" action="{{ route('admin.users.destroy', { id: row.id }) }}?_method=DELETE" onsubmit="return confirm('Résilier ce compte ? Cette action est définitive.')">
+                    {{ csrfField() }}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn-danger">Résilier compte</button>
+                  </form>
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    @else
+      <p class="empty">Aucun utilisateur.</p>
+    @end
+  </section>
+  <section class="admin-block">
+    <h2>Sessions de jeu</h2>
+    @if(gameSessions.length)
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Utilisateur</th>
+              <th>Deck</th>
+              <th>Mode</th>
+              <th>Score</th>
+              <th>Terminée</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(row in gameSessions)
+              <tr>
+                <td>#{{ row.id }}</td>
+                <td>{{ row.username || `User ${row.user_id}` }}</td>
+                <td>{{ row.deck_name || `Deck ${row.deck_id}` }}</td>
+                <td>{{ row.mode }}</td>
+                <td>{{ row.correct_answers }} / {{ row.total_cards }}</td>
+                <td>{{ row.ended_at || 'En cours' }}</td>
+                <td>
+                  <form method="POST" action="{{ route('admin.sessions.destroy', { id: row.id }) }}?_method=DELETE" onsubmit="return confirm('Résilier cette session de jeu ?')">
+                    {{ csrfField() }}
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn-danger">Résilier</button>
+                  </form>
+                </td>
+              </tr>
+            @end
+          </tbody>
+        </table>
+      </div>
+    @else
+      <p class="empty">Aucune session de jeu.</p>
+    @end
+  </section>
+</main>
+@end
