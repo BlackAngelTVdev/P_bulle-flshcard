@@ -11,7 +11,18 @@
 
 .profile-container {
     width: 100%;
-    max-width: 600px;
+    max-width: 1100px;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.profile-forms {
+    min-width: 0;
 }
 
 .page-title {
@@ -30,6 +41,57 @@
     box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
     margin-bottom: 2.5rem;
     transition: transform 0.3s ease;
+}
+
+.stats-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+    position: sticky;
+    top: 1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0.8rem;
+    border-radius: 10px;
+    background: #f8f7ff;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: 1rem;
+    color: var(--primary-violet);
+    font-weight: 800;
+}
+
+.text-success {
+    color: #059669;
+}
+
+.text-danger {
+    color: #dc2626;
+}
+
+.last-session {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #6b7280;
 }
 
 .card-header {
@@ -137,6 +199,16 @@ input:focus {
 }
 
 /* --- RESPONSIVE --- */
+@media (max-width: 900px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-card {
+        position: static;
+    }
+}
+
 @media (max-width: 600px) {
     .card {
         padding: 1.5rem;
