@@ -45,6 +45,11 @@ header {
     text-transform: uppercase;
 }
 
+.logo-text a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .logo-flash {
     color: var(--primary-violet);
 }
