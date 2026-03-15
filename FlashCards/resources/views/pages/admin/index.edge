@@ -20,55 +20,56 @@
       <p>{{ stats.cards }}</p>
     </article>
     <article class="stat-card">
-      <h2>Sessions jeu</h2>
-      <p>{{ stats.gameSessions }}</p>
-    </article>
-    <article class="stat-card">
-      <h2>Sessions connexion</h2>
-      <p>{{ stats.loginSessions }}</p>
+      <h2>Connectes maintenant</h2>
+      <p data-connected-users-count>{{ stats.connectedUsers }}</p>
     </article>
   </section>
 
 
 
-  <section class="admin-block">
-    <h2>Sessions de connexion (remember me)</h2>
-    @if(loginSessions.length)
-      <div class="table-wrap">
-        <table class="admin-table">
-          <thead>
+
+  <section class="admin-block" id="connected-users-panel" data-users-url="{{ route('admin.connectedUsers.index') }}" data-disconnect-url-template="{{ route('admin.connectedUsers.disconnect', { id: '__USER_ID__' }) }}">
+    <h2>Utilisateurs connectes en ce moment</h2>
+    <p class="live-note">Mise a jour automatique toutes les 5 secondes.</p>
+    <p class="empty" data-connected-users-empty style="{{ connectedUsers.length ? 'display:none;' : '' }}">Aucun utilisateur actif.</p>
+    <div class="table-wrap" data-connected-users-table-wrap style="{{ connectedUsers.length ? '' : 'display:none;' }}">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Utilisateur</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Derniere activite</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody data-connected-users-body>
+          @each(row in connectedUsers)
             <tr>
-              <th>ID</th>
-              <th>Utilisateur</th>
-              <th>Email</th>
-              <th>Créée le</th>
-              <th>Expire le</th>
-              <th>Action</th>
+              <td>#{{ row.id }}</td>
+              <td>{{ row.username || '-' }}</td>
+              <td>{{ row.email || '-' }}</td>
+              <td>
+                @if(row.is_admin)
+                  <span class="badge-admin">Admin</span>
+                @else
+                  <span class="badge-user">User</span>
+                @endif
+              </td>
+              <td>{{ row.last_seen_at }}</td>
+              <td>
+                @if(auth.user && auth.user.id === row.id)
+                  <span class="self-pill">Toi</span>
+                @else
+                  <button type="button" class="btn-danger js-disconnect-user" data-user-id="{{ row.id }}">Deconnecter</button>
+                @endif
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            @each(row in loginSessions)
-              <tr>
-                <td>#{{ row.id }}</td>
-                <td>{{ row.username || `User ${row.tokenable_id}` }}</td>
-                <td>{{ row.email || '-' }}</td>
-                <td>{{ row.created_at }}</td>
-                <td>{{ row.expires_at }}</td>
-                <td>
-                  <form method="POST" action="{{ route('admin.loginSessions.destroy', { id: row.id }) }}?_method=DELETE" onsubmit="return confirm('Résilier cette session de connexion ?')">
-                    {{ csrfField() }}
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn-danger">Résilier</button>
-                  </form>
-                </td>
-              </tr>
-            @end
-          </tbody>
-        </table>
-      </div>
-    @else
-      <p class="empty">Aucune session de connexion.</p>
-    @end
+          @end
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section class="admin-block">
@@ -114,47 +115,6 @@
       </div>
     @else
       <p class="empty">Aucun utilisateur.</p>
-    @end
-  </section>
-  <section class="admin-block">
-    <h2>Sessions de jeu</h2>
-    @if(gameSessions.length)
-      <div class="table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Utilisateur</th>
-              <th>Deck</th>
-              <th>Mode</th>
-              <th>Score</th>
-              <th>Terminée</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            @each(row in gameSessions)
-              <tr>
-                <td>#{{ row.id }}</td>
-                <td>{{ row.username || `User ${row.user_id}` }}</td>
-                <td>{{ row.deck_name || `Deck ${row.deck_id}` }}</td>
-                <td>{{ row.mode }}</td>
-                <td>{{ row.correct_answers }} / {{ row.total_cards }}</td>
-                <td>{{ row.ended_at || 'En cours' }}</td>
-                <td>
-                  <form method="POST" action="{{ route('admin.sessions.destroy', { id: row.id }) }}?_method=DELETE" onsubmit="return confirm('Résilier cette session de jeu ?')">
-                    {{ csrfField() }}
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit" class="btn-danger">Résilier</button>
-                  </form>
-                </td>
-              </tr>
-            @end
-          </tbody>
-        </table>
-      </div>
-    @else
-      <p class="empty">Aucune session de jeu.</p>
     @end
   </section>
 </main>

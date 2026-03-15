@@ -5,6 +5,7 @@ import { updateProfileValidator, updatePasswordValidator } from '#validators/pro
 import hash from '@adonisjs/core/services/hash'
 import db from '@adonisjs/lucid/services/db'
 import GameSession from '#models/game_session'
+import { DateTime } from 'luxon'
 
 export default class AuthController {
   // ─── Pages d'authentification ───────────────────────────────────────────────
@@ -128,6 +129,10 @@ export default class AuthController {
       // Connexion de l'utilisateur avec le driver web
       await auth.use('web').login(user, isRememberMe)
 
+      session.put('auth_session_version', user.sessionVersion)
+      user.lastSeenAt = DateTime.now()
+      await user.save()
+
       return response.redirect().toRoute('decks.index')
     } catch {
       // En cas d'erreur (user non trouvé ou mdp faux), on flash un message
@@ -151,6 +156,10 @@ export default class AuthController {
       // Connexion automatique après inscription
       await auth.use('web').login(user, true)
 
+      session.put('auth_session_version', user.sessionVersion)
+      user.lastSeenAt = DateTime.now()
+      await user.save()
+
       return response.redirect().toRoute('decks.index')
     } catch (error) {
       // Capture les messages d'erreur de validation pour les afficher en front
@@ -163,8 +172,16 @@ export default class AuthController {
    * Déconnexion de l'utilisateur.
    */
   async logout({ auth, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    user.lastSeenAt = null
+    await user.save()
+
     await auth.use('web').logout()
     return response.redirect().toRoute('auth.login')
+  }
+
+  async presence({ response }: HttpContext) {
+    return response.noContent()
   }
 
   // ─── Actions de Profil ──────────────────────────────────────────────────────

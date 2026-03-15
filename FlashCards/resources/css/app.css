@@ -71,6 +71,7 @@ nav {
 
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 25px;
 }
 
@@ -85,6 +86,22 @@ nav a,
 nav a:hover,
 .nav-link:hover {
     color: var(--primary-violet);
+}
+
+.admin-link {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    color: #b45309;
+    background: #ffedd5;
+    border: 1px solid #fdba74;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+.admin-link:hover {
+    color: #9a3412 !important;
+    background: #fed7aa;
 }
 
 /* User Info */
@@ -311,6 +328,10 @@ footer {
         flex-direction: column;
         width: 100%;
         gap: 20px;
+    }
+
+    .admin-link {
+        display: inline-block;
     }
 
     .user-info {

@@ -105,6 +105,27 @@
   cursor: pointer;
 }
 
+.btn-danger[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.live-note {
+  margin: 0 0 0.85rem;
+  color: #6b7280;
+  font-size: 0.82rem;
+}
+
+.self-pill {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0369a1;
+  background: #e0f2fe;
+}
+
 .empty {
   color: #6b7280;
   font-style: italic;

@@ -29,6 +29,7 @@ router.group(() => {
 // Routes protégées
 router.group(() => {
   router.get('/logout', [AuthController, 'logout']).as('auth.logout')
+  router.get('/auth/presence', [AuthController, 'presence']).as('auth.presence')
 
 
   router.group(() => {
@@ -81,8 +82,9 @@ router.group(() => {
   // Section Admin
   router.group(() => {
     router.get('/', [AdminController, 'index']).as('admin.index')
+    router.get('/connected-users', [AdminController, 'connectedUsers']).as('admin.connectedUsers.index')
+    router.post('/connected-users/:id/disconnect', [AdminController, 'disconnectConnectedUser']).as('admin.connectedUsers.disconnect')
     router.delete('/game-sessions/:id', [AdminController, 'destroyGameSession']).as('admin.sessions.destroy')
-    router.delete('/login-sessions/:id', [AdminController, 'destroyLoginSession']).as('admin.loginSessions.destroy')
     router.delete('/users/:id', [AdminController, 'destroyUser']).as('admin.users.destroy')
   }).prefix('/admin').use(middleware.admin())
 
