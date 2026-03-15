@@ -1,8 +1,378 @@
-<h1>
-  {{ error.code }} - Server error
-</h1>
-<p>
-  This template is rendered by the
-  <a href="http://docs.adonisjs.com/guides/exception-handling#status-pages">status pages feature</a>
-  of the global exception handler.
-</p>
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>500 — Flash Dam's</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-violet: #8b5cf6;
+        --bg-main: #f5f3ff;
+        --bg-card: #ffffff;
+        --border: #e5e7eb;
+        --accent: #8b5cf6;
+        --accent-glow: rgba(139, 92, 246, 0.25);
+        --text-primary: #1f2937;
+        --text-muted: #6b7280;
+        --red: #ef4444;
+        --red-glow: rgba(239, 68, 68, 0.2);
+        --orange: #f97316;
+        --font-main: 'Inter', system-ui, sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      html, body {
+        height: 100%;
+        background: var(--bg-main);
+        color: var(--text-primary);
+        font-family: var(--font-main);
+        overflow: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+      .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18; }
+      .blob.a { width: 500px; height: 500px; background: var(--red); top: -120px; left: -100px; animation: bdrift 12s ease-in-out infinite alternate; }
+      .blob.b { width: 400px; height: 400px; background: #f97316; bottom: -80px; right: -60px; animation: bdrift 9s ease-in-out infinite alternate-reverse; }
+      .blob.c { width: 300px; height: 300px; background: var(--primary-violet); bottom: 20%; left: 30%; opacity: 0.1; animation: bdrift 11s ease-in-out infinite alternate; }
+
+      @keyframes bdrift {
+        from { transform: translate(0, 0) scale(1); }
+        to   { transform: translate(40px, 30px) scale(1.15); }
+      }
+
+      .logo {
+        position: fixed; top: 28px; left: 36px; z-index: 50;
+        display: flex; align-items: center; gap: 8px;
+        font-weight: 700; font-size: 14px; letter-spacing: 3px;
+        text-transform: uppercase; color: var(--text-muted);
+      }
+      .pip {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--red);
+        box-shadow: 0 0 10px var(--red-glow);
+        animation: pip 0.9s step-end infinite;
+      }
+      @keyframes pip { 50% { opacity: 0; } }
+
+      .page {
+        position: relative; z-index: 1; height: 100vh;
+        display: flex; align-items: center; justify-content: center;
+        gap: 72px; padding: 0 60px;
+      }
+      @media (max-width:860px) {
+        .page { flex-direction: column; gap: 32px; padding: 60px 24px; overflow-y: auto; height: auto; min-height: 100vh; }
+      }
+
+      /* SCENE — crashed terminal */
+      .scene { position: relative; width: 300px; flex-shrink: 0; }
+
+      .monitor {
+        width: 280px; margin: 0 auto;
+        background: #1a1625;
+        border: 1px solid rgba(239,68,68,0.3);
+        border-radius: 12px;
+        box-shadow: 0 0 0 1px rgba(239,68,68,0.1),
+                    0 20px 60px rgba(239,68,68,0.15),
+                    0 4px 16px rgba(0,0,0,0.3);
+        overflow: hidden;
+      }
+
+      .monitor-bar {
+        display: flex; align-items: center; gap: 6px;
+        padding: 10px 14px;
+        background: #231d35;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      .wd { width: 8px; height: 8px; border-radius: 50%; }
+      .wd-r { background: #ff5f57; }
+      .wd-y { background: #febc2e; }
+      .wd-g { background: #28c840; }
+      .monitor-title {
+        margin-left: auto;
+        font-family: var(--font-mono); font-size: 9px;
+        letter-spacing: 2px; color: rgba(255,255,255,0.2);
+        text-transform: uppercase;
+      }
+
+      .monitor-body { padding: 14px 16px 16px; }
+
+      .tl {
+        font-family: var(--font-mono); font-size: 10px; line-height: 1.9;
+        opacity: 0; animation: llin 0.2s ease-out forwards;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .tl:nth-child(1) { animation-delay: 0.2s; }
+      .tl:nth-child(2) { animation-delay: 0.5s; }
+      .tl:nth-child(3) { animation-delay: 0.8s; }
+      .tl:nth-child(4) { animation-delay: 1.1s; }
+      .tl:nth-child(5) { animation-delay: 1.4s; }
+      .tl:nth-child(6) { animation-delay: 1.7s; }
+      .tl:nth-child(7) { animation-delay: 2.0s; }
+
+      @keyframes llin {
+        from { opacity: 0; transform: translateX(-4px); }
+        to   { opacity: 1; transform: none; }
+      }
+
+      .t-ok  { color: #22c55e; }
+      .t-wn  { color: #fbbf24; }
+      .t-er  { color: #f87171; }
+      .t-dm  { color: rgba(255,255,255,0.25); }
+      .t-ac  { color: #a78bfa; }
+      .t-wh  { color: rgba(255,255,255,0.7); }
+
+      .cur {
+        display: inline-block; width: 6px; height: 10px;
+        background: #f87171; vertical-align: middle; margin-left: 2px;
+        border-radius: 1px; animation: blink 0.9s step-end infinite;
+      }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      .scanline {
+        position: absolute; inset: 0; border-radius: 12px;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0,0,0,0.07) 2px,
+          rgba(0,0,0,0.07) 4px
+        );
+        pointer-events: none;
+      }
+
+      .stand {
+        width: 60px; height: 14px;
+        background: #231d35;
+        border: 1px solid rgba(255,255,255,0.06);
+        margin: 0 auto;
+        border-radius: 0 0 6px 6px;
+      }
+      .base {
+        width: 120px; height: 8px;
+        background: #1a1625;
+        border: 1px solid rgba(239,68,68,0.15);
+        margin: 0 auto;
+        border-radius: 4px;
+      }
+
+      /* CONTENT */
+      .content { display: flex; flex-direction: column; gap: 24px; max-width: 420px; }
+
+      .badge {
+        display: inline-flex; align-items: center; gap: 7px;
+        padding: 5px 14px;
+        background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.25);
+        border-radius: 20px;
+        font-family: var(--font-mono); font-size: 10px; letter-spacing: 3px;
+        color: var(--red); text-transform: uppercase; width: fit-content;
+      }
+      .bdot {
+        width: 5px; height: 5px; border-radius: 50%;
+        background: var(--red); box-shadow: 0 0 8px var(--red);
+        animation: pip 0.9s step-end infinite;
+      }
+
+      .bignum {
+        font-size: clamp(88px, 13vw, 128px);
+        font-weight: 700; line-height: 0.85; letter-spacing: -6px;
+        background: linear-gradient(135deg, #1f2937 0%, #ef4444 60%, #f97316 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative; display: inline-block;
+      }
+      .bignum::after {
+        content: '500';
+        position: absolute; left: 5px; top: 5px;
+        background: linear-gradient(135deg, #1f2937 0%, #ef4444 60%, #f97316 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+        opacity: 0.1; z-index: -1;
+        animation: ng 6s ease-in-out infinite;
+      }
+      @keyframes ng {
+        0%,87%,100% { transform: none; opacity: 0.1; }
+        89% { transform: translateX(-8px); opacity: 0.22; }
+        92% { transform: translateX(5px); opacity: 0.15; }
+        94% { transform: none; opacity: 0.1; }
+      }
+
+      .headline { font-size: clamp(18px,2.5vw,24px); font-weight: 300; color: var(--text-muted); letter-spacing: 0.3px; line-height: 1.5; }
+      .sub { font-size: 14px; color: var(--text-muted); opacity: 0.7; font-weight: 300; line-height: 1.8; }
+
+      /* Error card */
+      .err-card {
+        background: var(--bg-card);
+        border: 1px solid rgba(239,68,68,0.2);
+        border-radius: 12px; overflow: hidden;
+        box-shadow: 0 4px 20px rgba(239,68,68,0.07);
+        position: relative;
+      }
+      .err-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--red), transparent);
+        opacity: 0.4;
+      }
+      .err-bar {
+        display: flex; align-items: center; gap: 6px;
+        padding: 12px 16px 10px;
+        border-bottom: 1px solid var(--border);
+        background: #fff5f5;
+      }
+      .err-tag {
+        margin-left: auto;
+        font-family: var(--font-mono); font-size: 9px;
+        letter-spacing: 2px; color: var(--red); opacity: 0.6;
+        text-transform: uppercase;
+      }
+      .err-body { padding: 14px 16px; }
+
+      .err-type {
+        font-family: var(--font-mono); font-size: 11px;
+        color: var(--red); font-weight: 700;
+        margin-bottom: 6px; letter-spacing: 0.5px;
+      }
+      .err-msg {
+        font-family: var(--font-mono); font-size: 11px;
+        color: var(--text-primary); line-height: 1.7;
+        word-break: break-word;
+      }
+      .err-code-badge {
+        display: inline-block; margin-top: 10px;
+        padding: 3px 10px;
+        background: rgba(239,68,68,0.07);
+        border: 1px solid rgba(239,68,68,0.2);
+        border-radius: 6px;
+        font-family: var(--font-mono); font-size: 10px;
+        color: var(--red); letter-spacing: 1px;
+      }
+
+      .btn {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 13px 28px;
+        background: var(--accent); color: #fff;
+        font-family: var(--font-main); font-size: 14px; font-weight: 600;
+        text-decoration: none; border-radius: 10px; letter-spacing: 0.3px;
+        width: fit-content;
+        box-shadow: 0 0 0 1px rgba(139,92,246,0.3), 0 8px 28px rgba(139,92,246,0.3);
+        transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+        position: relative; overflow: hidden;
+      }
+      .btn::before {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 55%);
+        pointer-events: none;
+      }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(139,92,246,0.5), 0 16px 40px rgba(139,92,246,0.4); background: #7c3aed; }
+      .barrow { transition: transform 0.15s; font-size: 16px; }
+      .btn:hover .barrow { transform: translateX(-3px); }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="ambient">
+      <div class="blob a"></div>
+      <div class="blob b"></div>
+      <div class="blob c"></div>
+    </div>
+
+    <div class="logo">
+      <div class="pip"></div>
+      Flash Dam's
+    </div>
+
+    <div class="page">
+
+      <!-- SCENE — écran planté -->
+      <div class="scene">
+        <div style="position:relative;width:280px;margin:0 auto;">
+          <div class="monitor" style="position:relative;">
+            <div class="monitor-bar">
+              <div class="wd wd-r"></div>
+              <div class="wd wd-y"></div>
+              <div class="wd wd-g"></div>
+              <span class="monitor-title">SYSTEM CRASH</span>
+            </div>
+            <div class="monitor-body">
+              <div class="tl"><span class="t-ok">$</span> <span class="t-wh">node server.js</span></div>
+              <div class="tl"><span class="t-ok">✓</span> <span class="t-dm">HTTP server started on :3333</span></div>
+              <div class="tl"><span class="t-dm">›</span> <span class="t-dm">Handling incoming request…</span></div>
+              <div class="tl"><span class="t-wn">⚠</span> <span class="t-wn">Memory pressure detected</span></div>
+              <div class="tl"><span class="t-er">✗</span> <span class="t-er">Unhandled exception thrown</span></div>
+              <div class="tl"><span class="t-er">✗</span> <span class="t-er">{{ error.name ?? 'InternalServerError' }}: <span class="t-ac" id="log-err-msg"></span></span></div>
+              <div class="tl"><span class="t-dm">›</span> <span class="t-dm">Awaiting restart…<span class="cur"></span></span></div>
+            </div>
+            <div class="scanline"></div>
+          </div>
+          <div class="stand"></div>
+          <div class="base"></div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <div class="badge">
+          <div class="bdot"></div>
+          Erreur serveur
+        </div>
+        <div class="bignum">500</div>
+        <div class="headline">Quelque chose s'est cassé</div>
+        <div class="sub">
+          Nos serveurs ont rencontré un problème inattendu.<br />
+          Nos équipes sont sur le coup — réessayez dans un instant.
+        </div>
+
+        <div class="err-card">
+          <div class="err-bar">
+            <div class="wd wd-r"></div>
+            <div class="wd wd-y"></div>
+            <div class="wd wd-g"></div>
+            <span class="err-tag">INCIDENT — HTTP {{ error.status ?? 500 }}</span>
+          </div>
+          <div class="err-body">
+            <div class="err-type">{{ error.name ?? 'InternalServerError' }}</div>
+            <div class="err-msg" id="err-msg-display">
+              {{ error.message ?? 'Une erreur interne est survenue.' }}
+            </div>
+            @if(error.code)
+              <span class="err-code-badge">{{ error.code }}</span>
+            @end
+          </div>
+        </div>
+
+        <a href="/" class="btn">
+          <span class="barrow">←</span>
+          Retour à l'accueil
+        </a>
+      </div>
+
+    </div>
+
+    <script>
+      var msg = document.getElementById('err-msg-display').textContent.trim();
+      document.getElementById('log-err-msg').textContent = msg.length > 40 ? msg.slice(0, 40) + '…' : msg;
+    </script>
+
+  </body>
+
+</html>

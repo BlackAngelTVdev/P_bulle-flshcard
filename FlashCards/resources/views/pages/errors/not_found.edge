@@ -31,6 +31,19 @@
         --font-main: 'Inter', system-ui, sans-serif;
         --font-mono: 'JetBrains Mono', monospace;
       }
+
+      /* Grid pattern overlay */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
       
       *,
       *::before,
@@ -629,7 +642,10 @@
         font-weight: 700;
         line-height: 0.85;
         letter-spacing: -6px;
-        color: var(--text-primary);
+        background: linear-gradient(135deg, #1f2937 0%, #8b5cf6 60%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         position: relative;
         display: inline-block;
       }
@@ -639,7 +655,10 @@
         position: absolute;
         left: 5px;
         top: 5px;
-        color: var(--primary-violet);
+        background: linear-gradient(135deg, #1f2937 0%, #8b5cf6 60%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         opacity: 0.1;
         z-index: -1;
         animation: ng 6s ease-in-out infinite;
@@ -828,6 +847,50 @@
         }
       }
       
+      /* URL pill */
+
+      .url-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        background: rgba(139, 92, 246, 0.06);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--text-muted);
+        max-width: 100%;
+        overflow: hidden;
+      }
+
+      .url-method {
+        font-weight: 700;
+        color: var(--red);
+        background: rgba(239, 68, 68, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
+        letter-spacing: 1px;
+        flex-shrink: 0;
+      }
+
+      .url-path {
+        color: var(--primary-violet);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .url-status {
+        margin-left: auto;
+        flex-shrink: 0;
+        color: var(--red);
+        font-weight: 700;
+        font-size: 10px;
+        opacity: 0.8;
+      }
+
       /* Button */
       
       .btn {
@@ -1065,6 +1128,12 @@
           Le serveur SRV-03 a rendu l'âme.<br />La ressource demandée est partie en fumée.
         </div>
 
+        <div class="url-pill">
+          <span class="url-method">GET</span>
+          <span class="url-path" id="req-url"></span>
+          <span class="url-status">404</span>
+        </div>
+
         <div class="log">
           <div class="log-bar">
             <div class="wd wd-r">
@@ -1083,7 +1152,7 @@
               <span class="dm">00:18</span>&nbsp; <span class="wn">WARN</span>&nbsp;&nbsp; Température CPU anormale [94°C]
             </div>
             <div class="ll">
-              <span class="dm">00:18</span>&nbsp; <span class="wn">WARN</span>&nbsp;&nbsp; Route <span class="ac">GET /cette/page</span>inconnue
+              <span class="dm">00:18</span>&nbsp; <span class="wn">WARN</span>&nbsp;&nbsp; Route <span class="ac">GET <span id="log-url"></span></span> inconnue
             </div>
             <div class="ll">
               <span class="dm">00:19</span>&nbsp; <span class="er">ERROR</span>&nbsp; Ressource introuvable [HTTP 404]
@@ -1100,6 +1169,11 @@
       </div>
 
     </div>
+  <script>
+    var p = window.location.pathname + window.location.search;
+    document.getElementById('req-url').textContent = p;
+    document.getElementById('log-url').textContent = p;
+  </script>
   </body>
 
 </html>
