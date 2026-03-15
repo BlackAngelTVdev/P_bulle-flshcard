@@ -1,4 +1,5 @@
 import vine from '@vinejs/vine'
+import { frMessages } from '#validators/messages'
 
 export const updateProfileValidator = vine.compile(
   vine.object({
@@ -37,3 +38,5 @@ export const updatePasswordValidator = vine.compile(
     passwordConfirmation: vine.string().confirmed({ confirmationField: 'password' }),
   })
 )
+updateProfileValidator.messagesProvider = frMessages
+updatePasswordValidator.messagesProvider = frMessages
