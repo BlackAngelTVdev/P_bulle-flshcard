@@ -1,53 +1,71 @@
 @component('components/main', { title: 'Decks | Flash Dam\'s', css: 'home', js: 'home' })
-<main>
-  <div class="search-bar">
-    <form method="GET" action="" onsubmit="return false;">
-      <input type="text" name="q" placeholder="Ex: Informatique, NoSQL" value="{{ q || '' }}" autocomplete="off" />
-      <button type="button" aria-label="Rechercher">
-        <span class="search-icon" aria-hidden="true"></span>
-      </button>
-    </form>
-    <p class="search-help" role="note">Virgule = categorie, theme</p>
-  </div>
+  <main>
+    <div class="search-bar">
+      <form method="GET" action="" onsubmit="return false;">
+        <input
+          type="text"
+          name="q"
+          placeholder="Ex: Informatique, NoSQL"
+          value="{{ q || '' }}"
+          autocomplete="off"
+        />
+        <button type="button" aria-label="Rechercher">
+          <span class="search-icon" aria-hidden="true"></span>
+        </button>
+      </form>
+      <p class="search-help" role="note">
+        Virgule = categorie, theme
+      </p>
+    </div>
 
-  <div class="decks-grid">
+    <div class="decks-grid">
 
-    {{-- On vérifie si on a des groupes, sinon on affiche l'état vide --}}
-    @if(Object.keys(groupedDecks).length > 0)
+      {{-- On vérifie si on a des groupes, sinon on affiche l'état vide --}}
+      @if(Object.keys(groupedDecks).length > 0)
 
-      @each((decksInCategory, category) in groupedDecks)
-        <details class="category-group">
-          <summary class="category-summary">
-            <span class="category-label">📂 {{ category }}</span>
-            <span class="badge-count">{{ decksInCategory.length }} decks</span>
-          </summary>
+        @each((decksInCategory, category) in groupedDecks)
+          <details class="category-group">
+            <summary class="category-summary">
+              <span class="category-label">📂 {{ category }}</span>
+              <span class="badge-count">{{ decksInCategory.length }} decks</span>
+            </summary>
 
-          <div class="category-content">
-            @each(deck in decksInCategory)
-              <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
-                <div class="deck-info">
-                  <h2 class="deck-title">{{ deck.name }}</h2>
-                  <p class="deck-description">{{ deck.description || '' }}</p>
-                </div>
-                <div class="deck-footer">
-                  <span class="count">{{ deck.$extras.cards_count || 0 }} cartes</span>
-                </div>
-              </a>
-            @end
+            <div class="category-content">
+              @each(deck in decksInCategory)
+                <a href="{{ route('decks.show', { id: deck.id }) }}" class="deck-card">
+                  <div class="deck-info">
+                    <h2 class="deck-title">
+                      {{ deck.name }}
+                    </h2>
+                    <p class="deck-description">
+                      {{ deck.description || '' }}
+                    </p>
+                  </div>
+                  <div class="deck-footer">
+                    <span class="count">{{ deck.$extras.cards_count || 0 }} cartes</span>
+                  </div>
+                </a>
+              @end
+            </div>
+          </details>
+        @end
+        
+      @else
+        {{-- État vide si groupedDecks est vide --}}
+        <div class="empty-state">
+          <div class="empty-icon">
+            📂
           </div>
-        </details>
+          <h2>
+            Pas encore de deck pour le moment
+          </h2>
+          <p>
+            Commence par créer ton premier deck pour réviser !
+          </p>
+          <a href="{{ route('decks.create') }}" class="btn-primary">Créer un deck</a>
+        </div>
       @end
-
-    @else
-      {{-- État vide si groupedDecks est vide --}}
-      <div class="empty-state">
-        <div class="empty-icon">📂</div>
-        <h2>Pas encore de deck pour le moment</h2>
-        <p>Commence par créer ton premier deck pour réviser !</p>
-        <a href="{{ route('decks.create') }}" class="btn-primary">Créer un deck</a>
-      </div>
-    @end
-
-  </div>
-</main>
+      
+    </div>
+  </main>
 @end

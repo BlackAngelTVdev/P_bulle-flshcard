@@ -32,29 +32,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // Récupérer tous les groupes de catégories
     const categoryGroups = document.querySelectorAll('.category-group')
 
-    categoryGroups.forEach(group => {
+    categoryGroups.forEach((group) => {
       const categoryLabel = group.querySelector('.category-label')
       const categoryName = categoryLabel ? categoryLabel.textContent.toLowerCase() : ''
       const deckCards = group.querySelectorAll('.deck-card')
       let visibleDecks = 0
 
       // Filtrer chaque deck dans cette catégorie
-      deckCards.forEach(card => {
+      deckCards.forEach((card) => {
         const deckTitle = card.querySelector('.deck-title').textContent.toLowerCase()
         const deckDescription = card.querySelector('.deck-description').textContent.toLowerCase()
         const deckContent = `${deckTitle} ${deckDescription}`
 
-        const genericMatch = query.mode === 'generic' && (
-          deckTitle.includes(query.generic) ||
-          deckDescription.includes(query.generic) ||
-          categoryName.includes(query.generic)
-        )
+        const genericMatch =
+          query.mode === 'generic' &&
+          (deckTitle.includes(query.generic) ||
+            deckDescription.includes(query.generic) ||
+            categoryName.includes(query.generic))
 
         const categoryMatch = !query.category || categoryName.includes(query.category)
-        const themeMatch = query.themes.length === 0 || query.themes.every(theme => deckContent.includes(theme))
+        const themeMatch =
+          query.themes.length === 0 || query.themes.every((theme) => deckContent.includes(theme))
 
         // Sans virgule: recherche globale. Avec virgule: categorie, theme1, theme2...
-        const matches = query.mode === 'empty' ||
+        const matches =
+          query.mode === 'empty' ||
           genericMatch ||
           (query.mode === 'segmented' && categoryMatch && themeMatch)
 
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     // Gérer l'affichage de l'empty state si besoin
-    const hasVisibleGroups = Array.from(categoryGroups).some(g => g.style.display !== 'none')
+    const hasVisibleGroups = Array.from(categoryGroups).some((g) => g.style.display !== 'none')
     let emptyState = document.querySelector('.empty-state')
 
     if (!hasVisibleGroups && query.mode !== 'empty') {

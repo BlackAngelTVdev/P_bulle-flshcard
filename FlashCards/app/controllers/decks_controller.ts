@@ -60,10 +60,8 @@ export default class DecksController {
   async myDecks({ auth, view, request }: HttpContext) {
     const q = (request.input('q', '') || '').toString().trim()
 
-    const qb = Deck.query()
-      .where('userId', auth.user!.id)
-      .withCount('cards')
-      // Important : Trie par catégorie pour que l'affichage soit ordonné
+    const qb = Deck.query().where('userId', auth.user!.id).withCount('cards')
+    // Important : Trie par catégorie pour que l'affichage soit ordonné
 
     if (q) {
       qb.where((builder) => {
@@ -265,10 +263,10 @@ export default class DecksController {
       endedAt: null,
     })
 
-    return view.render('pages/deck/game', { 
-      deck, 
-      cards, 
-      mode, 
+    return view.render('pages/deck/game', {
+      deck,
+      cards,
+      mode,
       cardFilter,
       gameSession,
       limit: cards.length,
@@ -293,13 +291,15 @@ export default class DecksController {
       : null
 
     const wrongCardsCount = gameSession?.wrongCardIds?.length || 0
-    const score = scoreInput !== undefined ? Number(scoreInput) : Number(gameSession?.correctAnswers || 0)
-    const total = totalInput !== undefined ? Number(totalInput) : Number(gameSession?.totalCards || 0)
+    const score =
+      scoreInput !== undefined ? Number(scoreInput) : Number(gameSession?.correctAnswers || 0)
+    const total =
+      totalInput !== undefined ? Number(totalInput) : Number(gameSession?.totalCards || 0)
 
-    return view.render('pages/deck/result', { 
-      deck, 
-      score, 
-      total, 
+    return view.render('pages/deck/result', {
+      deck,
+      score,
+      total,
       mode,
       sessionId,
       wrongCardsCount,
@@ -341,7 +341,11 @@ export default class DecksController {
     }
 
     const uniqueCardIds = [...new Set(answers.map((item) => item.cardId))]
-    const existingCards = await deck.related('cards').query().whereIn('id', uniqueCardIds).select('id')
+    const existingCards = await deck
+      .related('cards')
+      .query()
+      .whereIn('id', uniqueCardIds)
+      .select('id')
     const validCardIds = new Set(existingCards.map((card) => card.id))
 
     const playedSet = new Set(gameSession.playedCardIds || [])
@@ -447,7 +451,8 @@ export default class DecksController {
       })
     }
 
-    const hasFallbackArrays = normalizedPlayed.length > 0 || normalizedCorrect.length > 0 || normalizedWrong.length > 0
+    const hasFallbackArrays =
+      normalizedPlayed.length > 0 || normalizedCorrect.length > 0 || normalizedWrong.length > 0
 
     if (hasFallbackArrays) {
       for (const cardId of normalizedPlayed) {
@@ -481,16 +486,18 @@ export default class DecksController {
 
     gameSession.merge({
       mode,
-      totalCards: Number.isFinite(total) && total > 0
-        ? total
-        : hasFallbackArrays
-          ? normalizedPlayed.length
-          : gameSession.totalCards,
-      correctAnswers: Number.isFinite(score) && score >= 0
-        ? score
-        : hasFallbackArrays
-          ? normalizedCorrect.length
-          : gameSession.correctAnswers,
+      totalCards:
+        Number.isFinite(total) && total > 0
+          ? total
+          : hasFallbackArrays
+            ? normalizedPlayed.length
+            : gameSession.totalCards,
+      correctAnswers:
+        Number.isFinite(score) && score >= 0
+          ? score
+          : hasFallbackArrays
+            ? normalizedCorrect.length
+            : gameSession.correctAnswers,
       playedCardIds: hasFallbackArrays ? normalizedPlayed : gameSession.playedCardIds,
       correctCardIds: hasFallbackArrays ? normalizedCorrect : gameSession.correctCardIds,
       wrongCardIds: hasFallbackArrays ? normalizedWrong : gameSession.wrongCardIds,

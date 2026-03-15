@@ -1,49 +1,62 @@
 @component('components/main', { title: `S'entrainer sur ${deck.name} | Flash Dam\'s`, css: 'play' })
-<main>
+  <main>
     <div class="setup-container">
-        <h1>{{ deck.name }}</h1>
+      <h1>
+        {{ deck.name }}
+      </h1>
 
-        <form action="{{ route('decks.game', { id: deck.id }) }}" method="GET">
-            <div class="mode-selection">
-                <p>S'entraîner en mode :</p>
-                <select name="mode" class="mode-select">
-                    <option value="basique">Basique (Recto/Verso)</option>
-                    <option value="survie">Mode Survie (3 vies) 💀</option>
-                    <option value="chrono">Mode Chrono (10s) ⏱️</option>
-                </select>
-            </div>
+      <form action="{{ route('decks.game', { id: deck.id }) }}" method="GET">
+        <div class="mode-selection">
+          <p>
+            S'entraîner en mode :
+          </p>
+          <select name="mode" class="mode-select">
+            <option value="basique">
+              Basique (Recto/Verso)
+            </option>
+            <option value="survie">
+              Mode Survie (3 vies) 💀
+            </option>
+            <option value="chrono">
+              Mode Chrono (10s) ⏱️
+            </option>
+          </select>
+        </div>
 
-            <div class="mode-selection">
-                <p>Quelles cartes jouer ?</p>
-                <select name="cardFilter" class="mode-select">
-                    <option value="all">Toutes les cartes</option>
-                    <option value="unplayed">Seulement les non jouées ({{ unplayedCount || 0 }})</option>
-                    <option value="failed">Seulement les non réussies ({{ failedCount || 0 }})</option>
-                </select>
-                <small class="hint">Progression perso: {{ playedCount || 0 }} jouées / {{ cardsCount || 0 }} au total.</small>
-            </div>
+        <div class="mode-selection">
+          <p>
+            Quelles cartes jouer ?
+          </p>
+          <select name="cardFilter" class="mode-select">
+            <option value="all">
+              Toutes les cartes
+            </option>
+            <option value="unplayed">
+              Seulement les non jouées ({{ unplayedCount || 0 }})
+            </option>
+            <option value="failed">
+              Seulement les non réussies ({{ failedCount || 0 }})
+            </option>
+          </select>
+          <small class="hint">Progression perso: {{ playedCount || 0 }} jouées / {{ cardsCount || 0 }} au total.</small>
+        </div>
 
-            {{-- NOUVEAU : Sélection du volume de cartes --}}
-            <div class="limit-selection">
-                <p>Combien de cartes ?</p>
-                <div class="input-wrapper">
-                    <input 
-                        type="number" 
-                        name="limit" 
-                        value="20" 
-                        min="1" 
-                        max="{{ cardsCount || 500 }}" 
-                        class="limit-input"
-                    >
-                    <span class="total-info">/ {{ cardsCount || 'toutes' }}</span>
-                </div>
-                <small class="hint">Laisse vide pour tout réviser.</small>
-            </div>
+        {{-- NOUVEAU : Sélection du volume de cartes --}}
+        <div class="limit-selection">
+          <p>
+            Combien de cartes ?
+          </p>
+          <div class="input-wrapper">
+            <input type="number" name="limit" value="20" min="1" max="{{ cardsCount || 500 }}" class="limit-input" />
+            <span class="total-info">/ {{ cardsCount || 'toutes' }}</span>
+          </div>
+          <small class="hint">Laisse vide pour tout réviser.</small>
+        </div>
 
-            <button type="submit" class="btn-start">C'est parti !</button>
+        <button type="submit" class="btn-start">C'est parti !</button>
 
-            <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
-        </form>
+        <a href="{{ route('decks.show', { id: deck.id }) }}" class="btn-back">Retour au deck</a>
+      </form>
     </div>
-</main>
+  </main>
 @end

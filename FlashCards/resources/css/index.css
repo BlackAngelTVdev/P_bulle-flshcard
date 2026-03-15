@@ -106,8 +106,6 @@ body {
   transition: background 0.2s;
 }
 
-
-
 .small-info strong {
   color: var(--primary-violet);
   font-size: 1.1rem;
@@ -179,7 +177,6 @@ body {
 
 /* --- RESPONSIVE --- */
 @media (max-width: 900px) {
-
   .hero-grid,
   .features-grid {
     grid-template-columns: 1fr;

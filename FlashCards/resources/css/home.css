@@ -31,7 +31,7 @@ main {
   border: 1px solid rgba(139, 92, 246, 0.08);
 }
 
-.search-bar input[type="text"] {
+.search-bar input[type='text'] {
   flex: 1;
   border: none;
   outline: none;
@@ -100,7 +100,9 @@ main {
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -4px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
 }
 
 .search-help::before {
@@ -149,7 +151,6 @@ main {
 .category-summary::-webkit-details-marker {
   display: none;
 }
-
 
 /* Badge du nombre de decks */
 .badge-count {

@@ -7,7 +7,7 @@ const sessionConfig = defineConfig({
   cookieName: 'adonis-session',
 
   /**
-   * On le laisse à FALSE. 
+   * On le laisse à FALSE.
    * C'est ce qui permet au cookie de survivre quand tu fermes l'onglet.
    */
   clearWithBrowser: false,

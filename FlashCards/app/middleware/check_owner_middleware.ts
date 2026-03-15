@@ -6,7 +6,7 @@ import db from '@adonisjs/lucid/services/db'
 export default class CheckOwnerMiddleware {
   async handle(ctx: HttpContext, next: NextFn) {
     const { params, auth, response, request, session } = ctx
-    
+
     if (!auth.user) {
       session.flash('error', 'Vous devez être connecté.')
       return response.redirect().toRoute('auth.login')
@@ -20,7 +20,8 @@ export default class CheckOwnerMiddleware {
     if (id) {
       if (isCardRoute) {
         /* On check si la carte appartient à un deck du user */
-        const card = await db.from('cards')
+        const card = await db
+          .from('cards')
           .join('decks', 'cards.deck_id', 'decks.id')
           .where('cards.id', id)
           .where('decks.user_id', userId)
@@ -28,17 +29,14 @@ export default class CheckOwnerMiddleware {
         ownerFound = !!card
       } else {
         /* On check si le deck appartient au user */
-        const deck = await db.from('decks')
-          .where('id', id)
-          .where('user_id', userId)
-          .first()
+        const deck = await db.from('decks').where('id', id).where('user_id', userId).first()
         ownerFound = !!deck
       }
 
       if (!ownerFound) {
         /* Au lieu du forbidden(), on flash et on redirige */
-        session.flash('error', 'Accès refusé : vous n\'êtes pas le propriétaire.')
-        return response.redirect().back() 
+        session.flash('error', "Accès refusé : vous n'êtes pas le propriétaire.")
+        return response.redirect().back()
       }
     }
 

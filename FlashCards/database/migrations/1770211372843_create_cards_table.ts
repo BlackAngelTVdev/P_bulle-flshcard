@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
       table.string('question').notNullable()
       table.string('answer').notNullable()
-      
+
       // La clé étrangère pour lier au deck
       table.integer('deck_id').unsigned().references('id').inTable('decks').onDelete('CASCADE')
 

@@ -8,7 +8,7 @@ export default class extends BaseSeeder {
         username: 'Damien',
         email: 'dami.scoot3@gmail.com',
         password: 'admin1234',
-        isAdmin: true
+        isAdmin: true,
       },
       {
         username: 'EtudiantSolide',

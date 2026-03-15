@@ -1,167 +1,180 @@
 @component('components/main', { title: 'Decks | Flash Dam\'s', css: 'editprofile' })
 
+  <div class="profile-page">
+    <div class="profile-container">
+      <h1 class="page-title">
+        Mon profil
+      </h1>
 
-<div class="profile-page">
-  <div class="profile-container">
-    <h1 class="page-title">Mon profil</h1>
+      <div class="profile-layout">
+        <aside class="stats-card">
+          <div class="card-header">
+            <h2>
+              Mes stats
+            </h2>
+            <p>
+              Ton suivi personnel sur l'application.
+            </p>
+          </div>
 
-    <div class="profile-layout">
-      <aside class="stats-card">
-        <div class="card-header">
-          <h2>Mes stats</h2>
-          <p>Ton suivi personnel sur l'application.</p>
-        </div>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Decks créés</span>
+              <span class="stat-value">{{ profileStats.decksCount }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Cartes créées</span>
+              <span class="stat-value">{{ profileStats.cardsCount }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Sessions jouées</span>
+              <span class="stat-value">{{ profileStats.sessionsCount }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Réponses totales</span>
+              <span class="stat-value">{{ profileStats.totalPlayed }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Réussies</span>
+              <span class="stat-value text-success">{{ profileStats.totalCorrect }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Ratées</span>
+              <span class="stat-value text-danger">{{ profileStats.totalWrong }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Cartes à revoir</span>
+              <span class="stat-value">{{ profileStats.cardsToReview }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Taux de réussite</span>
+              <span class="stat-value">{{ profileStats.accuracy }}%</span>
+            </div>
+          </div>
 
-        <div class="stats-grid">
-          <div class="stat-item">
-            <span class="stat-label">Decks créés</span>
-            <span class="stat-value">{{ profileStats.decksCount }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Cartes créées</span>
-            <span class="stat-value">{{ profileStats.cardsCount }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Sessions jouées</span>
-            <span class="stat-value">{{ profileStats.sessionsCount }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Réponses totales</span>
-            <span class="stat-value">{{ profileStats.totalPlayed }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Réussies</span>
-            <span class="stat-value text-success">{{ profileStats.totalCorrect }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Ratées</span>
-            <span class="stat-value text-danger">{{ profileStats.totalWrong }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Cartes à revoir</span>
-            <span class="stat-value">{{ profileStats.cardsToReview }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Taux de réussite</span>
-            <span class="stat-value">{{ profileStats.accuracy }}%</span>
-          </div>
-        </div>
+          <p class="last-session">
+            Dernière session: {{ profileStats.lastSessionAt }}
+          </p>
+        </aside>
 
-        <p class="last-session">Dernière session: {{ profileStats.lastSessionAt }}</p>
-      </aside>
+        <section class="profile-forms">
 
-      <section class="profile-forms">
+          {{-- ─── Section : Infos générales ─── --}}
+          <div class="card">
+            <div class="card-header">
+              <h2>
+                Informations générales
+              </h2>
+              <p>
+                Modifie ton nom d'utilisateur et ton adresse email.
+              </p>
+            </div>
 
-    {{-- ─── Section : Infos générales ─── --}}
-    <div class="card">
-      <div class="card-header">
-        <h2>Informations générales</h2>
-        <p>Modifie ton nom d'utilisateur et ton adresse email.</p>
+            <form action="{{ route('profile.update') }}?_method=PUT" method="POST" class="card-body">
+              {{ csrfField() }}
+        <input type="hidden" name="_method" value="PUT" />
+
+              @if(flashMessages.has('errors'))
+                <div class="alert alert-error">
+                  @each(error in flashMessages.get('errors'))
+                    <p>
+                      {{ error.message ?? error }}
+                    </p>
+                  @end
+                </div>
+              @end
+              
+              <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  value="{{ flashMessages.get('username') ?? user.username }}"
+                  autocomplete="username"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Adresse email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value="{{ flashMessages.get('email') ?? user.email }}"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+              </div>
+            </form>
+          </div>
+
+          {{-- ─── Section : Mot de passe ─── --}}
+          <div class="card">
+            <div class="card-header">
+              <h2>
+                Changer le mot de passe
+              </h2>
+              <p>
+                Utilise un mot de passe fort d'au moins 8 caractères.
+              </p>
+            </div>
+
+            <form action="{{ route('profile.password') }}?_method=PUT" method="POST" class="card-body">
+              {{ csrfField() }}
+        <input type="hidden" name="_method" value="PUT" />
+
+              @if(flashMessages.has('passwordError'))
+                <div class="alert alert-error">
+                  @each(error in [flashMessages.get('passwordError')].flat())
+                    <p>
+                      {{ error.message ?? error }}
+                    </p>
+                  @end
+                </div>
+              @end
+              
+              <div class="form-group">
+                <label for="currentPassword">Mot de passe actuel</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  name="currentPassword"
+                  autocomplete="current-password"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Nouveau mot de passe</label>
+                <input type="password" id="password" name="password" autocomplete="new-password" required />
+              </div>
+
+              <div class="form-group">
+                <label for="passwordConfirmation">Confirmer le mot de passe</label>
+                <input
+                  type="password"
+                  id="passwordConfirmation"
+                  name="passwordConfirmation"
+                  autocomplete="new-password"
+                  required
+                />
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+              </div>
+            </form>
+          </div>
+
+        </section>
       </div>
 
-      <form action="{{ route('profile.update') }}?_method=PUT" method="POST" class="card-body">
-        {{ csrfField() }}
-        <input type="hidden" name="_method" value="PUT">
-
-        @if(flashMessages.has('errors'))
-          <div class="alert alert-error">
-            @each(error in flashMessages.get('errors'))
-              <p>{{ error.message ?? error }}</p>
-            @end
-          </div>
-        @end
-
-        <div class="form-group">
-          <label for="username">Nom d'utilisateur</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value="{{ flashMessages.get('username') ?? user.username }}"
-            autocomplete="username"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Adresse email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value="{{ flashMessages.get('email') ?? user.email }}"
-            autocomplete="email"
-            required
-          />
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Sauvegarder</button>
-        </div>
-      </form>
     </div>
-
-    {{-- ─── Section : Mot de passe ─── --}}
-    <div class="card">
-      <div class="card-header">
-        <h2>Changer le mot de passe</h2>
-        <p>Utilise un mot de passe fort d'au moins 8 caractères.</p>
-      </div>
-
-      <form action="{{ route('profile.password') }}?_method=PUT" method="POST" class="card-body">
-        {{ csrfField() }}
-        <input type="hidden" name="_method" value="PUT">
-
-        @if(flashMessages.has('passwordError'))
-          <div class="alert alert-error">
-            @each(error in [flashMessages.get('passwordError')].flat())
-              <p>{{ error.message ?? error }}</p>
-            @end
-          </div>
-        @end
-
-        <div class="form-group">
-          <label for="currentPassword">Mot de passe actuel</label>
-          <input
-            type="password"
-            id="currentPassword"
-            name="currentPassword"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Nouveau mot de passe</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            autocomplete="new-password"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="passwordConfirmation">Confirmer le mot de passe</label>
-          <input
-            type="password"
-            id="passwordConfirmation"
-            name="passwordConfirmation"
-            autocomplete="new-password"
-            required
-          />
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
-        </div>
-      </form>
-    </div>
-
-      </section>
-    </div>
-
   </div>
-</div>
 @end

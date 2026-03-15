@@ -2,259 +2,262 @@
 
 /* --- LAYOUT DE LA PAGE --- */
 body {
-    background-color: #f8fafc;
-    /* Un gris très léger pour faire ressortir la carte blanche */
-    margin: 0;
-    font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f8fafc;
+  /* Un gris très léger pour faire ressortir la carte blanche */
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 .auth-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 90vh;
-    /* Laisse un peu de place pour le footer */
-    padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  /* Laisse un peu de place pour le footer */
+  padding: 1.5rem;
 }
 
 /* --- LA CARTE BLANCHE --- */
 .auth-card {
-    background: white;
-    padding: 2.5rem;
-    border-radius: 24px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
+  background: white;
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 
 /* --- LE LOGO STYLISÉ --- */
 .logo-text {
-    font-size: 2.2rem;
-    font-weight: 900;
-    letter-spacing: -1.5px;
-    margin-bottom: 1rem;
-    display: inline-block;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  margin-bottom: 1rem;
+  display: inline-block;
 }
 
 .logo-flash {
-    color: var(--primary-violet);
-    text-transform: uppercase;
+  color: var(--primary-violet);
+  text-transform: uppercase;
 }
 
 .logo-dams {
-    color: #0885ce;
-    /* Vert émeraude pour le contraste */
-    font-style: italic;
+  color: #0885ce;
+  /* Vert émeraude pour le contraste */
+  font-style: italic;
 }
 
 h1 {
-    color: #1e293b;
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    font-weight: 700;
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
 }
 
 /* --- FORMULAIRE --- */
 form {
-    text-align: left;
+  text-align: left;
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #475569;
-    margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.5rem;
 }
 
 input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 input:focus {
-    outline: none;
-    border-color: var(--primary-violet);
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  outline: none;
+  border-color: var(--primary-violet);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 
 /* --- BOUTON --- */
 .btn-primary {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: var(--primary-violet);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-    margin-top: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.2s;
+  margin-top: 1rem;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 /* --- MESSAGES D'ERREUR --- */
 .error {
-    color: #dc2626;
-    font-size: 0.8rem;
-    margin-top: 0.4rem;
-    display: block;
-    font-weight: 500;
+  color: #dc2626;
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+  display: block;
+  font-weight: 500;
 }
 
 /* --- FOOTER DE LA CARTE --- */
 .auth-footer {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #64748b;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #64748b;
 }
 
 .auth-footer a {
-    color: var(--primary-violet);
-    text-decoration: none;
-    font-weight: 600;
+  color: var(--primary-violet);
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .auth-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .btn-primary:disabled {
-    background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
-    opacity: 0.5;
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    height: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  height: auto;
 }
 
-
-.checkbox-group input[type="checkbox"] {
-    width: 1.2rem;
-    height: 1.2rem;
-    margin: 0 !important;
-    padding: 0;
-    cursor: pointer;
+.checkbox-group input[type='checkbox'] {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0 !important;
+  padding: 0;
+  cursor: pointer;
 }
 
 .checkbox-group label {
-    margin: 0 !important;
-    padding: 0;
-    line-height: 1;
-    cursor: pointer;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
+  margin: 0 !important;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
 }
 
 .checkbox-group label a {
-    margin-left: 4px;
-    text-decoration: underline;
-    color: inherit;
+  margin-left: 4px;
+  text-decoration: underline;
+  color: inherit;
 }
 
 .form-group-remember {
-    margin: 15px 0;
-    display: flex;
-    align-items: center;
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
 }
 
 .remember-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-dark);
 }
 
-.remember-label input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    accent-color: var(--primary-violet);
-    /* Utilise ta couleur de base */
+.remember-label input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary-violet);
+  /* Utilise ta couleur de base */
 }
 
 /* --- RESPONSIVE DESIGN (Auth) --- */
 
 @media (max-width: 480px) {
-    .auth-container {
-        padding: 1rem;
-        min-height: 85vh;
-        /* Évite les problèmes de viewport sur les navigateurs mobiles */
-    }
+  .auth-container {
+    padding: 1rem;
+    min-height: 85vh;
+    /* Évite les problèmes de viewport sur les navigateurs mobiles */
+  }
 
-    .auth-card {
-        padding: 1.5rem;
-        /* On réduit le padding interne pour gagner de la place */
-        border-radius: 20px;
-        /* Un peu moins arrondi sur petit écran */
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        /* Ombre plus légère */
-    }
+  .auth-card {
+    padding: 1.5rem;
+    /* On réduit le padding interne pour gagner de la place */
+    border-radius: 20px;
+    /* Un peu moins arrondi sur petit écran */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    /* Ombre plus légère */
+  }
 
-    .logo-text {
-        font-size: 1.8rem;
-        /* Logo un peu plus petit */
-        letter-spacing: -1px;
-    }
+  .logo-text {
+    font-size: 1.8rem;
+    /* Logo un peu plus petit */
+    letter-spacing: -1px;
+  }
 
-    h1 {
-        font-size: 1.25rem;
-        margin-bottom: 1.5rem;
-    }
+  h1 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
 
-    .form-group {
-        margin-bottom: 1.2rem;
-    }
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
 
-    input {
-        padding: 0.7rem 0.9rem;
-        /* Inputs légèrement plus compacts */
-        font-size: 1rem;
-        /* On garde 1rem pour éviter le zoom auto iOS */
-    }
+  input {
+    padding: 0.7rem 0.9rem;
+    /* Inputs légèrement plus compacts */
+    font-size: 1rem;
+    /* On garde 1rem pour éviter le zoom auto iOS */
+  }
 
-    .btn-primary {
-        padding: 0.9rem;
-        /* Bouton plus facile à taper au pouce */
-    }
+  .btn-primary {
+    padding: 0.9rem;
+    /* Bouton plus facile à taper au pouce */
+  }
 
-    .auth-footer {
-        margin-top: 1.5rem;
-    }
+  .auth-footer {
+    margin-top: 1.5rem;
+  }
 }
 
 /* Gestion du mode paysage sur mobile */
 @media (max-height: 500px) and (orientation: landscape) {
-    .auth-container {
-        padding: 2rem 1rem;
-        align-items: flex-start;
-        /* Permet de scroller le formulaire s'il est trop haut */
-    }
+  .auth-container {
+    padding: 2rem 1rem;
+    align-items: flex-start;
+    /* Permet de scroller le formulaire s'il est trop haut */
+  }
 }

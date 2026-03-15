@@ -39,11 +39,7 @@ export default class AuthController {
   async showEdit({ view, auth }: HttpContext) {
     const user = auth.getUserOrFail()
 
-    const decksRow = await db
-      .from('decks')
-      .where('user_id', user.id)
-      .count('* as total')
-      .first()
+    const decksRow = await db.from('decks').where('user_id', user.id).count('* as total').first()
 
     const cardsRow = await db
       .from('cards')
@@ -115,10 +111,7 @@ export default class AuthController {
 
     try {
       // On cherche l'utilisateur soit par son email, soit par son username
-      const user = await User.query()
-        .where('email', uid)
-        .orWhere('username', uid)
-        .firstOrFail()
+      const user = await User.query().where('email', uid).orWhere('username', uid).firstOrFail()
 
       // Vérification manuelle du hash du mot de passe
       const isValid = await hash.verify(user.password, password)

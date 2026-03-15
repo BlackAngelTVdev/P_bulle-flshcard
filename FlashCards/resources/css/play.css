@@ -1,162 +1,164 @@
 @import url(./var.css);
 
 main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
 }
 
 .setup-container {
-    background: var(--white);
-    max-width: 500px;
-    width: 100%;
-    padding: 3rem;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
-    border-top: 8px solid var(--primary-violet);
-    text-align: center;
+  background: var(--white);
+  max-width: 500px;
+  width: 100%;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(139, 92, 246, 0.15);
+  border-top: 8px solid var(--primary-violet);
+  text-align: center;
 }
 
 h1 {
-    color: var(--primary-violet);
-    margin-bottom: 0.5rem;
+  color: var(--primary-violet);
+  margin-bottom: 0.5rem;
 }
 
 .mode-selection {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 
 .mode-selection p {
-    font-weight: 700;
-    color: #4b5563;
-    margin-bottom: 1rem;
+  font-weight: 700;
+  color: #4b5563;
+  margin-bottom: 1rem;
 }
 
 /* Le menu déroulant */
 .mode-select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid var(--light-violet);
-    border-radius: 10px;
-    font-size: 1rem;
-    font-family: inherit;
-    color: #374151;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--light-violet);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #374151;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .mode-select:focus {
-    border-color: var(--primary-violet);
+  border-color: var(--primary-violet);
 }
 
 .btn-start {
-    width: 100%;
-    background-color: var(--primary-violet);
-    color: white;
-    border: none;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
+  width: 100%;
+  background-color: var(--primary-violet);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background-color 0.3s;
 }
 
 .btn-start:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .btn-back {
-    display: block;
-    margin-top: 1.5rem;
-    color: #6b7280;
-    text-decoration: none;
-    font-size: 0.9rem;
+  display: block;
+  margin-top: 1.5rem;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .btn-back:hover {
-    color: var(--primary-violet);
+  color: var(--primary-violet);
 }
 
 .limit-selection {
-    margin-top: 20px;
-    margin-bottom: 25px;
-    text-align: center;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  text-align: center;
 }
 
 .input-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .limit-input {
-    width: 80px;
-    padding: 10px;
-    border: 2px solid var(--primary-violet);
-    border-radius: 8px;
-    background: white;
-    font-size: 1.1rem;
-    text-align: center;
+  width: 80px;
+  padding: 10px;
+  border: 2px solid var(--primary-violet);
+  border-radius: 8px;
+  background: white;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .total-info {
-    font-weight: bold;
-    color: #666;
+  font-weight: bold;
+  color: #666;
 }
 
 .hint {
-    display: block;
-    margin-top: 5px;
-    color: #888;
-    font-size: 0.8rem;
+  display: block;
+  margin-top: 5px;
+  color: #888;
+  font-size: 0.8rem;
 }
 /* --- RESPONSIVE DESIGN (Setup Game) --- */
 
 @media (max-width: 600px) {
-    main {
-        padding: 1rem;
-        min-height: 75vh;
-    }
+  main {
+    padding: 1rem;
+    min-height: 75vh;
+  }
 
-    .setup-container {
-        padding: 2rem 1.5rem; /* On réduit pour gagner de la place */
-        border-radius: 16px;
-    }
+  .setup-container {
+    padding: 2rem 1.5rem; /* On réduit pour gagner de la place */
+    border-radius: 16px;
+  }
 
-    h1 {
-        font-size: 1.5rem;
-    }
+  h1 {
+    font-size: 1.5rem;
+  }
 
-    .mode-selection {
-        margin: 1.5rem 0;
-    }
+  .mode-selection {
+    margin: 1.5rem 0;
+  }
 
-    .mode-select {
-        padding: 10px;
-        font-size: 0.95rem;
-    }
+  .mode-select {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
 
-    .btn-start {
-        padding: 12px;
-        font-size: 1rem;
-    }
+  .btn-start {
+    padding: 12px;
+    font-size: 1rem;
+  }
 
-    .btn-back {
-        margin-top: 1rem;
-    }
+  .btn-back {
+    margin-top: 1rem;
+  }
 }
 
 /* Fix pour les écrans très courts */
 @media (max-height: 550px) {
-    .setup-container {
-        padding: 1.5rem;
-    }
-    .mode-selection {
-        margin: 1rem 0;
-    }
+  .setup-container {
+    padding: 1.5rem;
+  }
+  .mode-selection {
+    margin: 1rem 0;
+  }
 }

@@ -1,69 +1,117 @@
 @component('components/main', { title: `Modifier ${deck.name} | Flash Dam\'s`, css: 'deckedit' })
-<main>
-    <h1>Modifier {{ deck.name }}</h1>
+  <main>
+    <h1>
+      Modifier {{ deck.name }}
+    </h1>
 
     <form action="{{ route('decks.update', { id: deck.id }) }}?_method=PUT" method="POST">
-        {{ csrfField() }}
+      {{ csrfField() }}
+      <div class="field">
+        <label for="name">Nom du deck</label>
+        <input type="text" id="name" name="name" value="{{ old('name') || deck.name }}" />
+        @inputError('name')
+          <p class="text-danger">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
 
-        <div class="field">
-            <label for="name">Nom du deck</label>
-            <input type="text" id="name" name="name" value="{{ old('name') || deck.name }}" />
-            @inputError('name')
-                <p class="text-danger">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
+      <div class="field">
+        <label for="category">Matière / Catégorie</label>
+        <select id="category" name="category">
+          {{-- On compare la catégorie du deck ou l'ancienne valeur saisie pour mettre "selected" --}}
+          @let(currentCat = old('category') || deck.category)
 
-        <div class="field">
-            <label for="category">Matière / Catégorie</label>
-            <select id="category" name="category">
-                {{-- On compare la catégorie du deck ou l'ancienne valeur saisie pour mettre "selected" --}}
-                @let(currentCat = old('category') || deck.category)
+          <optgroup label="Langues 🌍">
+            <option value="Anglais" {{ currentCat == 'Anglais' ? 'selected' : '' }}>
+              Anglais
+            </option>
+            <option value="Allemand" {{ currentCat == 'Allemand' ? 'selected' : '' }}>
+              Allemand
+            </option>
+            <option value="Espagnol" {{ currentCat == 'Espagnol' ? 'selected' : '' }}>
+              Espagnol
+            </option>
+            <option value="Italien" {{ currentCat == 'Italien' ? 'selected' : '' }}>
+              Italien
+            </option>
+            <option value="Français" {{ currentCat == 'Français' ? 'selected' : '' }}>
+              Français / Littérature
+            </option>
+          </optgroup>
 
-                <optgroup label="Langues 🌍">
-                    <option value="Anglais" {{ currentCat == 'Anglais' ? 'selected' : '' }}>Anglais</option>
-                    <option value="Allemand" {{ currentCat == 'Allemand' ? 'selected' : '' }}>Allemand</option>
-                    <option value="Espagnol" {{ currentCat == 'Espagnol' ? 'selected' : '' }}>Espagnol</option>
-                    <option value="Italien" {{ currentCat == 'Italien' ? 'selected' : '' }}>Italien</option>
-                    <option value="Français" {{ currentCat == 'Français' ? 'selected' : '' }}>Français / Littérature</option>
-                </optgroup>
+          <optgroup label="Sciences & Tech 🧬">
+            <option value="Maths" {{ currentCat == 'Maths' ? 'selected' : '' }}>
+              Maths
+            </option>
+            <option value="Physique-Chimie" {{ currentCat == 'Physique-Chimie' ? 'selected' : '' }}>
+              Physique-Chimie
+            </option>
+            <option value="SVT" {{ currentCat == 'SVT' ? 'selected' : '' }}>
+              SVT
+            </option>
+            <option value="Informatique" {{ currentCat == 'Informatique' ? 'selected' : '' }}>
+              Informatique / Dev
+            </option>
+          </optgroup>
 
-                <optgroup label="Sciences & Tech 🧬">
-                    <option value="Maths" {{ currentCat == 'Maths' ? 'selected' : '' }}>Maths</option>
-                    <option value="Physique-Chimie" {{ currentCat == 'Physique-Chimie' ? 'selected' : '' }}>Physique-Chimie</option>
-                    <option value="SVT" {{ currentCat == 'SVT' ? 'selected' : '' }}>SVT</option>
-                    <option value="Informatique" {{ currentCat == 'Informatique' ? 'selected' : '' }}>Informatique / Dev</option>
-                </optgroup>
+          <optgroup label="Sciences Humaines 🏛️">
+            <option value="Philo" {{ currentCat == 'Philo' ? 'selected' : '' }}>
+              Philosophie
+            </option>
+            <option value="Histoire" {{ currentCat == 'Histoire' ? 'selected' : '' }}>
+              Histoire
+            </option>
+            <option value="Géo" {{ currentCat == 'Géo' ? 'selected' : '' }}>
+              Géographie
+            </option>
+            <option value="SES" {{ currentCat == 'SES' ? 'selected' : '' }}>
+              SES / Social
+            </option>
+            <option value="Droit" {{ currentCat == 'Droit' ? 'selected' : '' }}>
+              Droit & Justice
+            </option>
+          </optgroup>
 
-                <optgroup label="Sciences Humaines 🏛️">
-                    <option value="Philo" {{ currentCat == 'Philo' ? 'selected' : '' }}>Philosophie</option>
-                    <option value="Histoire" {{ currentCat == 'Histoire' ? 'selected' : '' }}>Histoire</option>
-                    <option value="Géo" {{ currentCat == 'Géo' ? 'selected' : '' }}>Géographie</option>
-                    <option value="SES" {{ currentCat == 'SES' ? 'selected' : '' }}>SES / Social</option>
-                    <option value="Droit" {{ currentCat == 'Droit' ? 'selected' : '' }}>Droit & Justice</option>
-                </optgroup>
+          <optgroup label="Autre 🚀">
+            <option value="Code de la route" {{ currentCat == 'Code de la route' ? 'selected' : '' }}>
+              Code de la route 🚗
+            </option>
+            <option value="Culture G" {{ currentCat == 'Culture G' ? 'selected' : '' }}>
+              Culture Générale
+            </option>
+            <option value="Médecine" {{ currentCat == 'Médecine' ? 'selected' : '' }}>
+              Santé / Médecine
+            </option>
+            <option value="Autre" {{ currentCat == 'Autre' ? 'selected' : '' }}>
+              Divers / Autre
+            </option>
+          </optgroup>
+        </select>
+        @inputError('category')
+          <p class="text-danger">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
 
-                <optgroup label="Autre 🚀">
-                    <option value="Code de la route" {{ currentCat == 'Code de la route' ? 'selected' : '' }}>Code de la route 🚗</option>
-                    <option value="Culture G" {{ currentCat == 'Culture G' ? 'selected' : '' }}>Culture Générale</option>
-                    <option value="Médecine" {{ currentCat == 'Médecine' ? 'selected' : '' }}>Santé / Médecine</option>
-                    <option value="Autre" {{ currentCat == 'Autre' ? 'selected' : '' }}>Divers / Autre</option>
-                </optgroup>
-            </select>
-            @inputError('category')
-                <p class="text-danger">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          value="{{ old('description') || deck.description }}"
+        />
+        @inputError('description')
+          <p class="text-danger">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
 
-        <div class="field">
-            <label for="description">Description</label>
-            <input type="text" id="description" name="description" value="{{ old('description') || deck.description }}" />
-            @inputError('description')
-                <p class="text-danger">{{ $messages.join(', ') }}</p> 
-            @end
-        </div>
-
-        <button type="submit">Enregistrer les modifications</button>
-        <a href="{{ route('decks.index') }}" class="btn-abandon">Abandonner</a>
+      <button type="submit">Enregistrer les modifications</button>
+      <a href="{{ route('decks.index') }}" class="btn-abandon">Abandonner</a>
     </form>
-</main>
+  </main>
 @end

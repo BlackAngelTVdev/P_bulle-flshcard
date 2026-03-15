@@ -1,75 +1,124 @@
 @component('components/main', { title: 'Créer un Deck | Flash Dam\'s', css: 'createdeck' })
-<div class="create-container">
-    <h3>Ajouter un deck</h3>
+  <div class="create-container">
+    <h3>
+      Ajouter un deck
+    </h3>
 
     <form action="{{ route('decks.store') }}" method="POST">
-        {{ csrfField() }}
+      {{ csrfField() }}
+      <div class="field">
+        <label for="name">Nom du deck</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          value="{{ old('name') || '' }}"
+          placeholder="Ex: Vocabulaire Anglais"
+        />
+        @inputError('name')
+          <p class="text-danger">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
 
-        <div class="field">
-            <label for="name">Nom du deck</label>
-            <input type="text" id="name" name="name" value="{{ old('name') || '' }}"
-                placeholder="Ex: Vocabulaire Anglais" />
-            @inputError('name')
-            <p class="text-danger">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
+      <div class="field">
+        <label for="category">Matière / Catégorie</label>
+        <select id="category" name="category">
+          <option value="" disabled {{ !old('category') ? 'selected' : '' }}>
+            -- Choisis une catégorie --
+          </option>
 
-        <div class="field">
-            <label for="category">Matière / Catégorie</label>
-            <select id="category" name="category">
-                <option value="" disabled {{ !old('category') ? 'selected' : '' }}>-- Choisis une catégorie --</option>
+          <optgroup label="Langues 🌍">
+            <option value="Anglais" {{ old('category')=='Anglais' ? 'selected' : '' }}>
+              Anglais
+            </option>
+            <option value="Allemand" {{ old('category')=='Allemand' ? 'selected' : '' }}>
+              Allemand
+            </option>
+            <option value="Espagnol" {{ old('category')=='Espagnol' ? 'selected' : '' }}>
+              Espagnol
+            </option>
+            <option value="Italien" {{ old('category')=='Italien' ? 'selected' : '' }}>
+              Italien
+            </option>
+            <option value="Français" {{ old('category')=='Français' ? 'selected' : '' }}>
+              Français / Littérature
+            </option>
+          </optgroup>
 
-                <optgroup label="Langues 🌍">
-                    <option value="Anglais" {{ old('category')=='Anglais' ? 'selected' : '' }}>Anglais</option>
-                    <option value="Allemand" {{ old('category')=='Allemand' ? 'selected' : '' }}>Allemand</option>
-                    <option value="Espagnol" {{ old('category')=='Espagnol' ? 'selected' : '' }}>Espagnol</option>
-                    <option value="Italien" {{ old('category')=='Italien' ? 'selected' : '' }}>Italien</option>
-                    <option value="Français" {{ old('category')=='Français' ? 'selected' : '' }}>Français / Littérature
-                    </option>
-                </optgroup>
+          <optgroup label="Sciences & Tech 🧬">
+            <option value="Maths" {{ old('category')=='Maths' ? 'selected' : '' }}>
+              Maths
+            </option>
+            <option value="Physique-Chimie" {{ old('category')=='Physique-Chimie' ? 'selected' : '' }}>
+              Physique-Chimie
+            </option>
+            <option value="SVT" {{ old('category')=='SVT' ? 'selected' : '' }}>
+              SVT
+            </option>
+            <option value="Informatique" {{ old('category')=='Informatique' ? 'selected' : '' }}>
+              Informatique /
+                        Dev
+            </option>
+          </optgroup>
 
-                <optgroup label="Sciences & Tech 🧬">
-                    <option value="Maths" {{ old('category')=='Maths' ? 'selected' : '' }}>Maths</option>
-                    <option value="Physique-Chimie" {{ old('category')=='Physique-Chimie' ? 'selected' : '' }}>
-                        Physique-Chimie</option>
-                    <option value="SVT" {{ old('category')=='SVT' ? 'selected' : '' }}>SVT</option>
-                    <option value="Informatique" {{ old('category')=='Informatique' ? 'selected' : '' }}>Informatique /
-                        Dev</option>
-                </optgroup>
+          <optgroup label="Sciences Humaines 🏛️">
+            <option value="Philo" {{ old('category')=='Philo' ? 'selected' : '' }}>
+              Philosophie
+            </option>
+            <option value="Histoire" {{ old('category')=='Histoire' ? 'selected' : '' }}>
+              Histoire
+            </option>
+            <option value="Géo" {{ old('category')=='Géo' ? 'selected' : '' }}>
+              Géographie
+            </option>
+            <option value="SES" {{ old('category')=='SES' ? 'selected' : '' }}>
+              SES / Social
+            </option>
+            <option value="Droit" {{ old('category')=='Droit' ? 'selected' : '' }}>
+              Droit & Justice
+            </option>
+          </optgroup>
 
-                <optgroup label="Sciences Humaines 🏛️">
-                    <option value="Philo" {{ old('category')=='Philo' ? 'selected' : '' }}>Philosophie</option>
-                    <option value="Histoire" {{ old('category')=='Histoire' ? 'selected' : '' }}>Histoire</option>
-                    <option value="Géo" {{ old('category')=='Géo' ? 'selected' : '' }}>Géographie</option>
-                    <option value="SES" {{ old('category')=='SES' ? 'selected' : '' }}>SES / Social</option>
-                    <option value="Droit" {{ old('category')=='Droit' ? 'selected' : '' }}>Droit & Justice</option>
-                </optgroup>
+          <optgroup label="Autre 🚀">
+            <option value="Code de la route" {{ old('category')=='Code de la route' ? 'selected' : '' }}>
+              Code de
+                        la route 🚗
+            </option>
+            <option value="Culture G" {{ old('category')=='Culture G' ? 'selected' : '' }}>
+              Culture Générale
+            </option>
+            <option value="Médecine" {{ old('category')=='Médecine' ? 'selected' : '' }}>
+              Santé / Médecine
+            </option>
+            <option value="Autre" {{ old('category')=='Autre' ? 'selected' : '' }}>
+              Divers / Autre
+            </option>
+          </optgroup>
+        </select>
+      </div>
 
-                <optgroup label="Autre 🚀">
-                    <option value="Code de la route" {{ old('category')=='Code de la route' ? 'selected' : '' }}>Code de
-                        la route 🚗</option>
-                    <option value="Culture G" {{ old('category')=='Culture G' ? 'selected' : '' }}>Culture Générale
-                    </option>
-                    <option value="Médecine" {{ old('category')=='Médecine' ? 'selected' : '' }}>Santé / Médecine
-                    </option>
-                    <option value="Autre" {{ old('category')=='Autre' ? 'selected' : '' }}>Divers / Autre</option>
-                </optgroup>
-            </select>
-        </div>
+      <div class="field">
+        <label for="description">Description</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          value="{{ old('description') || '' }}"
+          placeholder="De quoi parle ce deck ?"
+        />
+        @inputError('description')
+          <p class="text-danger">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
 
-        <div class="field">
-            <label for="description">Description</label>
-            <input type="text" id="description" name="description" value="{{ old('description') || '' }}"
-                placeholder="De quoi parle ce deck ?" />
-            @inputError('description')
-            <p class="text-danger">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
-
-        <div class="form-actions">
-            <button type="submit">Enregistrer</button>
-            <a href="{{ route('decks.index') }}" class="btn-abandon">Abandonner</a>
-        </div>
+      <div class="form-actions">
+        <button type="submit">Enregistrer</button>
+        <a href="{{ route('decks.index') }}" class="btn-abandon">Abandonner</a>
+      </div>
     </form>
-</div>
+  </div>
 @end

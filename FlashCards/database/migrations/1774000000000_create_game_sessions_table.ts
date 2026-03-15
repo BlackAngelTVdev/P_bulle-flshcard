@@ -6,8 +6,20 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().notNullable().references('id').inTable('users').onDelete('CASCADE')
-      table.integer('deck_id').unsigned().notNullable().references('id').inTable('decks').onDelete('CASCADE')
+      table
+        .integer('user_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('users')
+        .onDelete('CASCADE')
+      table
+        .integer('deck_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('decks')
+        .onDelete('CASCADE')
       table.string('mode').notNullable().defaultTo('basique')
       table.integer('total_cards').notNullable().defaultTo(0)
       table.integer('correct_answers').notNullable().defaultTo(0)

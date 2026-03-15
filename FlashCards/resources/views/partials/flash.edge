@@ -1,24 +1,33 @@
-<div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
+<div
+  id="toast-container"
+  style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;"
+>
   @if(flashMessages.has('success'))
     <div class="toast success">
-      <div class="toast-content">{{ flashMessages.get('success') }}</div>
-      <div class="progress-bar"></div>
+      <div class="toast-content">
+        {{ flashMessages.get('success') }}
+      </div>
+      <div class="progress-bar">
+      </div>
     </div>
   @end
-
+  
   @if(flashMessages.has('error'))
     <div class="toast error">
-      <div class="toast-content">{{ flashMessages.get('error') }}</div>
-      <div class="progress-bar"></div>
+      <div class="toast-content">
+        {{ flashMessages.get('error') }}
+      </div>
+      <div class="progress-bar">
+      </div>
     </div>
   @end
 </div>
 <script>
-  document.querySelectorAll('.toast').forEach((toast) => {
+  document.querySelectorAll(".toast").forEach(toast => {
     setTimeout(() => {
       toast.style.transition = "opacity 0.5s ease";
       toast.style.opacity = "0";
       setTimeout(() => toast.remove(), 500);
-    }, 5000); // 5 secondes
+    }, 5e3); // 5 secondes
   });
 </script>
