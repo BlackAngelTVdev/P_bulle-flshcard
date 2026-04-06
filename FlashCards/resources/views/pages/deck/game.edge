@@ -1,51 +1,64 @@
 @component('components/main', { title: `Jeu : ${deck.name} | Flash Dam\'s`, css: 'game', js: 'game' })
-<main>
+  <main>
     {{-- 1. Interface de Statut (Vies ou Chrono) --}}
     <div class="game-header">
-        <div class="score-board">
-            Score : <span id="current-score">0</span> / {{ cards.length }}
-        </div>
+      <div class="score-board">
+        Score : <span id="current-score">0</span>/ {{ cards.length }}
+      </div>
 
-        @if(mode === 'survie')
-            <div id="lives-display">❤️❤️❤️</div>
-        @elseif(mode === 'chrono')
-            <div class="timer-container">
-                <div id="timer-bar"></div>
-            </div>
-        @endif
+      @if(mode === 'survie')
+        <div id="lives-display">
+          ❤️❤️❤️
+        </div>
+      @elseif(mode === 'chrono')
+        <div class="timer-container">
+          <div id="timer-bar">
+          </div>
+        </div>
+      @endif
     </div>
 
     {{-- 2. Container de données (Version Sécurisée) --}}
     {{-- On utilise triple accolades ou JSON.stringify proprement pour éviter les bugs d'apostrophes --}}
-    <div id="game-container" 
-         data-cards="{{ JSON.stringify(cards) }}" 
-         data-deck-id="{{ deck.id }}"
-         data-mode="{{ mode }}">
+    <div
+      id="game-container"
+      data-cards="{{ JSON.stringify(cards) }}"
+      data-deck-id="{{ deck.id }}"
+      data-mode="{{ mode }}"
+      data-game-session-id="{{ gameSession.id }}"
+      data-csrf-token="{{ csrfToken }}"
+    >
     </div>
 
     {{-- 3. La Flashcard --}}
     <div class="flashcard" id="card-element">
-        <div class="card-inner" id="card-inner">
-            {{-- Recto --}}
-            <div class="card-front">
-                <h2 id="question-text">Chargement...</h2>
-                <p class="hint">Clique pour voir la réponse</p>
-            </div>
-
-            {{-- Verso --}}
-            <div class="card-back">
-                <h2 id="answer-text">...</h2>
-                <div class="game-actions">
-                    {{-- On utilise des types button pour éviter tout rechargement de page accidentel --}}
-                    <button type="button" class="btn-wrong" onclick="nextCard(false)">
-                        <span>Faux</span> ❌
-                    </button>
-                    <button type="button" class="btn-right" onclick="nextCard(true)">
-                        <span>Juste</span> ✅
-                    </button>
-                </div>
-            </div>
+      <div class="card-inner" id="card-inner">
+        {{-- Recto --}}
+        <div class="card-front">
+          <h2 id="question-text">
+            Chargement...
+          </h2>
+          <p class="hint">
+            Clique pour voir la réponse
+          </p>
         </div>
+
+        {{-- Verso --}}
+        <div class="card-back">
+          <h2 id="answer-text">
+            ...
+          </h2>
+          <div class="game-actions">
+            {{-- On utilise des types button pour éviter tout rechargement de page accidentel --}}
+            <button type="button" class="btn-wrong" onclick="nextCard(false)">
+              <span>Faux</span>❌
+                    </button>
+            <button type="button" class="btn-right" onclick="nextCard(true)">
+              <span>Juste</span>✅
+                    </button>
+          </div>
+        </div>
+      </div>
     </div>
-</main>
+  </main>
 @end

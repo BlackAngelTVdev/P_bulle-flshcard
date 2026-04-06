@@ -9,12 +9,12 @@ export default defineConfig({
     }),
   ],
 
-  // AJOUTE ÇA ICI : 
+  // AJOUTE ÇA ICI :
   // Ça dit à Vite : "N'utilise aucun plugin PostCSS, reste en CSS pur"
   css: {
     postcss: {
-      plugins: []
-    }
+      plugins: [],
+    },
   },
 
   server: {

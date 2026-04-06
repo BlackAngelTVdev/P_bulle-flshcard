@@ -11,25 +11,33 @@
 
 ## 🧐 Aperçu
 
-<table border="0">
-  <tr>
-    <td align="center">
-      <p><b>📸 Login</b></p>
-      <img  alt="Capture d’écran 2026-03-06 085529" src="https://github.com/user-attachments/assets/e50d6601-f237-41c6-bd1d-a4976bc06077" />
+<table >
+  <tr valign="top">
+    <td width="50%" align="center">
+      <p align="center"><b>📸 Login</b></p>
+      <a href="https://github.com/user-attachments/assets/e50d6601-f237-41c6-bd1d-a4976bc06077">
+        <img src="https://github.com/user-attachments/assets/e50d6601-f237-41c6-bd1d-a4976bc06077" width="100%" alt="Login Screen" />
+      </a>
     </td>
-    <td align="center">
-      <p><b>📸 Home page</b></p>
-      <img  alt="Capture d’écran 2026-03-06 085411" src="https://github.com/user-attachments/assets/9b8ebfc6-9d22-4390-95b3-9115ba4689d1" />
+    <td width="50%" align="center">
+      <p align="center"><b>📸 Home Page</b></p>
+      <a href="https://github.com/user-attachments/assets/9b8ebfc6-9d22-4390-95b3-9115ba4689d1">
+        <img src="https://github.com/user-attachments/assets/9b8ebfc6-9d22-4390-95b3-9115ba4689d1" width="100%" alt="Home Page" />
+      </a>
     </td>
   </tr>
-  <tr>
-    <td align="center">
-      <p><b>📸 Crée une carte</b></p>
-      <img  alt="Capture d’écran 2026-03-06 085502" src="https://github.com/user-attachments/assets/1e0f5475-ce20-45d1-9929-836dc2460c82" />
+  <tr valign="top">
+    <td width="50%" align="center">
+      <p align="center"><b>📸 Création de carte</b></p>
+      <a href="https://github.com/user-attachments/assets/1e0f5475-ce20-45d1-9929-836dc2460c82">
+        <img src="https://github.com/user-attachments/assets/1e0f5475-ce20-45d1-9929-836dc2460c82" width="100%" alt="Create Card" />
+      </a>
     </td>
-    <td align="center">
-      <p><b>📸 Jeux</b></p>
-      <img alt="Capture d’écran 2026-03-06 085752" src="https://github.com/user-attachments/assets/bd1094b3-c22f-4a89-b4c7-45ea5d42c0f4" />
+    <td width="50%" align="center">
+      <p align="center"><b>📸 Interface Jeux</b></p>
+      <a href="https://github.com/user-attachments/assets/bd1094b3-c22f-4a89-b4c7-45ea5d42c0f4">
+        <img src="https://github.com/user-attachments/assets/bd1094b3-c22f-4a89-b4c7-45ea5d42c0f4" width="100%" alt="Games Interface" />
+      </a>
     </td>
   </tr>
 </table>
@@ -199,6 +207,7 @@ Si tu as une idée, une question ou que tu as repéré un comportement étrange,
 
 Ce projet est sous licence :
 ![GitHub License](https://img.shields.io/github/license/BlackAngelTVdev/Je-donne-ou-je-prete?style=flat-square&color=blue)
+
 
 
 

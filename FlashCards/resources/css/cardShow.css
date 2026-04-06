@@ -2,197 +2,224 @@
 
 /* --- LAYOUT PRINCIPAL --- */
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Centre verticalement */
-    align-items: center;     /* Centre horizontalement */
-    min-height: 90vh;        /* Prend presque toute la hauteur de l'écran */
-    padding: 2rem;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Centre verticalement */
+  align-items: center;
+  /* Centre horizontalement */
+  min-height: 90vh;
+  /* Prend presque toute la hauteur de l'écran */
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 /* --- CONTENEUR DE LA CARTE --- */
 .flashcard {
-    width: 100%;
-    max-width: 500px;
-    height: 350px;
-    perspective: 1000px; /* Effet 3D */
-    cursor: pointer;
+  width: 100%;
+  max-width: 500px;
+  height: 350px;
+  perspective: 1000px;
+  /* Effet 3D */
+  cursor: pointer;
 }
 
 .card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
 }
 
 /* État retourné */
 .flashcard.is-flipped .card-inner {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 /* --- FACES DE LA CARTE --- */
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Cache le dos pendant la rotation */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.1);
-    box-sizing: border-box;
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  /* Cache le dos pendant la rotation */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.1);
+  box-sizing: border-box;
 }
 
 .card-label {
-    position: absolute;
-    top: 20px;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #9ca3af;
-    font-weight: 700;
+  position: absolute;
+  top: 20px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #9ca3af;
+  font-weight: 700;
 }
 
 /* Style Recto (Question) */
 .card-front {
-    background: white;
-    border-top: 8px solid var(--primary-violet);
+  background: white;
+  border-top: 8px solid var(--primary-violet);
 }
 
 .card-front h2 {
-    color: var(--primary-violet);
-    font-size: 2rem;
-    margin: 0;
+  color: var(--primary-violet);
+  font-size: 2rem;
+  margin: 0;
 }
 
 .hint {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #6b7280;
-    font-style: italic;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-style: italic;
 }
 
 /* Style Verso (Réponse) */
 .card-back {
-    background: #fdfbff;
-    transform: rotateY(180deg);
-    border-top: 8px solid #10b981; /* Vert pour la réponse */
+  background: #fdfbff;
+  transform: rotateY(180deg);
+  border-top: 8px solid #10b981;
+  /* Vert pour la réponse */
 }
 
 .answer-text {
-    font-size: 1.4rem;
-    color: #374151;
-    line-height: 1.6;
+  font-size: 1.4rem;
+  color: #374151;
+  line-height: 1.6;
 }
 
 /* --- ACTIONS (BOUTONS) --- */
 .card-actions {
-    display: flex;
-    gap: 15px;
-    width: 100%;
-    max-width: 500px;
-    margin-top: 3rem; /* Espace fixe entre la carte et les boutons */
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 3rem;
+  /* Espace fixe entre la carte et les boutons */
 }
 
-.btn-ok, .btn-edit-card, .btn-delete-card {
-    flex: 1;
-    padding: 14px;
-    border-radius: 12px;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-    transition: all 0.2s;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
+.btn-ok,
+.btn-edit-card,
+.btn-delete-card {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-ok {
-    background: #f3f4f6;
-    color: #374151;
+  background: #f3f4f6;
+  color: #374151;
 }
 
 .btn-edit-card {
-    background: var(--primary-violet);
-    color: white;
+  background: var(--primary-violet);
+  color: white;
 }
 
 .btn-delete-card {
-    background: white;
-    color: #dc2626;
-    border: 2px solid #dc2626;
+  background: white;
+  color: #dc2626;
+  border: 2px solid #dc2626;
 }
 
 /* Hover Effects */
-.btn-ok:hover { background: #e5e7eb; }
-.btn-edit-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3); }
-.btn-delete-card:hover { background: #dc2626; color: white; }
+
+.btn-edit-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+}
+
+.btn-delete-card:hover {
+  color: white;
+}
 
 /* Gestion des formulaires dans les boutons */
-form { 
-    flex: 1; 
-    display: flex;
+form {
+  flex: 1;
+  display: flex;
 }
+
 /* --- RESPONSIVE DESIGN (Flashcard) --- */
 
 @media (max-width: 600px) {
-    main {
-        padding: 1rem;
-        min-height: 85vh; /* Ajustement pour éviter le scroll inutile sur petit écran */
-    }
+  main {
+    padding: 1rem;
+    min-height: 85vh;
+    /* Ajustement pour éviter le scroll inutile sur petit écran */
+  }
 
-    .flashcard {
-        height: 300px; /* On réduit un peu la hauteur pour laisser de la place aux boutons */
-    }
+  .flashcard {
+    height: 300px;
+    /* On réduit un peu la hauteur pour laisser de la place aux boutons */
+  }
 
-    .card-front h2 {
-        font-size: 1.6rem;
-    }
+  .card-front h2 {
+    font-size: 1.6rem;
+  }
 
-    .answer-text {
-        font-size: 1.2rem;
-        padding: 0 10px;
-    }
+  .answer-text {
+    font-size: 1.2rem;
+    padding: 0 10px;
+  }
 
-    /* Empilement des boutons sur mobile */
-    .card-actions {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 2rem;
-        align-items: center;
-    }
+  /* Empilement des boutons sur mobile */
+  .card-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 2rem;
+    align-items: center;
+  }
 
-    .btn-ok, .btn-edit-card, .btn-delete-card, form {
-        width: 100%;
-        max-width: 320px; /* On limite pour que ce soit pas trop massif */
-    }
+  .btn-ok,
+  .btn-edit-card,
+  .btn-delete-card,
+  form {
+    width: 100%;
+    max-width: 320px;
+    /* On limite pour que ce soit pas trop massif */
+  }
 
-    form {
-        justify-content: center; /* Centre le bouton de suppression dans le form */
-    }
+  form {
+    justify-content: center;
+    /* Centre le bouton de suppression dans le form */
+  }
 
-    .btn-ok, .btn-edit-card, .btn-delete-card {
-        padding: 12px;
-        font-size: 0.95rem;
-    }
+  .btn-ok,
+  .btn-edit-card,
+  .btn-delete-card {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
 }
 
 /* Fix pour les écrans très bas (iPhone SE ou mode paysage) */
 @media (max-height: 600px) {
-    main {
-        justify-content: flex-start; /* Évite de couper le haut de la carte */
-        padding-top: 2rem;
-    }
-    
-    .flashcard {
-        height: 250px;
-    }
+  main {
+    justify-content: flex-start;
+    /* Évite de couper le haut de la carte */
+    padding-top: 2rem;
+  }
+
+  .flashcard {
+    height: 250px;
+  }
 }

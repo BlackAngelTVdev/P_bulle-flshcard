@@ -6,12 +6,12 @@ const authConfig = defineConfig({
   default: 'web',
   guards: {
     web: sessionGuard({
-      // 1. On garde juste ce booléen. Adonis 6 gère la table tout seul 
+      // 1. On garde juste ce booléen. Adonis 6 gère la table tout seul
       // si elle s'appelle 'remember_me_tokens'.
-      useRememberMeTokens: true, 
+      useRememberMeTokens: true,
 
       provider: sessionUserProvider({
-        model: () => import('#models/user')
+        model: () => import('#models/user'),
       }),
     }),
   },

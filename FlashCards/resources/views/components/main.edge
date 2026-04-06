@@ -1,23 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/${css}.css`, `resources/js/${js}.js`])
+    <meta name="csrf-token" content="{{ csrfToken }}" />
+    @if(auth.user)
+      <meta name="auth-presence-url" content="{{ route('auth.presence') }}" />
+    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/${css}.css`])
+    @if(js)
+      @vite([`resources/js/${js}.js`])
+    @endif
     <title>
-        {{ title || "Application Flash Dam\'s" }}
+      {{ title || "Application Flash Dam\'s" }}
     </title>
-</head>
+  </head>
 
-<body>
+  <body>
     @include('partials/header')
     @include('partials/flash')
     <div class="container">
-        {{{ await $slots.main() }}}
+      {{{ await $slots.main() }}}
     </div>
     @include('partials/footer')
-</body>
+  </body>
 
 </html>

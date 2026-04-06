@@ -51,10 +51,7 @@ export default class CardsController {
     }
 
     // --- Vérification propriété du deck ---
-    const deck = await Deck.query()
-      .where('id', deckId)
-      .where('userId', auth.user!.id)
-      .first()
+    const deck = await Deck.query().where('id', deckId).where('userId', auth.user!.id).first()
 
     if (!deck) {
       session.flash('error', 'Accès refusé ou deck inexistant.')
@@ -116,10 +113,9 @@ export default class CardsController {
     // -------------------------------------------------------
     // CAS MANUEL : Pas de fichier
     // -------------------------------------------------------
-    const invalidFiles = [
-      ...request.files('courseFiles'),
-      ...request.files('courseImages'),
-    ].filter((f) => !f.isValid)
+    const invalidFiles = [...request.files('courseFiles'), ...request.files('courseImages')].filter(
+      (f) => !f.isValid
+    )
 
     if (invalidFiles.length > 0) {
       const msgs = invalidFiles.flatMap((f) => f.errors.map((e) => e.message))
@@ -133,7 +129,10 @@ export default class CardsController {
       session.flash('success', 'Carte créée avec succès !')
       return response.redirect().toRoute('decks.show', { id: deck.id })
     } catch (error) {
-      session.flash('error', 'Veuillez remplir les champs Question et Réponse, ou fournir un fichier.')
+      session.flash(
+        'error',
+        'Veuillez remplir les champs Question et Réponse, ou fournir un fichier.'
+      )
       return response.redirect().back()
     }
   }

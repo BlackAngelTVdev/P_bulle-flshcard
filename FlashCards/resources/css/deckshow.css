@@ -53,7 +53,6 @@ p {
 }
 
 .btn-play:hover {
-  background-color: #059669;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
@@ -84,7 +83,6 @@ p {
 }
 
 .btn-delete-deck:hover {
-  background-color: #dc2626;
   color: white;
 }
 
@@ -120,7 +118,6 @@ p {
 }
 
 .table-row:hover {
-  background-color: #f5f3ff;
 }
 
 .col {
@@ -159,7 +156,6 @@ p {
 }
 
 .btn-add-card:hover {
-  background-color: var(--primary-violet);
   color: white;
 }
 
@@ -249,12 +245,12 @@ p {
 }
 
 .wa {
-  background: linear-gradient(135deg, #25D366, #128C7E);
+  background: linear-gradient(135deg, #25d366, #128c7e);
   color: white;
 }
 
 .snap {
-  background: linear-gradient(135deg, #FFFC00, #fefb00);
+  background: linear-gradient(135deg, #fffc00, #fefb00);
   color: black;
 }
 
@@ -323,7 +319,7 @@ p {
   }
 
   .col::before {
-    content: "Recto :";
+    content: 'Recto :';
     display: block;
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -332,8 +328,8 @@ p {
     margin-bottom: 4px;
   }
 
-  .col+.col::before {
-    content: "Verso :";
+  .col + .col::before {
+    content: 'Verso :';
   }
 
   .col-actions {

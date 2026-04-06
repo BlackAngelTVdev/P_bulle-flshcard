@@ -5,78 +5,115 @@ import HomeController from '#controllers/home_controller'
 const DecksController = () => import('#controllers/decks_controller')
 const CardsController = () => import('#controllers/cards_controller')
 const AuthController = () => import('#controllers/users_controller')
+const AdminController = () => import('#controllers/admin_controller')
 
 // Routes redirection
 router.get('/', [HomeController, 'index']).as('index')
 
-router.get('/legal/:face', ({ params, view }) => {
-  const face = ['cgu', 'data'].includes(params.face) ? params.face : 'cgu'
-  return view.render('pages/conditions/legal', { face })
-}).as('legal')
-router.get('/legal', ({ response }) => {
-  return response.redirect().toRoute('legal', { face: 'cgu' })
-}).as('legal.index')
+router
+  .get('/legal/:face', ({ params, view }) => {
+    const face = ['cgu', 'data'].includes(params.face) ? params.face : 'cgu'
+    return view.render('pages/conditions/legal', { face })
+  })
+  .as('legal')
+router
+  .get('/legal', ({ response }) => {
+    return response.redirect().toRoute('legal', { face: 'cgu' })
+  })
+  .as('legal.index')
 
 // Auth
-router.group(() => {
-  router.get('/login', [AuthController, 'showLogin']).as('auth.login')
-  router.post('/login', [AuthController, 'login']).as('auth.handleLogin')
-  router.get('/register', [AuthController, 'showRegister']).as('auth.register')
-  router.post('/register', [AuthController, 'register']).as('auth.handleRegister')
-}).prefix('/auth')
+router
+  .group(() => {
+    router.get('/login', [AuthController, 'showLogin']).as('auth.login')
+    router.post('/login', [AuthController, 'login']).as('auth.handleLogin')
+    router.get('/register', [AuthController, 'showRegister']).as('auth.register')
+    router.post('/register', [AuthController, 'register']).as('auth.handleRegister')
+  })
+  .prefix('/auth')
 
 // Routes protégées
-router.group(() => {
-  router.get('/logout', [AuthController, 'logout']).as('auth.logout')
+router
+  .group(() => {
+    router.post('/logout', [AuthController, 'logout']).as('auth.logout')
+    router.get('/auth/presence', [AuthController, 'presence']).as('auth.presence')
 
+    router
+      .group(() => {
+        router.get('/edit', [AuthController, 'showEdit']).as('profile.edit')
+        router.put('/', [AuthController, 'updateProfile']).as('profile.update')
+        router.put('/password', [AuthController, 'updatePassword']).as('profile.password')
+      })
+      .prefix('/profile')
 
-  router.group(() => {
-    router.get('/edit', [AuthController, 'showEdit']).as('profile.edit')
-    router.put('/', [AuthController, 'updateProfile']).as('profile.update')
-    router.put('/password', [AuthController, 'updatePassword']).as('profile.password')
-  }).prefix('/profile')
+    // Section Decks
+    router
+      .group(() => {
+        // Consultation et Jeu (Ouvert à tous les connectés)
+        router.get('/', [DecksController, 'index']).as('decks.index')
+        router.get('/mine', [DecksController, 'myDecks']).as('decks.mine')
+        router.get('/create', [DecksController, 'create']).as('decks.create')
+        router.post('/', [DecksController, 'store']).as('decks.store')
+        router.get('/:id', [DecksController, 'show']).as('decks.show')
 
+        // Tes routes de jeu remises ici :
+        router.get('/:id/play', [DecksController, 'play']).as('decks.play')
+        router.get('/:id/game', [DecksController, 'game']).as('decks.game')
+        router.post('/:id/progress', [DecksController, 'progress']).as('decks.progress')
+        router.post('/:id/finish', [DecksController, 'finish']).as('decks.finish')
+        router.get('/:id/result', [DecksController, 'result']).as('decks.result')
 
+        // Modification (🛡️ Uniquement le proprio)
+        router
+          .group(() => {
+            router.get('/:id/edit', [DecksController, 'edit']).as('decks.edit')
+            router.put('/:id', [DecksController, 'update']).as('decks.update')
+            router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
+          })
+          .use(middleware.isOwner())
+      })
+      .prefix('/decks')
 
-  // Section Decks
-  router.group(() => {
-    // Consultation et Jeu (Ouvert à tous les connectés)
-    router.get('/', [DecksController, 'index']).as('decks.index')
-    router.get('/mine', [DecksController, 'myDecks']).as('decks.mine')
-    router.get('/create', [DecksController, 'create']).as('decks.create')
-    router.post('/', [DecksController, 'store']).as('decks.store')
-    router.get('/:id', [DecksController, 'show']).as('decks.show')
+    // Section Cards
+    router
+      .group(() => {
+        router.get('/create', [CardsController, 'create']).as('cards.create')
+        router.post('/', [CardsController, 'store']).as('cards.store')
+        router.get('/:id', [CardsController, 'show']).as('cards.show')
 
-    // Tes routes de jeu remises ici :
-    router.get('/:id/play', [DecksController, 'play']).as('decks.play')
-    router.get('/:id/game', [DecksController, 'game']).as('decks.game')
-    router.get('/:id/result', [DecksController, 'result']).as('decks.result')
+        // Modification (Middleware de propriété)
+        router
+          .group(() => {
+            router.get('/:id/edit', [CardsController, 'edit']).as('cards.edit')
+            router.put('/:id', [CardsController, 'update']).as('cards.update')
+            router.delete('/:id', [CardsController, 'destroy']).as('cards.destroy')
+          })
+          .use(middleware.isOwner())
+      })
+      .prefix('/cards')
 
-    // Modification (🛡️ Uniquement le proprio)
-    router.group(() => {
-      router.get('/:id/edit', [DecksController, 'edit']).as('decks.edit')
-      router.put('/:id', [DecksController, 'update']).as('decks.update')
-      router.delete('/:id', [DecksController, 'destroy']).as('decks.destroy')
-    }).use(middleware.isOwner())
+    // Section Admin
+    router
+      .group(() => {
+        router.get('/', [AdminController, 'index']).as('admin.index')
+        router
+          .get('/connected-users', [AdminController, 'connectedUsers'])
+          .as('admin.connectedUsers.index')
+        router
+          .post('/connected-users/:id/disconnect', [AdminController, 'disconnectConnectedUser'])
+          .as('admin.connectedUsers.disconnect')
+        router
+          .delete('/game-sessions/:id', [AdminController, 'destroyGameSession'])
+          .as('admin.sessions.destroy')
+        router.delete('/users/:id', [AdminController, 'destroyUser']).as('admin.users.destroy')
+      })
+      .prefix('/admin')
+      .use(middleware.admin())
+  })
+  .use(middleware.auth())
 
-  }).prefix('/decks')
-
-  // Section Cards
-  router.group(() => {
-    router.get('/create', [CardsController, 'create']).as('cards.create')
-    router.post('/', [CardsController, 'store']).as('cards.store')
-    router.get('/:id', [CardsController, 'show']).as('cards.show')
-
-    // Modification (Middleware de propriété)
-    router.group(() => {
-      router.get('/:id/edit', [CardsController, 'edit']).as('cards.edit')
-      router.put('/:id', [CardsController, 'update']).as('cards.update')
-      router.delete('/:id', [CardsController, 'destroy']).as('cards.destroy')
-    }).use(middleware.isOwner())
-  }).prefix('/cards')
-
-}).use(middleware.auth())
-
-router.any('*', ({ view }) => {
-  return view.render('pages/errors/not_found')
-}).as('not_found')
+router
+  .any('*', ({ view }) => {
+    return view.render('pages/errors/not_found')
+  })
+  .as('not_found')

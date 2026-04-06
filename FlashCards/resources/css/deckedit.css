@@ -40,7 +40,7 @@ label {
   margin-top: 0.5rem;
 }
 
-input[type="text"] {
+input[type='text'] {
   padding: 14px;
   border: 2px solid var(--light-violet);
   border-radius: 10px;
@@ -49,7 +49,7 @@ input[type="text"] {
   background-color: #f9fafb;
 }
 
-input[type="text"]:focus {
+input[type='text']:focus {
   outline: none;
   border-color: var(--primary-violet);
   background-color: var(--white);
@@ -66,7 +66,7 @@ input[type="text"]:focus {
 }
 
 /* --- BOUTONS --- */
-button[type="submit"] {
+button[type='submit'] {
   width: 100%;
   background-color: var(--primary-violet);
   color: white;
@@ -76,12 +76,13 @@ button[type="submit"] {
   font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s, background-color 0.3s;
+  transition:
+    transform 0.2s,
+    background-color 0.3s;
   margin-top: 1rem;
 }
 
-button[type="submit"]:hover {
-  background-color: var(--dark-violet);
+button[type='submit']:hover {
   transform: translateY(-2px);
 }
 
@@ -100,109 +101,119 @@ button[type="submit"]:hover {
 .btn-abandon:hover {
   color: var(--primary-violet);
 }
+
 /* --- RESPONSIVE DESIGN (Edit Deck) - FIX OVERFLOW --- */
 
 /* --- INPUTS & SELECT --- */
-input[type="text"], 
+input[type='text'],
 select {
-    padding: 14px 15px;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    background-color: #fafafa;
-    width: 100%;
-    box-sizing: border-box;
-    color: var(--text-dark);
+  padding: 14px 15px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--text-dark);
 }
 
 /* Style spécifique pour le SELECT */
 select {
-    cursor: pointer;
-    appearance: none; /* Enlève la flèche par défaut */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b5cf6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    background-size: 18px;
-    padding-right: 45px;
+  cursor: pointer;
+  appearance: none;
+  /* Enlève la flèche par défaut */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b5cf6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 18px;
+  padding-right: 45px;
 }
 
-input[type="text"]:focus, 
+input[type='text']:focus,
 select:focus {
-    border-color: var(--primary-violet);
-    background-color: var(--white);
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+  border-color: var(--primary-violet);
+  background-color: var(--white);
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 
 /* Style des groupes d'options (Optgroup) */
 optgroup {
-    font-weight: 700;
-    color: var(--primary-violet);
-    background: #f9fafb;
-    padding: 10px;
+  font-weight: 700;
+  color: var(--primary-violet);
+  background: #f9fafb;
+  padding: 10px;
 }
 
 option {
-    font-weight: 400;
-    color: var(--text-dark);
-    background: white;
+  font-weight: 400;
+  color: var(--text-dark);
+  background: white;
 }
+
 @media (max-width: 600px) {
-    main {
-        padding: 1rem;
-        min-height: auto;
-        margin-top: 1rem;
-        width: 100%;
-        box-sizing: border-box; /* Sécurité pour le container */
-        overflow-x: hidden;    /* Empêche tout slide horizontal parasite */
-    }
+  main {
+    padding: 1rem;
+    min-height: auto;
+    margin-top: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    /* Sécurité pour le container */
+    overflow-x: hidden;
+    /* Empêche tout slide horizontal parasite */
+  }
 
-    form {
-        width: 100%;           /* Prend toute la place disponible définie par le padding du main */
-        max-width: 100%;       /* Force à ne jamais dépasser l'écran */
-        padding: 1.5rem;       /* Padding réduit */
-        border-radius: 16px;
-        box-sizing: border-box; /* IMPORTANT : Inclus le padding dans les 100% de large */
-        margin: 0 auto;
-    }
+  form {
+    width: 100%;
+    /* Prend toute la place disponible définie par le padding du main */
+    max-width: 100%;
+    /* Force à ne jamais dépasser l'écran */
+    padding: 1.5rem;
+    /* Padding réduit */
+    border-radius: 16px;
+    box-sizing: border-box;
+    /* IMPORTANT : Inclus le padding dans les 100% de large */
+    margin: 0 auto;
+  }
 
-    h1 {
-        font-size: 1.6rem;
-        margin-bottom: 1.5rem;
-    }
+  h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
 
-    .field {
-        margin-bottom: 1.2rem;
-    }
+  .field {
+    margin-bottom: 1.2rem;
+  }
 
-    input[type="text"] {
-        width: 100%;
-        box-sizing: border-box; /* Évite que l'input dépasse du formulaire */
-        padding: 12px;
-        font-size: 1rem;
-    }
+  input[type='text'] {
+    width: 100%;
+    box-sizing: border-box;
+    /* Évite que l'input dépasse du formulaire */
+    padding: 12px;
+    font-size: 1rem;
+  }
 
-    button[type="submit"] {
-        width: 100%;
-        padding: 14px;
-        font-size: 1rem;
-    }
+  button[type='submit'] {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+  }
 
-    .btn-abandon {
-        margin-top: 1.2rem;
-        padding: 10px;
-    }
+  .btn-abandon {
+    margin-top: 1.2rem;
+    padding: 10px;
+  }
 }
 
 /* Fix pour les écrans ultra-compacts (ex: iPhone SE) */
 @media (max-width: 350px) {
-    form {
-        padding: 1rem;
-    }
-    
-    h1 {
-        font-size: 1.4rem;
-    }
+  form {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
 }

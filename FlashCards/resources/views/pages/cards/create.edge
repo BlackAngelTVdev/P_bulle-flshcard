@@ -1,157 +1,166 @@
 @component('components/main', { title: `Créer une carte | Flash Dam\'s`, css: 'cardcreate' })
-<main>
-    <h1>Créer une nouvelle carte</h1>
+  <main>
+    <h1>
+      Créer une nouvelle carte
+    </h1>
 
     <form action="{{ route('cards.store') }}" method="POST" enctype="multipart/form-data" id="cardForm">
-        {{ csrfField() }}
-        <input type="hidden" name="deckId" value="{{ deckId || old('deckId') || '' }}">
+      {{ csrfField() }}
+        <input type="hidden" name="deckId" value="{{ deckId || old('deckId') || '' }}" />
 
-        {{-- ===== SECTION MANUELLE ===== --}}
-        <div class="form-group">
-            <label for="question">Question</label>
-            <input type="text" id="question" name="question" value="{{ old('question') || '' }}">
-            @inputError('question')
-                <p class="error-message">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
-
-        <div class="form-group">
-            <label for="answer">Réponse</label>
-            <textarea id="answer" name="answer">{{ old('answer') || '' }}</textarea>
-            @inputError('answer')
-                <p class="error-message">{{ $messages.join(', ') }}</p>
-            @end
-        </div>
-
-        <div style="margin: 20px 0; text-align: center; font-weight: bold; color: #999;">— OU —</div>
-
-        {{-- ===== SECTION IA : visible selon quota ===== --}}
-        @if(auth.user.isAdmin || auth.user.canUseAiToday())
-
-            @if(auth.user.isAdmin)
-                <div style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:0.7rem;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:10px;">
-                    👑 Mode Admin — utilisation illimitée
-                </div>
-            @end
-
-            <div class="form-group ai-section">
-                <label>📎 Générer via fichiers de cours</label>
-                <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">
-                    Tu peux mélanger <strong>images, PDF, Word et PowerPoint</strong> en même temps.<br>
-                    L'IA analysera chaque fichier et fusionnera toutes les flashcards.
-                </p>
-                <input
-                    type="file"
-                    name="courseFiles[]"
-                    accept="image/*,.pdf,.docx,.pptx"
-                    id="fileInput"
-                    multiple
-                >
-                <div id="previewContainer" style="display:none;margin-top:12px;">
-                    <p style="font-size:0.8rem;font-weight:bold;margin-bottom:6px;">
-                        Fichiers sélectionnés : <span id="fileCount">0</span>
-                    </p>
-                    <div id="previewGrid" style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;"></div>
-                </div>
-            </div>
-
-        @else
-
-            <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-                <span style="font-size:2rem;">⏳</span>
-                <div>
-                    <p style="margin:0;font-weight:bold;color:#795548;">Génération IA indisponible aujourd'hui</p>
-                    <p style="margin:4px 0 0;font-size:0.8rem;color:#8d6e63;">
-                        Tu as déjà utilisé l'IA aujourd'hui. Le quota se réinitialise à <strong>minuit</strong>.<br>
-                        En attendant, tu peux créer des cartes manuellement ci-dessus.
-                    </p>
-                </div>
-            </div>
-
+      {{-- ===== SECTION MANUELLE ===== --}}
+      <div class="form-group">
+        <label for="question">Question</label>
+        <input type="text" id="question" name="question" value="{{ old('question') || '' }}" />
+        @inputError('question')
+          <p class="error-message">
+            {{ $messages.join(', ') }}
+          </p>
         @end
+      </div>
 
-        <button type="submit" class="btn-submit" id="submitBtn">Enregistrer la carte</button>
+      <div class="form-group">
+        <label for="answer">Réponse</label>
+        <textarea id="answer" name="answer">{{ old('answer') || '' }}</textarea>
+        @inputError('answer')
+          <p class="error-message">
+            {{ $messages.join(', ') }}
+          </p>
+        @end
+      </div>
+
+      <div style="margin: 20px 0; text-align: center; font-weight: bold; color: #999;">
+        — OU —
+      </div>
+
+      {{-- ===== SECTION IA : visible selon quota ===== --}}
+      @if(auth.user.isAdmin || auth.user.canUseAiToday())
+
+        @if(auth.user.isAdmin)
+          <div
+            style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:0.7rem;font-weight:bold;padding:3px 10px;border-radius:20px;margin-bottom:10px;"
+          >
+            👑 Mode Admin — utilisation illimitée
+          </div>
+        @end
+        
+        <div class="form-group ai-section">
+          <label>📎 Générer via fichiers de cours</label>
+          <p style="font-size:0.75rem;color:#666;margin-bottom:10px;">
+            Tu peux mélanger <strong>images, PDF, Word et PowerPoint</strong>en même temps.<br />
+            L'IA analysera chaque fichier et fusionnera toutes les flashcards.
+          </p>
+          <input type="file" name="courseFiles[]" accept="image/*,.pdf,.docx,.pptx" id="fileInput" multiple />
+          <div id="previewContainer" style="display:none;margin-top:12px;">
+            <p style="font-size:0.8rem;font-weight:bold;margin-bottom:6px;">
+              Fichiers sélectionnés : <span id="fileCount">0</span>
+            </p>
+            <div id="previewGrid" style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;">
+            </div>
+          </div>
+        </div>
+
+      @else
+      
+        <div
+          style="background:#fff8e1;border:1px solid #ffe082;border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;"
+        >
+          <span style="font-size:2rem;">⏳</span>
+          <div>
+            <p style="margin:0;font-weight:bold;color:#795548;">
+              Génération IA indisponible aujourd'hui
+            </p>
+            <p style="margin:4px 0 0;font-size:0.8rem;color:#8d6e63;">
+              Tu as déjà utilisé l'IA aujourd'hui. Le quota se réinitialise à <strong>minuit</strong>.<br />
+              En attendant, tu peux créer des cartes manuellement ci-dessus.
+            </p>
+          </div>
+        </div>
+
+      @end
+      
+      <button type="submit" class="btn-submit" id="submitBtn">Enregistrer la carte</button>
     </form>
-</main>
+  </main>
 
-<script>
-    const form = document.getElementById('cardForm')
-    const btn = document.getElementById('submitBtn')
-    const fileInput = document.getElementById('fileInput')
+  <script>
+    const form = document.getElementById("cardForm");
 
+    const btn = document.getElementById("submitBtn");
+
+    const fileInput = document.getElementById("fileInput");
     // Icônes selon l'extension
+
     function getFileIcon(filename) {
-        const ext = filename.split('.').pop().toLowerCase()
-        if (['jpg', 'jpeg', 'png', 'webp', 'gif'].includes(ext)) return null // on affiche l'image
-        if (ext === 'pdf') return '📄'
-        if (ext === 'docx') return '📝'
-        if (ext === 'pptx') return '📊'
-        return '📎'
+      const ext = filename.split(".").pop().toLowerCase();
+      if ([ "jpg", "jpeg", "png", "webp", "gif" ].includes(ext)) return null; // on affiche l'image
+      if (ext === "pdf") return "📄";
+      if (ext === "docx") return "📝";
+      if (ext === "pptx") return "📊";
+      return "📎";
     }
 
     if (fileInput) {
-        const previewContainer = document.getElementById('previewContainer')
-        const previewGrid = document.getElementById('previewGrid')
-        const fileCount = document.getElementById('fileCount')
-
-        fileInput.addEventListener('change', () => {
-            const files = Array.from(fileInput.files)
-            previewGrid.innerHTML = ''
-            if (files.length === 0) { previewContainer.style.display = 'none'; return }
-            previewContainer.style.display = 'block'
-            fileCount.textContent = files.length
-
-            files.forEach((file, index) => {
-                const wrapper = document.createElement('div')
-                wrapper.style.cssText = 'position:relative;display:inline-block;width:80px;'
-
-                const icon = getFileIcon(file.name)
-
-                if (icon === null) {
-                    // Image → aperçu visuel
-                    const reader = new FileReader()
-                    reader.onload = (e) => {
-                        const img = document.createElement('img')
-                        img.src = e.target.result
-                        img.style.cssText = 'width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid #ddd;'
-                        img.title = file.name
-                        wrapper.appendChild(img)
-                    }
-                    reader.readAsDataURL(file)
-                } else {
-                    // Document → icône + nom tronqué
-                    const box = document.createElement('div')
-                    box.style.cssText = 'width:80px;height:80px;border-radius:6px;border:2px solid #ddd;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f5f5f5;gap:4px;'
-                    const iconEl = document.createElement('span')
-                    iconEl.textContent = icon
-                    iconEl.style.fontSize = '28px'
-                    const nameEl = document.createElement('span')
-                    nameEl.textContent = file.name.length > 10 ? file.name.slice(0, 9) + '…' : file.name
-                    nameEl.style.cssText = 'font-size:9px;color:#555;text-align:center;padding:0 2px;word-break:break-all;'
-                    box.appendChild(iconEl)
-                    box.appendChild(nameEl)
-                    box.title = file.name
-                    wrapper.appendChild(box)
-                }
-
-                const label = document.createElement('div')
-                label.textContent = '#' + (index + 1)
-                label.style.cssText = 'position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);color:white;font-size:10px;padding:1px 4px;border-radius:3px;'
-                wrapper.appendChild(label)
-                previewGrid.appendChild(wrapper)
-            })
-        })
+      const previewContainer = document.getElementById("previewContainer");
+      const previewGrid = document.getElementById("previewGrid");
+      const fileCount = document.getElementById("fileCount");
+      fileInput.addEventListener("change", () => {
+        const files = Array.from(fileInput.files);
+        previewGrid.innerHTML = "";
+        if (files.length === 0) {
+          previewContainer.style.display = "none";
+          return;
+        }
+        previewContainer.style.display = "block";
+        fileCount.textContent = files.length;
+        files.forEach((file, index) => {
+          const wrapper = document.createElement("div");
+          wrapper.style.cssText = "position:relative;display:inline-block;width:80px;";
+          const icon = getFileIcon(file.name);
+          if (icon === null) {
+            // Image → aperçu visuel
+            const reader = new FileReader();
+            reader.onload = e => {
+              const img = document.createElement("img");
+              img.src = e.target.result;
+              img.style.cssText = "width:80px;height:80px;object-fit:cover;border-radius:6px;border:2px solid #ddd;";
+              img.title = file.name;
+              wrapper.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+          } else {
+            // Document → icône + nom tronqué
+            const box = document.createElement("div");
+            box.style.cssText = "width:80px;height:80px;border-radius:6px;border:2px solid #ddd;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f5f5f5;gap:4px;";
+            const iconEl = document.createElement("span");
+            iconEl.textContent = icon;
+            iconEl.style.fontSize = "28px";
+            const nameEl = document.createElement("span");
+            nameEl.textContent = file.name.length > 10 ? file.name.slice(0, 9) + "…" : file.name;
+            nameEl.style.cssText = "font-size:9px;color:#555;text-align:center;padding:0 2px;word-break:break-all;";
+            box.appendChild(iconEl);
+            box.appendChild(nameEl);
+            box.title = file.name;
+            wrapper.appendChild(box);
+          }
+          const label = document.createElement("div");
+          label.textContent = "#" + (index + 1);
+          label.style.cssText = "position:absolute;bottom:2px;right:4px;background:rgba(0,0,0,0.6);color:white;font-size:10px;padding:1px 4px;border-radius:3px;";
+          wrapper.appendChild(label);
+          previewGrid.appendChild(wrapper);
+        });
+      });
     }
 
-    form.addEventListener('submit', () => {
-        if (fileInput && fileInput.files.length > 0) {
-            const count = fileInput.files.length
-            const plural = count > 1 ? count + ' fichiers' : '1 fichier'
-            btn.textContent = "⏳ L'IA analyse " + plural + "..."
-            btn.style.opacity = '0.7'
-            btn.style.cursor = 'not-allowed'
-            btn.disabled = true
-        }
-    })
-</script>
+    form.addEventListener("submit", () => {
+      if (fileInput && fileInput.files.length > 0) {
+        const count = fileInput.files.length;
+        const plural = count > 1 ? count + " fichiers" : "1 fichier";
+        btn.textContent = "⏳ L'IA analyse " + plural + "...";
+        btn.style.opacity = "0.7";
+        btn.style.cursor = "not-allowed";
+        btn.disabled = true;
+      }
+    });
+  </script>
 @end

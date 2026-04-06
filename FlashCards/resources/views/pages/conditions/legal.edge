@@ -1,133 +1,189 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/legal.css'])
-  <title>Flash Dam's | Mentions Légales & Sécurité</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/legal.css'])
+    <title>
+      Flash Dam's | Mentions Légales & Sécurité
+    </title>
+  </head>
 
-<div class="legal-scene">
-  <div class="legal-header">
-    <a href="{{ route('index') }}" class="back-link">← Retour</a>
-    <p class="legal-subtitle">Cadre contractuel et politique de confidentialité.</p>
-    <div class="face-tabs">
-      <a href="{{ route('legal', { face: 'cgu' }) }}" class="face-tab {{ face === 'cgu' ? 'active' : '' }}">CGU</a>
-      <a href="{{ route('legal', { face: 'data' }) }}" class="face-tab {{ face === 'data' ? 'active' : '' }}">DATA</a>
+  <div class="legal-scene">
+    <div class="legal-header">
+      <a href="{{ route('index') }}" class="back-link">← Retour</a>
+      <p class="legal-subtitle">
+        Cadre contractuel et politique de confidentialité.
+      </p>
+      <div class="face-tabs">
+        <a
+          href="{{ route('legal', { face: 'cgu' }) }}"
+          class="face-tab {{ face === 'cgu' ? 'active' : '' }}"
+        >CGU</a>
+        <a
+          href="{{ route('legal', { face: 'data' }) }}"
+          class="face-tab {{ face === 'data' ? 'active' : '' }}"
+        >DATA</a>
+      </div>
+    </div>
+
+    <div class="card-wrapper" data-face="{{ face }}">
+      <div class="card-inner">
+
+        {{-- FACE AVANT : CGU (Conditions Générales d'Utilisation) --}}
+        <div class="card-face card-front">
+          <div class="card-header">
+            <div class="card-header-left">
+              <span class="card-pill">01 / USAGE</span>
+              <h1>
+                Conditions <span class="highlight">d'Utilisation</span>
+              </h1>
+            </div>
+          </div>
+          <div class="card-body">
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">1</span>Évolution du Modèle Économique
+              </h2>
+              <p>
+                Flash Dam's est actuellement fourni à titre gratuit. L'éditeur se réserve le droit discrétionnaire de modifier cette gratuité, d'introduire des fonctionnalités "Premium" ou des abonnements, moyennant une notification préalable aux utilisateurs enregistrés.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">2</span>Limitation de Responsabilité (Uptime)
+              </h2>
+              <p>
+                Le service repose sur une obligation de moyens. L'éditeur ne garantit pas une disponibilité ininterrompue (24/7). Aucune responsabilité ne pourra être recherchée en cas d'interruption liée à la maintenance, à des bugs ou à des défaillances de l'hébergeur.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">3</span>Clause de Non-Responsabilité (IA)
+              </h2>
+              <p>
+                L'intelligence artificielle intégrée est un outil d'assistance dont l'exactitude n'est pas contractuellement garantie. L'utilisateur assume l'entière responsabilité de la vérification des données générées avant tout usage académique ou professionnel.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">4</span>Propriété Intellectuelle
+              </h2>
+              <p>
+                Le code source, le design, les logos et la marque Flash Dam's sont la propriété exclusive de l'éditeur. Toute reproduction, même partielle, est strictement interdite sans accord préalable. L'utilisateur conserve la propriété des contenus (decks) qu'il crée.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">5</span>Suspension de Compte
+              </h2>
+              <p>
+                L'éditeur se réserve le droit de suspendre ou de supprimer, sans préavis ni indemnité, tout compte utilisateur dont l'usage serait jugé abusif, illégal ou nuisible à l'intégrité de la plateforme et de ses serveurs.
+              </p>
+            </section>
+          </div>
+        </div>
+
+        {{-- FACE ARRIÈRE : DATA (Politique de Confidentialité & Sécurité) --}}
+        <div class="card-face card-back">
+          <div class="card-header">
+            <div class="card-header-left">
+              <span class="card-pill card-pill--back">02 / SÉCURITÉ</span>
+              <h1>
+                Gestion des <span class="highlight">Données</span>
+              </h1>
+            </div>
+          </div>
+          <div class="card-body">
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">1</span>Politique de Sauvegarde (Backups)
+              </h2>
+              <p>
+                Bien que des protocoles de redondance et de sauvegardes régulières soient opérationnels sur nos serveurs, l'intégrité absolue et la pérennité des données ne sont pas garanties. L'utilisateur est invité à exporter ses données critiques régulièrement.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">2</span>Exclusion de Responsabilité (Pertes)
+              </h2>
+              <p>
+                En cas de défaillance matérielle majeure ou de corruption irréversible de la base de données, la responsabilité de Flash Dam's est limitée à la mise en œuvre des moyens de restauration disponibles. Aucune indemnité ne pourra être réclamée pour perte de données.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">3</span>Confidentialité et RGPD
+              </h2>
+              <p>
+                Conformément au RGPD, vos données personnelles font l'objet d'un traitement strictement confidentiel. Flash Dam's s'engage à ne jamais vendre, céder ou exploiter commercialement vos informations auprès de tiers.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">4</span>Droit à l'Oubli
+              </h2>
+              <p>
+                Tout utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données personnelles. La suppression d'un compte utilisateur entraîne la suppression définitive de l'ensemble des decks et données associées sous 30 jours.
+              </p>
+            </section>
+
+            <section class="legal-section">
+              <h2>
+                <span class="section-num">5</span>Cookies et Traçage
+              </h2>
+              <p>
+                Flash Dam's utilise exclusivement des cookies techniques nécessaires au maintien de la session utilisateur et à la sécurité de l'authentification. Aucun cookie de pistage publicitaire n'est déployé sur la plateforme.
+              </p>
+            </section>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <div class="card-wrapper" data-face="{{ face }}">
-    <div class="card-inner">
+  <script>
+    const wrapper = document.querySelector(".card-wrapper");
 
-      {{-- FACE AVANT : CGU (Conditions Générales d'Utilisation) --}}
-      <div class="card-face card-front">
-        <div class="card-header">
-          <div class="card-header-left">
-            <span class="card-pill">01 / USAGE</span>
-            <h1>Conditions <span class="highlight">d'Utilisation</span></h1>
-          </div>
-        </div>
-        <div class="card-body">
-          <section class="legal-section">
-            <h2><span class="section-num">1</span> Évolution du Modèle Économique</h2>
-            <p>Flash Dam's est actuellement fourni à titre gratuit. L'éditeur se réserve le droit discrétionnaire de modifier cette gratuité, d'introduire des fonctionnalités "Premium" ou des abonnements, moyennant une notification préalable aux utilisateurs enregistrés.</p>
-          </section>
+    const currentFace = wrapper.dataset.face;
+    // Flip instantané au chargement si besoin
 
-          <section class="legal-section">
-            <h2><span class="section-num">2</span> Limitation de Responsabilité (Uptime)</h2>
-            <p>Le service repose sur une obligation de moyens. L'éditeur ne garantit pas une disponibilité ininterrompue (24/7). Aucune responsabilité ne pourra être recherchée en cas d'interruption liée à la maintenance, à des bugs ou à des défaillances de l'hébergeur.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">3</span> Clause de Non-Responsabilité (IA)</h2>
-            <p>L'intelligence artificielle intégrée est un outil d'assistance dont l'exactitude n'est pas contractuellement garantie. L'utilisateur assume l'entière responsabilité de la vérification des données générées avant tout usage académique ou professionnel.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">4</span> Propriété Intellectuelle</h2>
-            <p>Le code source, le design, les logos et la marque Flash Dam's sont la propriété exclusive de l'éditeur. Toute reproduction, même partielle, est strictement interdite sans accord préalable. L'utilisateur conserve la propriété des contenus (decks) qu'il crée.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">5</span> Suspension de Compte</h2>
-            <p>L'éditeur se réserve le droit de suspendre ou de supprimer, sans préavis ni indemnité, tout compte utilisateur dont l'usage serait jugé abusif, illégal ou nuisible à l'intégrité de la plateforme et de ses serveurs.</p>
-          </section>
-        </div>
-      </div>
-
-      {{-- FACE ARRIÈRE : DATA (Politique de Confidentialité & Sécurité) --}}
-      <div class="card-face card-back">
-        <div class="card-header">
-          <div class="card-header-left">
-            <span class="card-pill card-pill--back">02 / SÉCURITÉ</span>
-            <h1>Gestion des <span class="highlight">Données</span></h1>
-          </div>
-        </div>
-        <div class="card-body">
-          <section class="legal-section">
-            <h2><span class="section-num">1</span> Politique de Sauvegarde (Backups)</h2>
-            <p>Bien que des protocoles de redondance et de sauvegardes régulières soient opérationnels sur nos serveurs, l'intégrité absolue et la pérennité des données ne sont pas garanties. L'utilisateur est invité à exporter ses données critiques régulièrement.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">2</span> Exclusion de Responsabilité (Pertes)</h2>
-            <p>En cas de défaillance matérielle majeure ou de corruption irréversible de la base de données, la responsabilité de Flash Dam's est limitée à la mise en œuvre des moyens de restauration disponibles. Aucune indemnité ne pourra être réclamée pour perte de données.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">3</span> Confidentialité et RGPD</h2>
-            <p>Conformément au RGPD, vos données personnelles font l'objet d'un traitement strictement confidentiel. Flash Dam's s'engage à ne jamais vendre, céder ou exploiter commercialement vos informations auprès de tiers.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">4</span> Droit à l'Oubli</h2>
-            <p>Tout utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données personnelles. La suppression d'un compte utilisateur entraîne la suppression définitive de l'ensemble des decks et données associées sous 30 jours.</p>
-          </section>
-
-          <section class="legal-section">
-            <h2><span class="section-num">5</span> Cookies et Traçage</h2>
-            <p>Flash Dam's utilise exclusivement des cookies techniques nécessaires au maintien de la session utilisateur et à la sécurité de l'authentification. Aucun cookie de pistage publicitaire n'est déployé sur la plateforme.</p>
-          </section>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<script>
-  const wrapper = document.querySelector('.card-wrapper')
-  const currentFace = wrapper.dataset.face
-
-  // Flip instantané au chargement si besoin
-  if (currentFace === 'data') {
-    wrapper.classList.add('no-transition')
-    wrapper.classList.add('is-flipped')
-    requestAnimationFrame(() => {
+    if (currentFace === "data") {
+      wrapper.classList.add("no-transition");
+      wrapper.classList.add("is-flipped");
       requestAnimationFrame(() => {
-        wrapper.classList.remove('no-transition')
-      })
-    })
-  }
+        requestAnimationFrame(() => {
+          wrapper.classList.remove("no-transition");
+        });
+      });
+    }
+    // Animation de transition fluide au clic
 
-  // Animation de transition fluide au clic
-  const handleFlip = (e, targetUrl) => {
-    e.preventDefault()
-    wrapper.classList.toggle('is-flipped')
-    setTimeout(() => { window.location.href = targetUrl }, 500)
-  }
+    const handleFlip = (e, targetUrl) => {
+      e.preventDefault();
+      wrapper.classList.toggle("is-flipped");
+      setTimeout(() => {
+        window.location.href = targetUrl;
+      }, 500);
+    };
 
-  document.querySelectorAll('.face-tab').forEach(el => {
-    el.addEventListener('click', (e) => {
-      const targetUrl = el.getAttribute('href')
-      const targetFace = targetUrl.includes('data') ? 'data' : 'cgu'
-      
-      if (targetFace !== currentFace) {
-        handleFlip(e, targetUrl)
-      } else {
-        e.preventDefault()
-      }
-    })
-  })
-</script>
+    document.querySelectorAll(".face-tab").forEach(el => {
+      el.addEventListener("click", e => {
+        const targetUrl = el.getAttribute("href");
+        const targetFace = targetUrl.includes("data") ? "data" : "cgu";
+        if (targetFace !== currentFace) {
+          handleFlip(e, targetUrl);
+        } else {
+          e.preventDefault();
+        }
+      });
+    });
+  </script>

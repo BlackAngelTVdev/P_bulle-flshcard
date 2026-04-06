@@ -37,6 +37,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime()
   declare lastAiRequestAt: DateTime | null
 
+  @column.dateTime()
+  declare lastSeenAt: DateTime | null
+
+  @column()
+  declare sessionVersion: number
+
   canUseAiToday(): boolean {
     if (this.isAdmin) return true
     if (!this.lastAiRequestAt) return true

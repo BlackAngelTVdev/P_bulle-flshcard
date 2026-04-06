@@ -3,6 +3,9 @@ import User from '#models/user'
 import { registerValidator } from '#validators/auth'
 import { updateProfileValidator, updatePasswordValidator } from '#validators/profile'
 import hash from '@adonisjs/core/services/hash'
+import db from '@adonisjs/lucid/services/db'
+import GameSession from '#models/game_session'
+import { DateTime } from 'luxon'
 
 export default class AuthController {
   // ─── Pages d'authentification ───────────────────────────────────────────────
@@ -35,7 +38,64 @@ export default class AuthController {
    */
   async showEdit({ view, auth }: HttpContext) {
     const user = auth.getUserOrFail()
-    return view.render('pages/auth/profil', { user })
+
+    const decksRow = await db.from('decks').where('user_id', user.id).count('* as total').first()
+
+    const cardsRow = await db
+      .from('cards')
+      .join('decks', 'decks.id', 'cards.deck_id')
+      .where('decks.user_id', user.id)
+      .count('* as total')
+      .first()
+
+    const sessionsRow = await db
+      .from('game_sessions')
+      .where('user_id', user.id)
+      .count('* as total')
+      .first()
+
+    const totalsRow = await db
+      .from('game_sessions')
+      .where('user_id', user.id)
+      .sum('total_cards as totalPlayed')
+      .sum('correct_answers as totalCorrect')
+      .first()
+
+    const reviewRow = await db
+      .from('user_card_stats')
+      .where('user_id', user.id)
+      .where('last_result', false)
+      .count('* as total')
+      .first()
+
+    const lastSession = await GameSession.query()
+      .where('user_id', user.id)
+      .whereNotNull('ended_at')
+      .orderBy('ended_at', 'desc')
+      .first()
+
+    const decksCount = Number(decksRow?.total || 0)
+    const cardsCount = Number(cardsRow?.total || 0)
+    const sessionsCount = Number(sessionsRow?.total || 0)
+    const totalPlayed = Number(totalsRow?.totalPlayed || 0)
+    const totalCorrect = Number(totalsRow?.totalCorrect || 0)
+    const totalWrong = Math.max(totalPlayed - totalCorrect, 0)
+    const cardsToReview = Number(reviewRow?.total || 0)
+    const accuracy = totalPlayed > 0 ? Math.round((totalCorrect / totalPlayed) * 100) : 0
+
+    const profileStats = {
+      decksCount,
+      cardsCount,
+      sessionsCount,
+      totalPlayed,
+      totalCorrect,
+      totalWrong,
+      cardsToReview,
+      accuracy,
+      lastSessionAt: lastSession?.endedAt?.toFormat('dd/LL/yyyy HH:mm') || 'Aucune session',
+    }
+
+    return view.render('pages/auth/profil', { user, profileStats })
   }
 
   // ─── Actions d'authentification ─────────────────────────────────────────────
@@ -51,10 +111,7 @@ export default class AuthController {
 
     try {
       // On cherche l'utilisateur soit par son email, soit par son username
-      const user = await User.query()
-        .where('email', uid)
-        .orWhere('username', uid)
-        .firstOrFail()
+      const user = await User.query().where('email', uid).orWhere('username', uid).firstOrFail()
 
       // Vérification manuelle du hash du mot de passe
       const isValid = await hash.verify(user.password, password)
@@ -64,6 +121,10 @@ export default class AuthController {
       await session.regenerate()
       // Connexion de l'utilisateur avec le driver web
       await auth.use('web').login(user, isRememberMe)
+
+      session.put('auth_session_version', user.sessionVersion)
+      user.lastSeenAt = DateTime.now()
+      await user.save()
 
       return response.redirect().toRoute('decks.index')
     } catch {
@@ -88,6 +149,10 @@ export default class AuthController {
       // Connexion automatique après inscription
       await auth.use('web').login(user, true)
 
+      session.put('auth_session_version', user.sessionVersion)
+      user.lastSeenAt = DateTime.now()
+      await user.save()
+
       return response.redirect().toRoute('decks.index')
     } catch (error) {
       // Capture les messages d'erreur de validation pour les afficher en front
@@ -100,8 +165,16 @@ export default class AuthController {
    * Déconnexion de l'utilisateur.
    */
   async logout({ auth, response }: HttpContext) {
+    const user = auth.getUserOrFail()
+    user.lastSeenAt = null
+    await user.save()
+
     await auth.use('web').logout()
     return response.redirect().toRoute('auth.login')
+  }
+
+  async presence({ response }: HttpContext) {
+    return response.noContent()
   }
 
   // ─── Actions de Profil ──────────────────────────────────────────────────────

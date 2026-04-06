@@ -9,11 +9,10 @@ import AdmZip from 'adm-zip'
 type Flashcard = { question: string; answer: string }
 
 export default class AIService {
-
   private visionModels = [
     'meta-llama/llama-4-maverick-17b-128e-instruct',
     'meta-llama/llama-4-scout-17b-16e-instruct',
-    'llama-3.2-11b-vision-preview',                  
+    'llama-3.2-11b-vision-preview',
   ]
 
   private textModel = 'llama-3.3-70b-versatile'
@@ -41,7 +40,7 @@ export default class AIService {
 
     const ext = (file.extname ?? '').toLowerCase()
     const buffer = await fs.readFile(file.tmpPath)
-    await fs.unlink(file.tmpPath).catch(() => { })
+    await fs.unlink(file.tmpPath).catch(() => {})
 
     // ---- PDF ----
     if (ext === 'pdf') {
@@ -156,7 +155,7 @@ RÈGLES DE FORMATAGE ABSOLUES :
     try {
       const imageData = await fs.readFile(image.tmpPath)
       base64Image = imageData.toString('base64')
-      await fs.unlink(image.tmpPath).catch(() => { })
+      await fs.unlink(image.tmpPath).catch(() => {})
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)
       throw new Error(`Lecture image échouée : ${msg}`)
