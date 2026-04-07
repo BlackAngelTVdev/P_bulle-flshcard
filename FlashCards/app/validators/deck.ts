@@ -18,6 +18,7 @@ const categories = [
   'Géo',
   'SES',
   'Droit',
+  'Psychologie',
   'Économie',
   'Médecine',
   'Culture G',

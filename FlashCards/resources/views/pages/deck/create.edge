@@ -67,6 +67,9 @@
             <option value="Philo" {{ old('category')=='Philo' ? 'selected' : '' }}>
               Philosophie
             </option>
+            <option value="Psychologie" {{ old('category')=='Psychologie' ? 'selected' : '' }}>
+              Psychologie
+            </option>
             <option value="Histoire" {{ old('category')=='Histoire' ? 'selected' : '' }}>
               Histoire
             </option>
@@ -80,15 +83,8 @@
               Droit & Justice
             </option>
           </optgroup>
-
-                <optgroup label="Sciences Humaines 🏛️">
-                    <option value="Philo" {{ old('category')=='Philo' ? 'selected' : '' }}>Philosophie</option>
-                    <option value="Psychologie" {{ old('category')=='Psychologie' ? 'selected' : '' }}>Psychologie</option>
-                    <option value="Histoire" {{ old('category')=='Histoire' ? 'selected' : '' }}>Histoire</option>
-                    <option value="Géo" {{ old('category')=='Géo' ? 'selected' : '' }}>Géographie</option>
-                    <option value="SES" {{ old('category')=='SES' ? 'selected' : '' }}>SES / Social</option>
-                    <option value="Droit" {{ old('category')=='Droit' ? 'selected' : '' }}>Droit & Justice</option>
-                </optgroup>
+        </select>
+      </div>
 
       <div class="field">
         <label for="description">Description</label>

@@ -149,7 +149,9 @@ main {
 }
 
 .btn-delete-card:hover {
+  background: #dc2626;
   color: white;
+  border-color: #dc2626;
 }
 
 /* Gestion des formulaires dans les boutons */

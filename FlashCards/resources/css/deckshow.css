@@ -83,7 +83,9 @@ p {
 }
 
 .btn-delete-deck:hover {
+  background-color: #dc2626;
   color: white;
+  border-color: #dc2626;
 }
 
 /* --- TABLEAU --- */
@@ -118,6 +120,7 @@ p {
 }
 
 .table-row:hover {
+  background: #f8f7ff;
 }
 
 .col {
@@ -156,6 +159,7 @@ p {
 }
 
 .btn-add-card:hover {
+  background: var(--primary-violet);
   color: white;
 }
 
