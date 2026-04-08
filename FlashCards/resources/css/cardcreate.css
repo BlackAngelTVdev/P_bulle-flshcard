@@ -1,7 +1,7 @@
 @import url(./var.css);
 
 /* --- LAYOUT GLOBAL --- */
-main {
+.card-create-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,7 +11,7 @@ main {
 }
 
 /* --- LE FORMULAIRE (Style Carte) --- */
-form {
+.card-create-page form {
   background: var(--white);
   max-width: 550px;
   width: 100%;
@@ -22,7 +22,7 @@ form {
   box-sizing: border-box;
 }
 
-h1 {
+.card-create-page h1 {
   color: var(--primary-violet);
   font-size: 2rem;
   text-align: center;
@@ -31,21 +31,26 @@ h1 {
 }
 
 /* --- CHAMPS DE SAISIE --- */
-.form-group {
+.card-create-page .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   margin-bottom: 1.5rem;
 }
 
-label {
+.card-create-page .field-help {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.card-create-page label {
   font-weight: 700;
   color: #374151;
   font-size: 0.95rem;
 }
 
-input[type='text'],
-textarea {
+.card-create-page input[type='text'],
+.card-create-page textarea {
   padding: 14px;
   border: 2px solid var(--light-violet);
   border-radius: 10px;
@@ -57,13 +62,13 @@ textarea {
   box-sizing: border-box;
 }
 
-textarea {
+.card-create-page textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-input[type='text']:focus,
-textarea:focus {
+.card-create-page input[type='text']:focus,
+.card-create-page textarea:focus {
   outline: none;
   border-color: var(--primary-violet);
   background-color: var(--white);
@@ -71,7 +76,7 @@ textarea:focus {
 }
 
 /* --- BOUTON SUBMIT --- */
-.btn-submit {
+.card-create-page .btn-submit {
   width: 100%;
   background-color: var(--primary-violet);
   color: white;
@@ -85,46 +90,46 @@ textarea:focus {
   margin-top: 1rem;
 }
 
-.btn-submit:hover {
+.card-create-page .btn-submit:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
 }
 
-.btn-submit:active {
+.card-create-page .btn-submit:active {
   transform: translateY(0);
 }
 /* --- RESPONSIVE DESIGN (Formulaire) --- */
 
 @media (max-width: 600px) {
-  main {
+  .card-create-page {
     padding: 1rem; /* On réduit l'espace autour du formulaire */
     min-height: auto; /* Évite de forcer une hauteur trop grande si le clavier mobile sort */
     margin-top: 2rem;
   }
 
-  form {
+  .card-create-page form {
     padding: 2rem 1.5rem; /* Padding interne réduit pour gagner de la place */
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
   }
 
-  h1 {
+  .card-create-page h1 {
     font-size: 1.6rem;
     margin-bottom: 2rem;
   }
 
-  .form-group {
+  .card-create-page .form-group {
     gap: 0.5rem; /* Un peu plus compact */
     margin-bottom: 1.2rem;
   }
 
-  input[type='text'],
-  textarea {
+  .card-create-page input[type='text'],
+  .card-create-page textarea {
     padding: 12px;
     font-size: 0.95rem; /* Texte légèrement plus petit pour le mobile */
   }
 
-  .btn-submit {
+  .card-create-page .btn-submit {
     padding: 14px;
     font-size: 1rem;
   }
@@ -132,11 +137,11 @@ textarea:focus {
 
 /* Optimisation pour les très petits écrans (iPhone SE, etc.) */
 @media (max-width: 380px) {
-  form {
+  .card-create-page form {
     padding: 1.5rem 1rem;
   }
 
-  h1 {
+  .card-create-page h1 {
     font-size: 1.4rem;
   }
 }

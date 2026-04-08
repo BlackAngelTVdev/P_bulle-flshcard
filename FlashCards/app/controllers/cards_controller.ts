@@ -4,6 +4,7 @@ import { createCardValidator, updateCardValidator } from '#validators/card'
 import AIService from '#services/ai_service'
 import Deck from '#models/deck'
 import { DateTime } from 'luxon'
+import { formatCardTextForDisplay } from '#services/card_text_formatter'
 
 export default class CardsController {
   // -------------------------------------------------------
@@ -105,7 +106,8 @@ export default class CardsController {
 
         return response.redirect().toRoute('decks.show', { id: deck.id })
       } catch (error) {
-        session.flash('error', `Erreur IA : ${error.message}`)
+        const message = error instanceof Error ? error.message : 'Erreur inconnue'
+        session.flash('error', `Erreur IA : ${message}`)
         return response.redirect().back()
       }
     }
@@ -142,7 +144,11 @@ export default class CardsController {
   // -------------------------------------------------------
   async show({ params, view }: HttpContext) {
     const card = await Card.query().where('id', params.id).preload('deck').firstOrFail()
-    return view.render('pages/cards/show', { card })
+    return view.render('pages/cards/show', {
+      card,
+      formattedQuestion: formatCardTextForDisplay(card.question),
+      formattedAnswer: formatCardTextForDisplay(card.answer),
+    })
   }
 
   // -------------------------------------------------------

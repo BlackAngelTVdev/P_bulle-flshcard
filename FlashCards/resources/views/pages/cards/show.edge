@@ -4,8 +4,8 @@
       <div class="card-inner">
         <div class="card-front">
           <span class="card-label">Question</span>
-          <h2>
-            {{ card.question }}
+          <h2 class="question-text">
+            {{ formattedQuestion }}
           </h2>
           <p class="hint">
             Clique pour voir la réponse
@@ -15,7 +15,7 @@
         <div class="card-back">
           <span class="card-label">Réponse</span>
           <p class="answer-text">
-            {{ card.answer }}
+            {{ formattedAnswer }}
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { createDeckValidator, updateDeckValidator } from '#validators/deck'
 import db from '@adonisjs/lucid/services/db'
 import { DateTime } from 'luxon'
+import { formatCardTextForDisplay } from '#services/card_text_formatter'
 
 const toPositiveIntArray = (value: unknown): number[] => {
   if (!Array.isArray(value)) return []
@@ -109,7 +110,14 @@ export default class DecksController {
   async show({ params, view }: HttpContext) {
     const deck = await Deck.findOrFail(params.id)
     await deck.load('cards')
-    return view.render('pages/deck/show', { deck })
+
+    const cardsForDisplay = deck.cards.map((card) => ({
+      ...card.serialize(),
+      formattedQuestion: formatCardTextForDisplay(card.question),
+      formattedAnswer: formatCardTextForDisplay(card.answer),
+    }))
+
+    return view.render('pages/deck/show', { deck, cardsForDisplay })
   }
 
   async edit({ params, auth, view, response }: HttpContext) {

@@ -1,4 +1,4 @@
-main {
+.card-edit-page {
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -8,7 +8,7 @@ main {
 }
 
 /* --- CARTE DE MODIFICATION --- */
-form {
+.card-edit-page form {
   background: var(--white);
   max-width: 550px;
   width: 100%;
@@ -18,7 +18,7 @@ form {
   border-top: 8px solid var(--primary-violet);
 }
 
-h1 {
+.card-edit-page h1 {
   color: var(--primary-violet);
   font-size: 2rem;
   text-align: center;
@@ -26,21 +26,22 @@ h1 {
 }
 
 /* --- CHAMPS DE SAISIE --- */
-.field {
+.card-edit-page .field {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
-label {
+.card-edit-page label {
   font-weight: 700;
   color: #374151;
   font-size: 0.95rem;
   margin-top: 0.5rem;
 }
 
-input[type='text'] {
+.card-edit-page input[type='text'],
+.card-edit-page textarea {
   padding: 14px;
   border: 2px solid var(--light-violet);
   border-radius: 10px;
@@ -49,15 +50,26 @@ input[type='text'] {
   background-color: #f9fafb;
 }
 
-input[type='text']:focus {
+.card-edit-page textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.card-edit-page input[type='text']:focus,
+.card-edit-page textarea:focus {
   outline: none;
   border-color: var(--primary-violet);
   background-color: var(--white);
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 
+.card-edit-page .field-help {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
 /* --- ERREURS (Conforme maquette "error newdeck") --- */
-.text-danger {
+.card-edit-page .text-danger {
   color: #dc2626;
   font-size: 0.85rem;
   font-weight: 600;
@@ -66,7 +78,7 @@ input[type='text']:focus {
 }
 
 /* --- BOUTONS --- */
-button[type='submit'] {
+.card-edit-page button[type='submit'] {
   width: 100%;
   background-color: var(--primary-violet);
   color: white;
@@ -82,12 +94,12 @@ button[type='submit'] {
   margin-top: 1rem;
 }
 
-button[type='submit']:hover {
+.card-edit-page button[type='submit']:hover {
   transform: translateY(-2px);
 }
 
 /* Style pour le lien "Abandonner" (exigé par l'analyse) */
-.btn-abandon {
+.card-edit-page .btn-abandon {
   display: block;
   text-align: center;
   margin-top: 1.5rem;
@@ -98,44 +110,45 @@ button[type='submit']:hover {
   transition: color 0.2s;
 }
 
-.btn-abandon:hover {
+.card-edit-page .btn-abandon:hover {
   color: var(--primary-violet);
 }
 /* --- RESPONSIVE DESIGN (Modification) --- */
 
 @media (max-width: 600px) {
-  main {
+  .card-edit-page {
     padding: 1rem; /* Moins d'espace perdu sur les côtés */
     min-height: auto;
     margin-top: 1.5rem;
   }
 
-  form {
+  .card-edit-page form {
     padding: 2rem 1.5rem; /* On réduit le padding interne pour gagner de la place */
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
   }
 
-  h1 {
+  .card-edit-page h1 {
     font-size: 1.6rem;
     margin-bottom: 1.5rem;
   }
 
-  .field {
+  .card-edit-page .field {
     margin-bottom: 1.2rem;
   }
 
-  input[type='text'] {
+  .card-edit-page input[type='text'],
+  .card-edit-page textarea {
     padding: 12px;
     font-size: 1rem; /* On garde du 1rem pour éviter le zoom auto de l'iPhone au focus */
   }
 
-  button[type='submit'] {
+  .card-edit-page button[type='submit'] {
     padding: 14px;
     font-size: 1rem;
   }
 
-  .btn-abandon {
+  .card-edit-page .btn-abandon {
     margin-top: 1.2rem;
     padding: 8px; /* Plus facile à cliquer */
   }
@@ -143,7 +156,7 @@ button[type='submit']:hover {
 
 /* Fix pour les très petits écrans */
 @media (max-width: 380px) {
-  form {
+  .card-edit-page form {
     padding: 1.5rem 1rem;
   }
 }

@@ -84,13 +84,13 @@
         </div>
       </div>
 
-      @each(card in deck.cards)
+      @each(card in cardsForDisplay)
         <a href="{{ route('cards.show', { id: card.id }) }}" class="table-row">
-          <div class="col">
-            {{ card.question }}
+          <div class="col card-content">
+            {{ card.formattedQuestion }}
           </div>
-          <div class="col">
-            {{ card.answer }}
+          <div class="col card-content">
+            {{ card.formattedAnswer }}
           </div>
           <div class="col-actions">
             <span class="edit-icon">Voir 👁️</span>

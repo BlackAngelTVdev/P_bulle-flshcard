@@ -1,5 +1,5 @@
 @component('components/main', { title: `Modifier la carte | Flash Dam\'s`, css: 'cardedit' })
-  <main>
+  <main class="card-edit-page">
     <form action="{{ route('cards.update', { id: card.id }) }}?_method=PUT" method="POST">
       {{ csrfField() }}
       <h1>
@@ -8,7 +8,11 @@
 
       <div class="field">
         <label for="question">Question</label>
-        <input type="text" id="question" name="question" value="{{ old('question') || card.question }}" />
+        <textarea
+          id="question"
+          name="question"
+          placeholder="Écris la question. Pour une puce, commence une ligne par ()"
+        >{{ old('question') || card.question }}</textarea>
         @if(flashMessages.has('errors.question'))
           <p class="text-danger">
             {{ flashMessages.get('errors.question') }}
@@ -18,7 +22,14 @@
 
       <div class="field">
         <label for="answer">Réponse</label>
-        <input type="text" id="answer" name="answer" value="{{ old('answer') || card.answer }}" />
+        <textarea
+          id="answer"
+          name="answer"
+          placeholder="Écris la réponse. Pour une puce, commence une ligne par ()"
+        >{{ old('answer') || card.answer }}</textarea>
+        <small class="field-help">
+          Les puces apparaissent uniquement sur les lignes qui commencent par <strong>()</strong>.
+        </small>
         @if(flashMessages.has('errors.answer'))
           <p class="text-danger">
             {{ flashMessages.get('errors.answer') }}

@@ -129,6 +129,10 @@ p {
   word-break: break-word;
 }
 
+.card-content {
+  white-space: pre-line;
+}
+
 .col-actions {
   width: 100px;
   text-align: right;

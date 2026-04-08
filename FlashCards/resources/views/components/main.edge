@@ -9,7 +9,7 @@
     @if(auth.user)
       <meta name="auth-presence-url" content="{{ route('auth.presence') }}" />
     @endif
-    @vite(['resources/css/app.css', 'resources/js/app.js', `resources/css/${css}.css`])
+    @vite([`resources/css/${css}.css`, 'resources/js/app.js', `resources/css/app.css`])
     @if(js)
       @vite([`resources/js/${js}.js`])
     @endif

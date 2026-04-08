@@ -114,6 +114,7 @@ main {
   margin: 0;
   font-size: 1.8rem;
   color: var(--text-dark);
+  white-space: pre-line;
 }
 
 /* --- ACTIONS --- */

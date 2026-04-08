@@ -1,5 +1,5 @@
 @component('components/main', { title: `Créer une carte | Flash Dam\'s`, css: 'cardcreate' })
-  <main>
+  <main class="card-create-page">
     <h1>
       Créer une nouvelle carte
     </h1>
@@ -11,7 +11,11 @@
       {{-- ===== SECTION MANUELLE ===== --}}
       <div class="form-group">
         <label for="question">Question</label>
-        <input type="text" id="question" name="question" value="{{ old('question') || '' }}" />
+        <textarea
+          id="question"
+          name="question"
+          placeholder="Écris la question. Pour une puce, commence une ligne par ()"
+        >{{ old('question') || '' }}</textarea>
         @inputError('question')
           <p class="error-message">
             {{ $messages.join(', ') }}
@@ -21,7 +25,14 @@
 
       <div class="form-group">
         <label for="answer">Réponse</label>
-        <textarea id="answer" name="answer">{{ old('answer') || '' }}</textarea>
+        <textarea
+          id="answer"
+          name="answer"
+          placeholder="Écris la réponse. Pour une puce, commence une ligne par ()"
+        >{{ old('answer') || '' }}</textarea>
+        <small class="field-help">
+          Les puces apparaissent uniquement sur les lignes qui commencent par <strong>()</strong>.
+        </small>
         @inputError('answer')
           <p class="error-message">
             {{ $messages.join(', ') }}

@@ -28,6 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const timerBar = document.getElementById('timer-bar')
   const cardElement = document.getElementById('card-element')
 
+  function formatCardTextForDisplay(text) {
+    if (typeof text !== 'string') return ''
+
+    return text
+      .split(/\r?\n/)
+      .map((line) => {
+        const match = line.match(/^\(\)\s*(.*)$/)
+        if (!match) return line
+
+        const content = (match[1] || '').trim()
+        return content ? `• ${content}` : '•'
+      })
+      .join('\n')
+  }
+
   // 3. Flip de la carte au clic
   if (cardElement) {
     cardElement.addEventListener('click', (e) => {
@@ -153,8 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function showCard() {
     if (currentIndex < cards.length) {
       // On met à jour le texte
-      questionText.innerText = cards[currentIndex].question
-      answerText.innerText = cards[currentIndex].answer
+      questionText.textContent = formatCardTextForDisplay(cards[currentIndex].question)
+      answerText.textContent = formatCardTextForDisplay(cards[currentIndex].answer)
 
       // Si mode chrono, on lance le décompte
       if (mode === 'chrono') startChrono()
