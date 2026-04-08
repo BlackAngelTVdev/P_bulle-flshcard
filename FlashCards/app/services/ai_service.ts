@@ -42,20 +42,17 @@ export default class AIService {
     const buffer = await fs.readFile(file.tmpPath)
     await fs.unlink(file.tmpPath).catch(() => {})
 
-    // ---- PDF ----
     if (ext === 'pdf') {
       const uint8 = new Uint8Array(buffer)
       const { text } = await extractPdfText(uint8, { mergePages: true })
       return text
     }
 
-    // ---- DOCX ----
     if (ext === 'docx') {
       const result = await mammoth.extractRawText({ buffer })
       return result.value
     }
 
-    // ---- PPTX ----
     if (ext === 'pptx') {
       const zip = new AdmZip(buffer)
       const entries = zip.getEntries()
@@ -92,49 +89,38 @@ export default class AIService {
       throw new Error(`Extraction de "${file.clientName}" échouée : ${msg}`)
     }
 
-    if (extractedText.trim().length < 20) {
+    if (extractedText.trim().length < 10) {
       throw new Error(`Le fichier "${file.clientName}" semble vide ou illisible.`)
     }
 
-    // Tronque à ~12 000 caractères pour rester dans le context window
-    const truncated = extractedText.slice(0, 12000)
+    const truncated = extractedText.slice(0, 15000)
 
-    const prompt = `Tu es un assistant pédagogique expert en création de flashcards de haute précision.
-Analyse le texte fourni et génère des flashcards selon les directives ci-dessous.
+    const prompt = `Tu es un extracteur de données pédagogiques ultra-exhaustif. 
+Ton objectif est de convertir TOUT le texte fourni en flashcards, sans omission d'informations importantes.
 
-TEXTE À ANALYSER :
+TEXTE SOURCE :
 """
 ${truncated}
 """
 
-DIRECTIVES PAR CATÉGORIE :
-1. LANGUES (Anglais, Allemand, Espagnol, Italien, Français) :
-   - Extrais tout vocabulaire (Mot -> Traduction).
-   - Pour la grammaire : Question = Règle/Contexte, Réponse = Application/Exemple.
+DIRECTIVES DE GÉNÉRATION :
+- EXHAUSTIVITÉ TOTALE : Si le texte contient une liste de 100 mots, génère 100 flashcards. Ne résume pas.
+- ADAPTATION : Le nombre de cartes doit correspondre strictement à la densité d'information du texte.
+- LANGUES : Extrais chaque couple de vocabulaire. Question = Mot source, Réponse = Traduction.
+- SCIENCES : Question = Concept/Théorème, Réponse = Définition/Formule précise.
+- MÉTHODE : Analyse le texte segment par segment pour ne rien oublier.
 
-2. SCIENCES & TECH (Maths, Physique-Chimie, SVT, Informatique) :
-   - Maths/Physique : Question = Nom du théorème/formule, Réponse = Formule ou définition.
-   - SVT/Médecine : Identifie les processus biologiques.
-   - Informatique : Question = Fonction/Syntaxe, Réponse = Rôle/Code.
-
-3. SCIENCES HUMAINES (Philo, Histoire, Géo, SES, Droit) :
-   - Histoire : Question = Événement/Date, Réponse = Description/Importance.
-   - Philo/SES : Question = Concept ou Auteur, Réponse = Définition ou Thèse.
-   - Droit : Question = Terme technique ou Article, Réponse = Définition ou Application.
-
-RÈGLES DE FORMATAGE ABSOLUES :
+RÈGLES DE FORMATAGE :
 - Réponds EXCLUSIVEMENT avec du JSON brut.
-- INTERDIT : Markdown, backticks, texte d'introduction ou de conclusion.
 - STRUCTURE : {"flashcards": [{"question": "...", "answer": "..."}]}
-- QUANTITÉ : Entre 5 et 40 flashcards.
-- Question de max 255 caractères, Réponse de max 255 caractères.`
+- CONTRAINTES : Question et Réponse doivent être claires et tenir sur 255 caractères max chacune.`
 
     const groq = new Groq({ apiKey })
     const completion = await groq.chat.completions.create({
       model: this.textModel,
       messages: [{ role: 'user', content: prompt }],
-      temperature: 0.1,
-      max_tokens: 4096,
+      temperature: 0, // Minimum pour une fidélité maximale aux données
+      max_tokens: 8192, // Augmenté pour supporter plus de cartes en une seule réponse
     })
 
     const rawContent = completion.choices[0]?.message?.content ?? null
@@ -165,36 +151,24 @@ RÈGLES DE FORMATAGE ABSOLUES :
     const imageUrl = `data:${contentType};base64,${base64Image}`
     const groq = new Groq({ apiKey })
 
-    const prompt = `Tu es un assistant pédagogique expert en création de flashcards de haute précision.
-Analyse l'image fournie et extrais les informations selon les directives par catégorie ci-dessous.
+    const prompt = `Tu es un expert en OCR (Reconnaissance Optique de Caractères) et en pédagogie.
+Analyse cette image et convertis l'intégralité de son contenu en flashcards.
 
-DIRECTIVES PAR CATÉGORIE :
-1. LANGUES (Anglais, Allemand, Espagnol, Italien, Français) :
-   - Extrais tout vocabulaire (Mot -> Traduction).
-   - Pour la grammaire : Question = Règle/Contexte, Réponse = Application/Exemple.
-   - Si c'est un tableau : 1 ligne = 1 flashcard.
+DIRECTIVE CRITIQUE POUR LES LISTES/TABLEAUX :
+- Si l'image contient une liste de vocabulaire, un tableau de conjugaison ou des définitions, tu DOIS extraire CHAQUE LIGNE individuellement.
+- NE FAIS PAS de sélection. Si tu vois 50 mots, tu génères 50 flashcards.
+- Pour les tableaux : Question = En-tête + Mot de la ligne, Réponse = Valeur correspondante.
 
-2. SCIENCES & TECH (Maths, Physique-Chimie, SVT, Informatique) :
-   - Maths/Physique : Question = Nom du théorème/formule ou énoncé de variable, Réponse = Formule LaTeX ou définition.
-   - SVT/Médecine : Identifie les schémas (Organe -> Fonction) ou processus biologiques.
-   - Informatique : Question = Fonction/Syntaxe, Réponse = Rôle/Code.
+DOMAINES :
+1. VOCABULAIRE : Question = Mot original, Réponse = Traduction/Définition.
+2. SCHÉMAS : Question = Nom de l'élément pointé, Réponse = Fonction/Description.
+3. FORMULES : Utilise LaTeX pour les symboles complexes.
 
-3. SCIENCES HUMAINES (Philo, Histoire, Géo, SES, Droit) :
-   - Histoire : Question = Événement/Date, Réponse = Description/Importance.
-   - Philo/SES : Question = Concept ou Auteur, Réponse = Définition ou Thèse principale.
-   - Géo/Droit : Question = Terme technique ou Article de loi, Réponse = Définition ou Application.
-
-4. CODE DE LA ROUTE & CULTURE G :
-   - Priorise l'identification visuelle (ex: Panneau -> Signification, Priorité -> Règle).
-
-RÈGLES DE FORMATAGE ABSOLUES :
-- Réponds EXCLUSIVEMENT avec du JSON brut.
-- INTERDIT : Markdown, backticks, ou texte d'introduction/conclusion.
+RÈGLES DE SORTIE :
+- JSON brut uniquement (pas de texte, pas de \`\`\`json).
 - STRUCTURE : {"flashcards": [{"question": "...", "answer": "..."}]}
-- COUVERTURE : Analyse l'image de haut en bas. Ne saute aucune ligne de tableau.
-- QUANTITÉ : Entre 5 et 40 flashcards par image.
-- PRÉCISION : Si le texte est manuscrit, fais une déduction logique basée sur le contexte.
-- Réponse de max 255 caractères, Question de max 255 caractères.`
+- QUANTITÉ : Illimitée. Génère autant de cartes que nécessaire pour couvrir 100% de l'image.
+- Limite de 255 caractères par champ.`
 
     let rawContent: string | null = null
     let lastError: unknown = null
@@ -212,8 +186,8 @@ RÈGLES DE FORMATAGE ABSOLUES :
               ],
             },
           ],
-          temperature: 0.1,
-          max_tokens: 2048,
+          temperature: 0, 
+          max_tokens: 4096,
         })
         rawContent = completion.choices[0]?.message?.content ?? null
         if (rawContent) {
@@ -229,16 +203,14 @@ RÈGLES DE FORMATAGE ABSOLUES :
 
     if (!rawContent) {
       const lastMsg = lastError instanceof Error ? lastError.message : String(lastError)
-      throw new Error(
-        `Tous les modèles ont échoué pour "${image.clientName}". Dernier message : ${lastMsg}`
-      )
+      throw new Error(`Échec critique pour "${image.clientName}" : ${lastMsg}`)
     }
 
     return this.parseFlashcards(rawContent, image.clientName)
   }
 
   // -------------------------------------------------------
-  // PARSE JSON → flashcards (factorisé)
+  // PARSE JSON → flashcards
   // -------------------------------------------------------
   private parseFlashcards(rawContent: string, fileName: string): Flashcard[] {
     let parsed: unknown
@@ -252,7 +224,7 @@ RÈGLES DE FORMATAGE ABSOLUES :
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err)
       console.error(`❌ JSON invalide pour "${fileName}" :`, rawContent)
-      throw new Error(`JSON invalide pour "${fileName}" : ${msg}`)
+      throw new Error(`L'IA a généré un format illisible pour "${fileName}".`)
     }
 
     let cards: Flashcard[] = []
@@ -261,35 +233,26 @@ RÈGLES DE FORMATAGE ABSOLUES :
       cards = parsed as Flashcard[]
     } else if (parsed !== null && typeof parsed === 'object') {
       const obj = parsed as Record<string, unknown>
-      if (Array.isArray(obj.flashcards)) {
-        cards = obj.flashcards as Flashcard[]
-      } else if (Array.isArray(obj.cards)) {
-        cards = obj.cards as Flashcard[]
+      const potentialArray = obj.flashcards || obj.cards || Object.values(obj).find(Array.isArray)
+      if (Array.isArray(potentialArray)) {
+        cards = potentialArray as Flashcard[]
       } else {
-        const firstArray = Object.values(obj).find(Array.isArray)
-        if (firstArray) {
-          cards = firstArray as Flashcard[]
-        } else {
-          throw new Error(`Format JSON inattendu pour "${fileName}"`)
-        }
+        throw new Error(`Format JSON inattendu pour "${fileName}"`)
       }
-    } else {
-      throw new Error(`Format JSON inattendu pour "${fileName}"`)
     }
 
     return cards.filter(
       (card) =>
-        card !== null &&
-        typeof card === 'object' &&
+        card &&
         typeof card.question === 'string' &&
         typeof card.answer === 'string' &&
-        card.question.trim() !== '' &&
-        card.answer.trim() !== ''
+        card.question.trim().length > 0 &&
+        card.answer.trim().length > 0
     )
   }
 
   // -------------------------------------------------------
-  // GÉNÉRATION depuis plusieurs fichiers mixtes
+  // GÉNÉRATION MULTI-FICHIERS
   // -------------------------------------------------------
   async generateFromFiles(
     files: MultipartFile[]
@@ -304,16 +267,11 @@ RÈGLES DE FORMATAGE ABSOLUES :
       if (result.status === 'fulfilled') {
         allCards.push(...result.value)
       } else {
-        const msg =
-          result.reason instanceof Error
-            ? result.reason.message
-            : String(result.reason ?? 'erreur inconnue')
-        console.error(`❌ Fichier #${index + 1} échoué — "${fileName}" : ${msg}`)
+        const msg = result.reason instanceof Error ? result.reason.message : String(result.reason)
         errors.push(`"${fileName}" : ${msg}`)
       }
     })
 
-    // Dédoublonnage par question
     const seen = new Set<string>()
     const cards = allCards.filter((card) => {
       const key = card.question.toLowerCase().trim()
@@ -325,7 +283,6 @@ RÈGLES DE FORMATAGE ABSOLUES :
     return { cards, errors }
   }
 
-  // Rétrocompat : ancien nom utilisé dans le controller
   async generateFromImages(
     images: MultipartFile[]
   ): Promise<{ cards: Flashcard[]; errors: string[] }> {
